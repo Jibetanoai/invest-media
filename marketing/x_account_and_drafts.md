@@ -24,13 +24,21 @@ https://jibetanoai.github.io/invest-media/articles/nisa-kihon-2026-2027-changes.
 3. NISA口座の金融機関変更、実は受付期間があるのを知ってますか?(前年10/1〜当年9/30)。うっかり見落としがちなルールをまとめました。
 https://jibetanoai.github.io/invest-media/articles/nisa-kihon-2026-2027-changes.html
 
-## 投稿ドラフト(NISA口座の選び方・証券会社比較 記事) ※生成完了後に使用
+## 投稿ドラフト(NISA口座の選び方・証券会社比較 記事)
 
 4. NISA、始めるのはいいけどどこの証券会社で開くのが正解?比較のときに見るべきポイントを整理しました。
-https://jibetanoai.github.io/invest-media/articles/(スラッグは生成後に確定)
+https://jibetanoai.github.io/invest-media/articles/nisa-account-brokerage-comparison-points.html
 
 5. 「とりあえず有名なところで」で証券口座を選ぶ前に。手数料・取扱商品・クレカ積立などの比較軸をまとめました。
-https://jibetanoai.github.io/invest-media/articles/(スラッグは生成後に確定)
+https://jibetanoai.github.io/invest-media/articles/nisa-account-brokerage-comparison-points.html
+
+## 投稿ドラフト(iDeCoとNISAの違い・使い分け 記事)
+
+6. 「NISAは始めたけど、iDeCoもやったほうがいい?」——よく聞かれる疑問を整理しました。結論、両制度は併用OK。お金を使う時期で分けて考えるのがポイントです。
+https://jibetanoai.github.io/invest-media/articles/ideco-nisa-difference-guide.html
+
+7. iDeCoは原則60歳まで引き出せない代わりに、掛金が全額所得控除に。NISAとの8つの違いを表で整理しました。2026年12月の制度改正ポイントも。
+https://jibetanoai.github.io/invest-media/articles/ideco-nisa-difference-guide.html
 
 ## 運用ルール(メモ)
 
