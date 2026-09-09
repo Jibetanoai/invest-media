@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://invest-media-kx.netlify.app/sitemap.xml
