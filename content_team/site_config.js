@@ -2,7 +2,7 @@
 // (OGP・canonical・サイトマップの絶対URLに使われる)。
 module.exports = {
   siteName: "invest_media",
-  baseUrl: "https://invest-media-kx.netlify.app",
+  baseUrl: "https://jibetanoai.github.io/invest-media",
   description: "NISA・つみたて投資・証券口座の選び方など、投資初心者向けに分かりやすく整理するメディアです。",
   twitterHandle: null, // TODO: Xアカウント開設後に "@xxxxx" を設定
 };
