@@ -10,6 +10,14 @@ const DOCS_DIR = path.join(__dirname, "..", "docs");
 const ARTICLES_DIR = path.join(DOCS_DIR, "articles");
 const INDEX_DATA_FILE = path.join(__dirname, "..", "data", "articles.json");
 
+function gaSnippet() {
+  if (!site.googleAnalyticsId) return "";
+  const id = site.googleAnalyticsId;
+  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${id}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');</script>
+`;
+}
+
 function escapeHtml(str) {
   return String(str ?? "")
     .replace(/&/g, "&amp;")
@@ -88,7 +96,7 @@ ${site.twitterHandle ? `<meta name="twitter:site" content="${escapeHtml(site.twi
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-</head>
+${gaSnippet()}</head>
 <body>
 
 <header class="site-header">
@@ -164,7 +172,7 @@ ${site.googleSiteVerification ? `<meta name="google-site-verification" content="
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-</head>
+${gaSnippet()}</head>
 <body>
 
 <header class="site-header">
