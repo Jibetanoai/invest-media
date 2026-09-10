@@ -151,11 +151,11 @@ function buildIndexHtml(articles) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(site.siteName)} | 投資・資産形成の基本メディア</title>
+<title>${escapeHtml(site.siteName)} | NISA・つみたて投資をやさしく整理</title>
 <meta name="description" content="${escapeHtml(site.description)}">
 <link rel="canonical" href="${site.baseUrl}/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="${escapeHtml(site.siteName)} | 投資・資産形成の基本メディア">
+<meta property="og:title" content="${escapeHtml(site.siteName)} | NISA・つみたて投資をやさしく整理">
 <meta property="og:description" content="${escapeHtml(site.description)}">
 <meta property="og:url" content="${site.baseUrl}/">
 <meta name="twitter:card" content="summary">
@@ -170,7 +170,7 @@ ${site.googleSiteVerification ? `<meta name="google-site-verification" content="
 <header class="site-header">
   <div class="site-header-inner">
     <a href="index.html" class="brand">${escapeHtml(site.siteName)}</a>
-    <p class="site-tagline">投資・資産形成の基本を、はじめての人にもわかりやすく</p>
+    <p class="site-tagline">NISA・つみたて投資・証券口座選びを、はじめての人にもわかりやすく</p>
   </div>
 </header>
 <div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
