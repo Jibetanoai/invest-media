@@ -184,6 +184,11 @@ ${gaSnippet()}</head>
 <div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
 
 <main>
+  <a class="article-card" href="shoken-koza-guide.html" style="border-color:var(--accent); margin-bottom:24px;">
+    <div class="article-card-date">📌 まとめガイド</div>
+    <h2>証券口座の選び方 完全ガイド</h2>
+    <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
+  </a>
   <div id="article-list" class="article-list">${listHtml}</div>
 </main>
 
@@ -201,6 +206,7 @@ ${gaSnippet()}</head>
 function buildSitemapXml(articles) {
   const urls = [
     `${site.baseUrl}/`,
+    `${site.baseUrl}/shoken-koza-guide.html`,
     ...articles.map((a) => `${site.baseUrl}/articles/${a.slug}.html`),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
