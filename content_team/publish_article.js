@@ -10,6 +10,37 @@ const DOCS_DIR = path.join(__dirname, "..", "docs");
 const ARTICLES_DIR = path.join(DOCS_DIR, "articles");
 const INDEX_DATA_FILE = path.join(__dirname, "..", "data", "articles.json");
 
+// 証券口座の選び方ガイド(shoken-koza-guide.html)のセクション構成と合わせたカテゴリ分類。
+// 新規記事は generate_article.js のトピック文言からキーワードで自動推定するが、
+// 分類が合わない場合は data/articles.json の該当エントリの category を手動修正すればよい。
+const CATEGORIES = [
+  { key: "kihon", label: "① 制度の全体像・基本" },
+  { key: "kouza", label: "② 口座を比較する" },
+  { key: "hajimeru", label: "③ 実際に始める" },
+  { key: "shouhin", label: "④ 商品を選ぶ" },
+  { key: "kaikata", label: "⑤ 買い方を決める" },
+  { key: "heiyou", label: "⑥ 他の制度と使い分ける" },
+  { key: "hajimetaato", label: "⑦ 始めた後に読む" },
+  { key: "souba", label: "⑧ 相場・経済の見方" },
+  { key: "kyounonews", label: "⑨ 今日の経済ニュース" },
+];
+const CATEGORY_KEYWORD_RULES = [
+  { key: "kaikata", words: ["積立", "一括投資", "つみたて投資枠", "成長投資枠", "クレカ積立", "ドルコスト"] },
+  { key: "heiyou", words: ["iDeCo", "イデコ", "ふるさと納税", "ロボアドバイザー", "ロボアド"] },
+  { key: "hajimetaato", words: ["含み損", "狼狽売り", "出口戦略", "取り崩し", "売り方"] },
+  { key: "souba", words: ["経済指標", "景気循環", "景気サイクル", "セクターローテーション", "セクター", "金利", "為替", "インフレ", "決算シーズン", "相場", "マクロ経済", "ニュースの読み方", "ニュース", "雇用統計", "テクニカル指標", "移動平均線", "MACD", "RSI", "ボリンジャーバンド", "標準偏差", "出来高", "オシレーター", "モメンタム", "チャート"] },
+  { key: "shouhin", words: ["インデックスファンド", "ETF", "全世界株式", "米国株式", "高配当", "分配金", "隠れコスト", "株主優待", "個別株"] },
+  { key: "hajimeru", words: ["始め方", "ステップ", "毎月いくら", "新社会人", "口座開設から"] },
+  { key: "kouza", words: ["証券会社の比較", "証券口座はどこ", "夫婦で", "金融機関は変更", "乗り換え"] },
+];
+function inferCategory(article) {
+  const text = `${article.title || ""} ${article.topic || ""}`;
+  for (const rule of CATEGORY_KEYWORD_RULES) {
+    if (rule.words.some((w) => text.includes(w))) return rule.key;
+  }
+  return "kihon";
+}
+
 function gaSnippet() {
   if (!site.googleAnalyticsId) return "";
   const id = site.googleAnalyticsId;
@@ -134,17 +165,50 @@ ${gaSnippet()}</head>
 `;
 }
 
-function buildIndexHtml(articles) {
-  const sorted = articles.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  const listHtml = sorted.length === 0
-    ? `<div class="empty-state">まだ記事がありません。近日公開予定です。</div>`
-    : sorted.map((a) => `
+function articleCardHtml(a) {
+  return `
       <a class="article-card" href="articles/${escapeHtml(a.slug)}.html">
         <div class="article-card-date">${formatDateJa(a.createdAt)}</div>
         <h2>${escapeHtml(a.title)}</h2>
         <p>${escapeHtml(a.meta)}</p>
       </a>
-    `).join("");
+    `;
+}
+
+function buildIndexHtml(articles) {
+  const sorted = articles.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  const tabsHtml = sorted.length === 0 ? "" : `
+  <div class="category-tabs" role="tablist">
+    <button type="button" class="category-tab is-active" role="tab" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>
+    ${CATEGORIES.map((c) => {
+      const count = sorted.filter((a) => (a.category || "kihon") === c.key).length;
+      if (count === 0) return "";
+      return `<button type="button" class="category-tab" role="tab" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
+    }).join("")}
+  </div>`;
+
+  const listHtml = sorted.length === 0
+    ? `<div class="empty-state">まだ記事がありません。近日公開予定です。</div>`
+    : sorted.map((a) => `<div class="article-card-wrap" data-category="${escapeHtml(a.category || "kihon")}">${articleCardHtml(a)}</div>`).join("");
+
+  const tabScript = sorted.length === 0 ? "" : `
+<script>
+(function() {
+  var tabs = document.querySelectorAll(".category-tab");
+  var cards = document.querySelectorAll(".article-card-wrap");
+  tabs.forEach(function(tab) {
+    tab.addEventListener("click", function() {
+      tabs.forEach(function(t) { t.classList.remove("is-active"); });
+      tab.classList.add("is-active");
+      var cat = tab.getAttribute("data-category");
+      cards.forEach(function(card) {
+        card.hidden = cat !== "all" && card.getAttribute("data-category") !== cat;
+      });
+    });
+  });
+})();
+</script>`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -189,6 +253,7 @@ ${gaSnippet()}</head>
     <h2>証券口座の選び方 完全ガイド</h2>
     <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
   </a>
+  ${tabsHtml}
   <div id="article-list" class="article-list">${listHtml}</div>
 </main>
 
@@ -197,7 +262,7 @@ ${gaSnippet()}</head>
   <a href="privacy-policy.html">プライバシーポリシー</a>
   <a href="contact.html">お問い合わせ</a>
 </footer>
-
+${tabScript}
 </body>
 </html>
 `;
@@ -228,6 +293,7 @@ function publishArticle(article) {
   const entry = {
     slug: article.slug, title: article.title, meta: article.meta,
     keywords: article.keywords, createdAt: article.createdAt,
+    category: article.category || inferCategory(article),
   };
   if (existingIdx >= 0) articles[existingIdx] = entry; else articles.push(entry);
   writeArticleIndex(articles);
@@ -240,4 +306,9 @@ function publishArticle(article) {
   return path.join(ARTICLES_DIR, `${article.slug}.html`);
 }
 
-module.exports = { publishArticle };
+function rebuildIndexOnly() {
+  const articles = readArticleIndex();
+  fs.writeFileSync(path.join(DOCS_DIR, "index.html"), buildIndexHtml(articles), "utf8");
+}
+
+module.exports = { publishArticle, readArticleIndex, writeArticleIndex, rebuildIndexOnly, inferCategory, CATEGORIES };
