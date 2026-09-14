@@ -150,7 +150,7 @@
       "meta": "株主優待の仕組みと、NISA成長投資枠で個別株を買うときの手順・注意点を初心者向けに整理。権利付最終日の数え方、配当金の受取方式、損益通算が使えない点などの落とし穴や、証券会社を比べる観点もまとめました。",
       "keywords": "株主優待, NISA 成長投資枠, 個別株 始め方, 株主優待 注意点",
       "createdAt": "2026-09-10T06:03:40.427Z",
-      "category": "shouhin"
+      "category": "kaikata"
     },
     {
       "slug": "toushin-hidden-cost-basics",
@@ -270,7 +270,7 @@
       "meta": "NISA口座をネット証券とネット銀行のどちらで開くか迷う人向けに、取扱商品・最低積立額・手数料・入金のしやすさなど6つの観点を整理。金融機関変更のルールや2027年からの制度改正の内容も、初心者向けにやさしく解説します。",
       "keywords": "NISA口座 ネット証券 ネット銀行, NISA 金融機関 選び方, NISA口座 どっち, NISA 金融機関変更",
       "createdAt": "2026-09-11T21:57:26.027Z",
-      "category": "kouza"
+      "category": "kihon"
     },
     {
       "slug": "nisa-account-opening-documents",
@@ -278,7 +278,7 @@
       "meta": "NISA口座の開設に必要なものは主に「マイナンバー確認書類」「本人確認書類」「銀行口座」の3点。2026年時点で使える書類の注意点、申し込みから税務署の確認完了までの流れと日数の目安、つまずきやすい不備の例を整理しました。",
       "keywords": "NISA 口座開設 必要なもの, NISA 本人確認書類, NISA マイナンバー, NISA 口座開設 期間",
       "createdAt": "2026-09-11T22:04:00.752Z",
-      "category": "hajimeru"
+      "category": "kihon"
     },
     {
       "slug": "nisa-check-frequency-mindset",
@@ -286,7 +286,7 @@
       "meta": "NISAの運用状況は毎日見るべき？それとも放置？年1回の点検を軸にした頻度の目安、見すぎが判断に影響しやすい理由、急落時の心構え、続けやすい証券会社選びの観点までを初心者向けに整理しました。",
       "keywords": "NISA 運用状況 確認頻度, NISA 見る頻度, NISA ほったらかし, 新NISA 見直し",
       "createdAt": "2026-09-11T22:09:45.015Z",
-      "category": "hajimetaato"
+      "category": "kihon"
     },
     {
       "slug": "macro-economics-basics-gdp-inflation-stock-price",
