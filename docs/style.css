@@ -134,6 +134,28 @@ main {
   font-size: 14px;
 }
 
+.article-search {
+  margin: 0 0 16px;
+}
+
+.article-search input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: border-color 0.15s ease;
+}
+
+.article-search input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 .category-tabs {
   display: flex;
   flex-wrap: wrap;

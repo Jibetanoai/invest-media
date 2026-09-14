@@ -198,25 +198,47 @@ function buildIndexHtml(articles) {
     }).join("")}
   </div>`;
 
+  const searchHtml = sorted.length === 0 ? "" : `
+  <div class="article-search">
+    <input type="search" id="article-search-input" placeholder="キーワードで検索(例:NISA、iDeCo)" aria-label="記事をキーワードで検索">
+  </div>`;
+
   const listHtml = sorted.length === 0
     ? `<div class="empty-state">まだ記事がありません。近日公開予定です。</div>`
-    : sorted.map((a) => `<div class="article-card-wrap" data-category="${escapeHtml(a.category || "kihon")}">${articleCardHtml(a)}</div>`).join("");
+    : sorted.map((a) => {
+        const searchText = [a.title, a.meta, a.keywords].filter(Boolean).join(" ").toLowerCase();
+        return `<div class="article-card-wrap" data-category="${escapeHtml(a.category || "kihon")}" data-search="${escapeHtml(searchText)}">${articleCardHtml(a)}</div>`;
+      }).join("");
 
   const tabScript = sorted.length === 0 ? "" : `
 <script>
 (function() {
   var tabs = document.querySelectorAll(".category-tab");
   var cards = document.querySelectorAll(".article-card-wrap");
+  var searchInput = document.getElementById("article-search-input");
+  var currentCategory = "all";
+  var currentQuery = "";
+  function applyFilter() {
+    cards.forEach(function(card) {
+      var matchesCategory = currentCategory === "all" || card.getAttribute("data-category") === currentCategory;
+      var matchesQuery = currentQuery === "" || card.getAttribute("data-search").indexOf(currentQuery) !== -1;
+      card.hidden = !(matchesCategory && matchesQuery);
+    });
+  }
   tabs.forEach(function(tab) {
     tab.addEventListener("click", function() {
       tabs.forEach(function(t) { t.classList.remove("is-active"); });
       tab.classList.add("is-active");
-      var cat = tab.getAttribute("data-category");
-      cards.forEach(function(card) {
-        card.hidden = cat !== "all" && card.getAttribute("data-category") !== cat;
-      });
+      currentCategory = tab.getAttribute("data-category");
+      applyFilter();
     });
   });
+  if (searchInput) {
+    searchInput.addEventListener("input", function() {
+      currentQuery = searchInput.value.trim().toLowerCase();
+      applyFilter();
+    });
+  }
 })();
 </script>`;
 
@@ -263,6 +285,7 @@ ${gaSnippet()}</head>
     <h2>証券口座の選び方 完全ガイド</h2>
     <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
   </a>
+  ${searchHtml}
   ${tabsHtml}
   <div id="article-list" class="article-list">${listHtml}</div>
 </main>
