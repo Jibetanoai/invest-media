@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { markdownToHtml } = require("./markdown");
+const { DIAGRAMS } = require("./diagrams");
 const site = require("./site_config");
 
 const DOCS_DIR = path.join(__dirname, "..", "docs");
@@ -112,9 +113,22 @@ function relatedArticlesHtml(current, allArticles) {
     </div>`;
 }
 
+// bodyMarkdown内の `[DIAGRAM:id]` (1行)を、diagrams.jsに定義したSVGに
+// 置き換える。markdown.jsが<,>をエスケープするためSVGをmarkdown内に直接
+// 書けず、変換後のHTML文字列に対して後から差し込む方式にしている。
+// 該当idが無い場合は元のまま(プレースホルダの文字列)を残す(サイレントに
+// 消してしまうと図が抜けていることに気づきにくいため)。
+function injectDiagrams(html) {
+  return html.replace(/<p>\[DIAGRAM:([a-z0-9-]+)\]<\/p>/g, (match, id) => {
+    const svg = DIAGRAMS[id];
+    if (!svg) return match;
+    return `<figure class="article-diagram">${svg}</figure>`;
+  });
+}
+
 function buildArticleHtml(article, allArticles) {
   const url = `${site.baseUrl}/articles/${article.slug}.html`;
-  const bodyHtml = markdownToHtml(article.bodyMarkdown);
+  const bodyHtml = injectDiagrams(markdownToHtml(article.bodyMarkdown));
   const publishedIso = article.createdAt;
 
   const jsonLd = {
