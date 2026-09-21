@@ -193,4 +193,149 @@ const DIAGRAMS = {
 </svg>`,
 };
 
+// --- 「相場の歴史」記事用の長期チャート ---
+// 日経平均・S&P500の主要な節目の値を折れ線で結び、暴落・暴騰の
+// イベントを注記した長期チャート。あくまで記事内で値動きの「規模感」を
+// つかむための概算値(illustrative)であり、公式の終値そのものではない
+// (年央値・概算の高値安値を使用している箇所がある)。正確な数値は
+// 日本経済新聞社(日経平均)やS&P Dow Jones Indicesの公式データで
+// ご確認ください、という前提を記事本文側にも明記すること。
+function buildHistoryChart({ points, events, width = 680, height = 340, yUnit, colorVar }) {
+  const padding = { top: 30, right: 40, bottom: 36, left: 70 };
+  const plotW = width - padding.left - padding.right;
+  const plotH = height - padding.top - padding.bottom;
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const xMin = Math.min(...xs);
+  const xMax = Math.max(...xs);
+  const yMax = Math.max(...ys) * 1.08;
+  const sx = (x) => padding.left + ((x - xMin) / (xMax - xMin)) * plotW;
+  const sy = (y) => padding.top + plotH - (y / yMax) * plotH;
+
+  const linePoints = points.map((p) => `${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join(" ");
+
+  // Y軸の目盛り(4分割)
+  const yTicks = [0, 1, 2, 3, 4].map((i) => (yMax / 4) * i);
+  const yTicksSvg = yTicks
+    .map((v) => {
+      const y = sy(v).toFixed(1);
+      return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--border)" stroke-width="1"/>
+      <text x="${padding.left - 8}" y="${Number(y) + 4}" text-anchor="end" font-size="10.5" fill="var(--muted)">${Math.round(v).toLocaleString()}</text>`;
+    })
+    .join("");
+
+  // X軸ラベル(データ点のうち、キリのよい年だけ表示)
+  const xLabelYears = [...new Set(points.map((p) => Math.floor(p.x)))].filter((y, i, arr) => {
+    if (i === 0 || i === arr.length - 1) return true;
+    return y % 5 === 0;
+  });
+  const xTicksSvg = xLabelYears
+    .map((year) => {
+      const x = sx(year).toFixed(1);
+      return `<text x="${x}" y="${height - padding.bottom + 18}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${year}</text>`;
+    })
+    .join("");
+
+  const eventsSvg = (events || [])
+    .map((e) => {
+      const xNum = sx(e.x);
+      const x = xNum.toFixed(1);
+      const y = sy(e.y).toFixed(1);
+      const tier = e.tier || 1;
+      const labelY = e.side === "below" ? Number(y) + 16 + tier * 16 : Number(y) - 8 - tier * 16;
+      const lineY2 = e.side === "below" ? Number(y) + 8 + tier * 16 : Number(y) - tier * 16;
+      // 右端・左端に近いイベントはラベルが枠外にはみ出さないよう寄せる
+      let anchor = e.anchor || "middle";
+      if (!e.anchor) {
+        if (xNum > width - padding.right - 60) anchor = "end";
+        else if (xNum < padding.left + 60) anchor = "start";
+      }
+      return `
+      <line x1="${x}" y1="${y}" x2="${x}" y2="${lineY2}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="${x}" cy="${y}" r="5" fill="var(--accent)"/>
+      <text x="${x}" y="${labelY}" text-anchor="${anchor}" font-size="11" font-weight="700" fill="var(--accent-ink)">${e.label}</text>`;
+    })
+    .join("");
+
+  return `
+<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${yUnit}の長期推移と主な暴落・暴騰イベントを示す折れ線グラフ(概算値)">
+  ${yTicksSvg}
+  ${xTicksSvg}
+  <polyline points="${linePoints}" fill="none" stroke="${colorVar}" stroke-width="2.5"/>
+  ${eventsSvg}
+  <line x1="${padding.left}" y1="${padding.top + plotH}" x2="${width - padding.right}" y2="${padding.top + plotH}" stroke="var(--muted)" stroke-width="1.5"/>
+</svg>`;
+}
+
+// 日経平均株価(概算・illustrative values, 単位: 円)
+const NIKKEI_POINTS = [
+  { x: 1985, y: 13000 },
+  { x: 1989.99, y: 38915 },
+  { x: 1992, y: 14309 },
+  { x: 1995, y: 14485 },
+  { x: 2000, y: 20337 },
+  { x: 2003, y: 7972 },
+  { x: 2007, y: 18261 },
+  { x: 2009.2, y: 7054 },
+  { x: 2012, y: 8455 },
+  { x: 2015, y: 19034 },
+  { x: 2018, y: 24448 },
+  { x: 2020.1, y: 23386 },
+  { x: 2020.25, y: 16552 },
+  { x: 2021, y: 28791 },
+  { x: 2024.3, y: 42224 },
+  { x: 2024.6, y: 31458 },
+  { x: 2024.9, y: 38000 },
+];
+
+const NIKKEI_EVENTS = [
+  { x: 1989.99, y: 38915, label: "①バブル最高値 38,915円", side: "above" },
+  { x: 2003, y: 7972, label: "②ITバブル崩壊", side: "below", tier: 1 },
+  { x: 2009.2, y: 7054, label: "③リーマンショック", side: "below", tier: 3 },
+  { x: 2020.25, y: 16552, label: "④コロナショック", side: "below" },
+  { x: 2024.6, y: 31458, label: "⑤2024年8月急落", side: "above" },
+];
+
+// S&P500(概算・illustrative values, 単位: ポイント)
+const SP500_POINTS = [
+  { x: 1985, y: 172 },
+  { x: 1987.6, y: 337 },
+  { x: 1987.8, y: 224 },
+  { x: 1990, y: 330 },
+  { x: 1995, y: 615 },
+  { x: 2000.2, y: 1527 },
+  { x: 2002.8, y: 776 },
+  { x: 2007.8, y: 1565 },
+  { x: 2009.2, y: 676 },
+  { x: 2013, y: 1848 },
+  { x: 2018, y: 2673 },
+  { x: 2020.1, y: 3386 },
+  { x: 2020.2, y: 2237 },
+  { x: 2021.9, y: 4766 },
+  { x: 2022.8, y: 3577 },
+  { x: 2024, y: 5882 },
+];
+
+const SP500_EVENTS = [
+  { x: 1987.8, y: 224, label: "①ブラックマンデー", side: "below" },
+  { x: 2002.8, y: 776, label: "②ITバブル崩壊", side: "below", tier: 1 },
+  { x: 2009.2, y: 676, label: "③リーマンショック", side: "below", tier: 3 },
+  { x: 2020.2, y: 2237, label: "④コロナショック", side: "above" },
+  { x: 2022.8, y: 3577, label: "⑤利上げ局面の下落", side: "above", tier: 3 },
+];
+
+DIAGRAMS["nikkei225-history"] = buildHistoryChart({
+  points: NIKKEI_POINTS,
+  events: NIKKEI_EVENTS,
+  yUnit: "日経平均株価",
+  colorVar: "var(--navy)",
+});
+
+DIAGRAMS["sp500-history"] = buildHistoryChart({
+  points: SP500_POINTS,
+  events: SP500_EVENTS,
+  yUnit: "S&P500",
+  colorVar: "var(--accent)",
+});
+
 module.exports = { DIAGRAMS };
