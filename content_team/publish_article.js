@@ -287,6 +287,11 @@ ${gaSnippet()}</head>
     <h2>証券口座の選び方 完全ガイド</h2>
     <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
   </a>
+  <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
+    <div class="article-card-date">📌 まとめガイド</div>
+    <h2>株式投資初心者ロードマップ｜安全に始めるための15記事</h2>
+    <p>何から読めばいいか迷う方向けに、基本→口座開設→商品選び→相場の仕組み→危険の避け方まで、順番に読める15記事に整理しました。</p>
+  </a>
   ${searchHtml}
   ${tabsHtml}
   <div id="article-list" class="article-list">${listHtml}</div>
@@ -307,6 +312,7 @@ function buildSitemapXml(articles) {
   const urls = [
     `${site.baseUrl}/`,
     `${site.baseUrl}/shoken-koza-guide.html`,
+    `${site.baseUrl}/kabu-toushi-roadmap.html`,
     ...articles.map((a) => `${site.baseUrl}/articles/${a.slug}.html`),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
