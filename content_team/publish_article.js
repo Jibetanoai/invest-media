@@ -289,8 +289,8 @@ ${gaSnippet()}</head>
   </a>
   <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
-    <h2>株式投資初心者ロードマップ｜安全に始めるための15記事</h2>
-    <p>何から読めばいいか迷う方向けに、基本→口座開設→商品選び→相場の仕組み→危険の避け方まで、順番に読める15記事に整理しました。</p>
+    <h2>株式投資初心者ロードマップ｜安全に始めるための19記事</h2>
+    <p>何から読めばいいか迷う方向けに、基本→口座開設→商品選び→注文方法→相場の仕組み→危険の避け方まで、順番に読める19記事に整理しました。</p>
   </a>
   ${searchHtml}
   ${tabsHtml}
