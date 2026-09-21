@@ -88,6 +88,18 @@ function formatDateJa(iso) {
   return `${get("year")}年${get("month")}月${get("day")}日`;
 }
 
+// 全記事共通のCTA。まとめガイド(shoken-koza-guide.html)は本文中どの記事
+// からも自然にたどり着けるリンクが無かったため、本文の直後(免責文の前)に
+// 毎回表示する。ガイド内には実際の証券会社アフィリエイトリンクがある。
+function hubCtaHtml() {
+  return `
+    <div class="hub-cta">
+      <p class="hub-cta-label">📌 まとめガイド</p>
+      <p class="hub-cta-text">口座選び・始め方・商品選びまで迷ったら、関連記事をテーマ別に整理したガイドページを見てみて。</p>
+      <a class="hub-cta-button" href="../shoken-koza-guide.html">証券口座の選び方 完全ガイドを見る →</a>
+    </div>`;
+}
+
 function relatedArticlesHtml(current, allArticles) {
   const others = allArticles.filter((a) => a.slug !== current.slug).slice(0, 3);
   if (others.length === 0) return "";
@@ -159,6 +171,7 @@ ${gaSnippet()}</head>
     <div class="article-body">
       ${bodyHtml}
     </div>
+    ${hubCtaHtml()}
     <div class="article-disclaimer">
       本記事は情報提供を目的としており、投資勧誘や助言を目的としたものではありません。投資判断はご自身の責任で行ってください。本サイトはアフィリエイト広告を利用しています。
     </div>
