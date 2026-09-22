@@ -224,11 +224,13 @@ function buildHistoryChart({ points, events, width = 680, height = 340, yUnit, c
     })
     .join("");
 
-  // X軸ラベル(データ点のうち、キリのよい年だけ表示)
-  const xLabelYears = [...new Set(points.map((p) => Math.floor(p.x)))].filter((y, i, arr) => {
-    if (i === 0 || i === arr.length - 1) return true;
-    return y % 5 === 0;
-  });
+  // X軸ラベル: 期間が短い(拡大)チャートでは年ごとに全部表示し、
+  // 長期チャートではキリのよい年(5の倍数)だけ間引いて表示する
+  const uniqueYears = [...new Set(points.map((p) => Math.floor(p.x)))];
+  const xLabelYears =
+    uniqueYears.length <= 10
+      ? uniqueYears
+      : uniqueYears.filter((y, i, arr) => i === 0 || i === arr.length - 1 || y % 5 === 0);
   const xTicksSvg = xLabelYears
     .map((year) => {
       const x = sx(year).toFixed(1);
@@ -336,6 +338,173 @@ DIAGRAMS["sp500-history"] = buildHistoryChart({
   events: SP500_EVENTS,
   yUnit: "S&P500",
   colorVar: "var(--accent)",
+});
+
+// --- 個別の暴落を深掘りする記事用の「拡大版」チャート ---
+// いずれも概算・illustrative valuesで、その出来事の前後だけを拡大して
+// 値動きの形が分かるようにしたもの。
+
+DIAGRAMS["black-monday-1987-chart"] = buildHistoryChart({
+  points: [
+    { x: 1987, y: 247 },
+    { x: 1987.25, y: 289 },
+    { x: 1987.5, y: 318 },
+    { x: 1987.65, y: 337 },
+    { x: 1987.7, y: 322 },
+    { x: 1987.79, y: 283 },
+    { x: 1987.8, y: 225 },
+    { x: 1987.83, y: 245 },
+    { x: 1987.92, y: 247 },
+    { x: 1988.25, y: 258 },
+    { x: 1988.5, y: 262 },
+  ],
+  events: [
+    { x: 1987.65, y: 337, label: "8月: 史上最高値337", side: "above" },
+    { x: 1987.8, y: 225, label: "10/19 ブラックマンデー: 1日で-20.5%", side: "below", tier: 1 },
+    { x: 1988.5, y: 262, label: "翌年半ばには回復", side: "above" },
+  ],
+  yUnit: "S&P500(1987年前後)",
+  colorVar: "var(--accent)",
+});
+
+DIAGRAMS["japan-bubble-burst-chart"] = buildHistoryChart({
+  points: [
+    { x: 1987, y: 21564 },
+    { x: 1988, y: 30159 },
+    { x: 1989.4, y: 33000 },
+    { x: 1989.99, y: 38915 },
+    { x: 1990.25, y: 29980 },
+    { x: 1990.6, y: 25000 },
+    { x: 1990.99, y: 23849 },
+    { x: 1991.5, y: 22000 },
+    { x: 1991.99, y: 22984 },
+    { x: 1992.25, y: 19346 },
+    { x: 1992.6, y: 14309 },
+    { x: 1992.99, y: 16925 },
+  ],
+  events: [
+    { x: 1989.99, y: 38915, label: "1989/12/29 史上最高値38,915円", side: "above" },
+    { x: 1992.6, y: 14309, label: "1992年 ピークから6割超下落", side: "below", tier: 1 },
+  ],
+  yUnit: "日経平均株価(バブル崩壊前後)",
+  colorVar: "var(--navy)",
+});
+
+DIAGRAMS["dotcom-bubble-chart"] = buildHistoryChart({
+  points: [
+    { x: 1998, y: 1085 },
+    { x: 1999, y: 1327 },
+    { x: 2000.2, y: 1527 },
+    { x: 2000.5, y: 1454 },
+    { x: 2000.99, y: 1320 },
+    { x: 2001.5, y: 1224 },
+    { x: 2001.75, y: 1040 },
+    { x: 2002.0, y: 1148 },
+    { x: 2002.5, y: 989 },
+    { x: 2002.8, y: 776 },
+    { x: 2003.25, y: 855 },
+    { x: 2003.99, y: 1112 },
+  ],
+  events: [
+    { x: 2000.2, y: 1527, label: "2000/3 ITバブル最高値", side: "above" },
+    { x: 2002.8, y: 776, label: "2002/10 底値(ピーク比 約半分)", side: "below", tier: 1 },
+  ],
+  yUnit: "S&P500(ITバブル前後)",
+  colorVar: "var(--accent)",
+});
+
+DIAGRAMS["lehman-shock-chart"] = buildHistoryChart({
+  points: [
+    { x: 2006, y: 16111 },
+    { x: 2007, y: 17226 },
+    { x: 2007.5, y: 18261 },
+    { x: 2007.99, y: 15308 },
+    { x: 2008.3, y: 12526 },
+    { x: 2008.6, y: 13481 },
+    { x: 2008.72, y: 11609 },
+    { x: 2008.83, y: 8577 },
+    { x: 2008.99, y: 8860 },
+    { x: 2009.15, y: 7054 },
+    { x: 2009.5, y: 9877 },
+    { x: 2009.99, y: 10546 },
+  ],
+  events: [
+    { x: 2007.5, y: 18261, label: "2007年 危機前の高値圏", side: "above" },
+    { x: 2008.72, y: 11609, label: "2008/9 リーマン・ブラザーズ破綻", side: "above", tier: 3 },
+    { x: 2009.15, y: 7054, label: "2009/3 底値", side: "below", tier: 1 },
+  ],
+  yUnit: "日経平均株価(リーマンショック前後)",
+  colorVar: "var(--navy)",
+});
+
+DIAGRAMS["corona-shock-2020-chart"] = buildHistoryChart({
+  points: [
+    { x: 2019.99, y: 23657 },
+    { x: 2020.05, y: 23205 },
+    { x: 2020.13, y: 23386 },
+    { x: 2020.17, y: 21142 },
+    { x: 2020.2, y: 19698 },
+    { x: 2020.22, y: 16552 },
+    { x: 2020.25, y: 19389 },
+    { x: 2020.33, y: 20193 },
+    { x: 2020.5, y: 22288 },
+    { x: 2020.75, y: 23205 },
+    { x: 2020.99, y: 27444 },
+  ],
+  events: [
+    { x: 2020.13, y: 23386, label: "2020/2 コロナ前高値", side: "above" },
+    { x: 2020.22, y: 16552, label: "2020/3 底値(約1か月で-30%)", side: "below", tier: 1 },
+    { x: 2020.99, y: 27444, label: "年末には高値を更新", side: "above" },
+  ],
+  yUnit: "日経平均株価(コロナショック前後)",
+  colorVar: "var(--navy)",
+});
+
+DIAGRAMS["2022-rate-hike-chart"] = buildHistoryChart({
+  points: [
+    { x: 2021.99, y: 4766 },
+    { x: 2022.16, y: 4374 },
+    { x: 2022.25, y: 4530 },
+    { x: 2022.4, y: 4132 },
+    { x: 2022.5, y: 3785 },
+    { x: 2022.6, y: 3900 },
+    { x: 2022.66, y: 4130 },
+    { x: 2022.75, y: 3586 },
+    { x: 2022.83, y: 3577 },
+    { x: 2022.92, y: 4080 },
+    { x: 2022.99, y: 3840 },
+    { x: 2023.25, y: 4109 },
+  ],
+  events: [
+    { x: 2021.99, y: 4766, label: "2022年初 過去最高値圏", side: "above" },
+    { x: 2022.83, y: 3577, label: "2022/10 年間安値", side: "below", tier: 1 },
+  ],
+  yUnit: "S&P500(2022年の利上げ局面)",
+  colorVar: "var(--accent)",
+});
+
+DIAGRAMS["boj-hike-2024-chart"] = buildHistoryChart({
+  points: [
+    { x: 2024.0, y: 36286 },
+    { x: 2024.1, y: 39098 },
+    { x: 2024.3, y: 40168 },
+    { x: 2024.45, y: 38596 },
+    { x: 2024.55, y: 42224 },
+    { x: 2024.58, y: 39101 },
+    { x: 2024.6, y: 35909 },
+    { x: 2024.605, y: 31458 },
+    { x: 2024.61, y: 34675 },
+    { x: 2024.65, y: 38062 },
+    { x: 2024.75, y: 37723 },
+    { x: 2024.99, y: 39894 },
+  ],
+  events: [
+    { x: 2024.55, y: 42224, label: "7/11 史上最高値42,224円", side: "above" },
+    { x: 2024.605, y: 31458, label: "8/5 1日で過去最大の下げ幅", side: "below", tier: 1 },
+    { x: 2024.99, y: 39894, label: "年末には大きく回復", side: "above" },
+  ],
+  yUnit: "日経平均株価(2024年8月前後)",
+  colorVar: "var(--navy)",
 });
 
 module.exports = { DIAGRAMS };
