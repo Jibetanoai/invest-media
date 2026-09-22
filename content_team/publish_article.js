@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { markdownToHtml } = require("./markdown");
 const { DIAGRAMS } = require("./diagrams");
+const { ARTICLE_ORDER_INDEX } = require("./article_order");
 const site = require("./site_config");
 
 const DOCS_DIR = path.join(__dirname, "..", "docs");
@@ -216,8 +217,34 @@ function articleCardHtml(a) {
     `;
 }
 
+// 「⑨ 今日の経済ニュース」だけは日付の新しい順、それ以外のカテゴリは
+// カテゴリの並び(①〜⑧・⑩)→カテゴリ内はarticle_order.jsで定義した内容ベースの順序、
+// という表示順にする。article_order.jsに載っていない記事はカテゴリ末尾(作成日の新しい順)。
+function articleSortKey(a) {
+  const category = a.category || "kihon";
+  const categoryIdx = CATEGORIES.findIndex((c) => c.key === category);
+  return { category, categoryIdx: categoryIdx === -1 ? CATEGORIES.length : categoryIdx };
+}
+
+function compareArticles(a, b) {
+  const ka = articleSortKey(a);
+  const kb = articleSortKey(b);
+  if (ka.categoryIdx !== kb.categoryIdx) return ka.categoryIdx - kb.categoryIdx;
+
+  if (ka.category === "kyounonews") {
+    return b.createdAt.localeCompare(a.createdAt);
+  }
+
+  const orderA = ARTICLE_ORDER_INDEX[a.slug];
+  const orderB = ARTICLE_ORDER_INDEX[b.slug];
+  if (orderA !== undefined && orderB !== undefined) return orderA - orderB;
+  if (orderA !== undefined) return -1;
+  if (orderB !== undefined) return 1;
+  return b.createdAt.localeCompare(a.createdAt);
+}
+
 function buildIndexHtml(articles) {
-  const sorted = articles.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sorted = articles.slice().sort(compareArticles);
 
   const tabsHtml = sorted.length === 0 ? "" : `
   <div class="category-tabs" role="tablist">
