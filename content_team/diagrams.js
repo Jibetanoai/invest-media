@@ -507,4 +507,50 @@ DIAGRAMS["boj-hike-2024-chart"] = buildHistoryChart({
   colorVar: "var(--navy)",
 });
 
+// --- アノマリー記事用の棒グラフ ---
+// カテゴリ(月・曜日など)ごとの値を棒グラフで示す、シンプルな比較チャート。
+function buildBarChart({ categories, values, width = 640, height = 300, colorVar, positiveLabel, negativeLabel }) {
+  const padding = { top: 30, right: 30, bottom: 40, left: 30 };
+  const plotW = width - padding.left - padding.right;
+  const plotH = height - padding.top - padding.bottom;
+  const maxAbs = Math.max(...values.map((v) => Math.abs(v))) * 1.25;
+  const zeroY = padding.top + plotH / 2;
+  const barW = (plotW / categories.length) * 0.6;
+  const gap = plotW / categories.length;
+
+  const bars = categories
+    .map((cat, i) => {
+      const v = values[i];
+      const barH = (Math.abs(v) / maxAbs) * (plotH / 2);
+      const x = padding.left + gap * i + (gap - barW) / 2;
+      const y = v >= 0 ? zeroY - barH : zeroY;
+      const labelY = v >= 0 ? zeroY - barH - 6 : zeroY + barH + 16;
+      return `
+      <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="3" fill="${colorVar}" opacity="${v >= 0 ? 1 : 0.55}"/>
+      <text x="${(x + barW / 2).toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${v > 0 ? "+" : ""}${v}%</text>
+      <text x="${(x + barW / 2).toFixed(1)}" y="${height - padding.bottom + 18}" text-anchor="middle" font-size="11" fill="var(--navy)">${cat}</text>`;
+    })
+    .join("");
+
+  const legend =
+    positiveLabel || negativeLabel
+      ? `<text x="${padding.left}" y="16" font-size="10.5" fill="var(--muted)">${positiveLabel || ""}${positiveLabel && negativeLabel ? " / " : ""}${negativeLabel || ""}</text>`
+      : "";
+
+  return `
+<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="カテゴリ別の傾向を示す棒グラフ(概算値)">
+  ${legend}
+  <line x1="${padding.left}" y1="${zeroY}" x2="${width - padding.right}" y2="${zeroY}" stroke="var(--border)" stroke-width="1.5"/>
+  ${bars}
+</svg>`;
+}
+
+DIAGRAMS["sell-in-may-seasonality"] = buildBarChart({
+  categories: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  values: [1.0, 0.3, 0.9, 1.3, 0.1, -0.2, 0.5, -0.6, -0.8, 0.7, 1.6, 1.4],
+  colorVar: "var(--accent)",
+  positiveLabel: "過去の傾向として上昇しやすいとされる月が多い",
+  negativeLabel: "夏場は相対的に弱いとされる",
+});
+
 module.exports = { DIAGRAMS };
