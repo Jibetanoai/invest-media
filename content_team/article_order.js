@@ -33,6 +33,7 @@ const CATEGORY_ARTICLE_ORDER = {
   shouhin: [
     "index-fund-how-to-choose-comparison-points",
     "toushin-etf-difference-nisa",
+    "reit-basics-for-beginners",
     "zensekai-kabushiki-vs-beikoku-kabushiki-nisa",
     "toushin-bunpaikin-ari-nashi",
     "toushin-hidden-cost-basics",
@@ -59,6 +60,8 @@ const CATEGORY_ARTICLE_ORDER = {
   ],
   hajimetaato: [
     "nisa-fukumizon-robaiuri-taisaku",
+    "what-to-do-during-a-market-crash",
+    "nisa-rebalance-basics",
     "nisa-exit-strategy-withdrawal",
   ],
   souba: [
@@ -66,6 +69,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "macro-economics-basics-gdp-inflation-stock-price",
     "economic-indicators-basics-cpi-jobs-gdp",
     "us-employment-situation-basics",
+    "earnings-report-basics-for-beginners",
     "business-cycle-sector-rotation-basics",
     "economic-news-investment-bias-basics",
     "technical-indicator-basics-ma-macd-rsi",
