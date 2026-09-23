@@ -63,6 +63,44 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
+function categoryLabel(key) {
+  const found = CATEGORIES.find((c) => c.key === key);
+  return found ? found.label : CATEGORIES[0].label;
+}
+
+// 全ページ共通の<head>要素(SNS共有画像・ファビコン・テーマカラー)。
+// rootはそのページからdocs直下への相対パス(トップは""、記事は"../")。
+function commonHeadHtml(root) {
+  const ogImage = `${site.baseUrl}/ogp.png`;
+  return `<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="${ogImage}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${ogImage}">
+${site.twitterHandle ? `<meta name="twitter:site" content="${escapeHtml(site.twitterHandle)}">\n` : ""}<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1f27" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="${root}favicon-32.png">
+<link rel="apple-touch-icon" href="${root}apple-touch-icon.png">`;
+}
+
+// 本文のh2に目次用のidを振り、h2が3つ以上ある記事には最初のh2の直前(リード文の後)に目次を入れる。
+function addTableOfContents(bodyHtml) {
+  const headings = [];
+  const html = bodyHtml.replace(/<h2>(.*?)<\/h2>/g, (match, inner) => {
+    const id = `sec-${headings.length + 1}`;
+    headings.push({ id, text: inner.replace(/<[^>]+>/g, "") });
+    return `<h2 id="${id}">${inner}</h2>`;
+  });
+  if (headings.length < 3) return html;
+  const toc = `<nav class="toc" aria-label="目次">
+        <p class="toc-title">目次</p>
+        <ol>${headings.map((h) => `<li><a href="#${h.id}">${h.text}</a></li>`).join("")}</ol>
+      </nav>
+      `;
+  return html.replace('<h2 id="sec-1">', `${toc}<h2 id="sec-1">`);
+}
+
 function readArticleIndex() {
   if (!fs.existsSync(INDEX_DATA_FILE)) return [];
   try {
@@ -99,21 +137,35 @@ function hubCtaHtml() {
   return `
     <div class="hub-cta">
       <p class="hub-cta-label">📌 まとめガイド</p>
-      <p class="hub-cta-text">口座選び・始め方・商品選びまで迷ったら、関連記事をテーマ別に整理したガイドページを見てみて。</p>
+      <p class="hub-cta-text">口座選び・始め方・商品選びまで迷ったら、関連記事をテーマ別に整理したガイドページをご覧ください。</p>
       <a class="hub-cta-button" href="../shoken-koza-guide.html">証券口座の選び方 完全ガイドを見る →</a>
     </div>`;
 }
 
+// 同じカテゴリの記事を優先してリンクする。読む順番を決めてあるカテゴリでは「この記事の次」から
+// 順に並べ(=次に読む記事)、今日の経済ニュースは新しい日付順。足りない分は他カテゴリで埋める。
 function relatedArticlesHtml(current, allArticles) {
-  const others = allArticles.filter((a) => a.slug !== current.slug).slice(0, 3);
-  if (others.length === 0) return "";
+  const currentCategory = current.category || inferCategory(current);
+  const sorted = allArticles.slice().sort(compareArticles);
+  const sameCategory = sorted.filter((a) => (a.category || "kihon") === currentCategory);
+  const pos = sameCategory.findIndex((a) => a.slug === current.slug);
+  const ordered = currentCategory === "kyounonews" || pos === -1
+    ? sameCategory
+    : [...sameCategory.slice(pos + 1), ...sameCategory.slice(0, pos)];
+  const others = sorted.filter((a) => (a.category || "kihon") !== currentCategory && a.category !== "kyounonews");
+  const candidates = currentCategory === "kyounonews"
+    // ニュースは直近のニュース2本 + ニュースを読むための解説記事(相場・経済の見方)2本
+    ? [...ordered.filter((a) => a.slug !== current.slug).slice(0, 2), ...others.filter((a) => a.category === "souba")]
+    : [...ordered, ...others];
+  const picked = candidates.filter((a) => a.slug !== current.slug).slice(0, 4);
+  if (picked.length === 0) return "";
   return `
-    <div class="article-disclaimer" style="background:transparent;">
-      <strong>関連記事</strong>
+    <section class="related-articles">
+      <h2 class="related-title">あわせて読みたい</h2>
       <ul>
-        ${others.map((a) => `<li><a href="${escapeHtml(a.slug)}.html">${escapeHtml(a.title)}</a></li>`).join("")}
+        ${picked.map((a) => `<li><a href="${escapeHtml(a.slug)}.html">${escapeHtml(a.title)}</a></li>`).join("")}
       </ul>
-    </div>`;
+    </section>`;
 }
 
 // bodyMarkdown内の `[DIAGRAM:id]` (1行)を、diagrams.jsに定義したSVGに
@@ -131,20 +183,35 @@ function injectDiagrams(html) {
 
 function buildArticleHtml(article, allArticles) {
   const url = `${site.baseUrl}/articles/${article.slug}.html`;
-  const bodyHtml = injectDiagrams(markdownToHtml(article.bodyMarkdown));
+  const bodyHtml = addTableOfContents(injectDiagrams(markdownToHtml(article.bodyMarkdown)));
   const publishedIso = article.createdAt;
+  // 公開後に内容を直した記事は、raw JSONに updatedAt(ISO文字列)を入れておくと更新日として表示・構造化データに反映される
+  const modifiedIso = article.updatedAt || publishedIso;
+  const categoryKey = article.category || inferCategory(article);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.meta,
+    image: `${site.baseUrl}/ogp.png`,
     datePublished: publishedIso,
-    dateModified: publishedIso,
-    author: { "@type": "Organization", name: site.siteName },
-    publisher: { "@type": "Organization", name: site.siteName },
+    dateModified: modifiedIso,
+    author: { "@type": "Organization", name: site.siteName, url: `${site.baseUrl}/operator.html` },
+    publisher: { "@type": "Organization", name: site.siteName, logo: { "@type": "ImageObject", url: `${site.baseUrl}/apple-touch-icon.png` } },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: site.siteName, item: `${site.baseUrl}/` },
+      { "@type": "ListItem", position: 2, name: article.title, item: url },
+    ],
+  };
+  const dateHtml = formatDateJa(modifiedIso) !== formatDateJa(publishedIso)
+    ? `${formatDateJa(publishedIso)}公開 ・ ${formatDateJa(modifiedIso)}更新`
+    : formatDateJa(publishedIso);
 
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -159,15 +226,17 @@ function buildArticleHtml(article, allArticles) {
 <meta property="og:description" content="${escapeHtml(article.meta)}">
 <meta property="og:url" content="${url}">
 <meta property="og:site_name" content="${escapeHtml(site.siteName)}">
-<meta name="twitter:card" content="summary">
+<meta property="article:published_time" content="${publishedIso}">
+<meta property="article:modified_time" content="${modifiedIso}">
 <meta name="twitter:title" content="${escapeHtml(article.title)}">
 <meta name="twitter:description" content="${escapeHtml(article.meta)}">
-${site.twitterHandle ? `<meta name="twitter:site" content="${escapeHtml(site.twitterHandle)}">` : ""}
+${commonHeadHtml("../")}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+<script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
 ${gaSnippet()}</head>
 <body>
 
@@ -179,10 +248,12 @@ ${gaSnippet()}</head>
 <div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
 
 <main>
-  <a href="../index.html" class="back-link">← 記事一覧に戻る</a>
+  <nav class="breadcrumb" aria-label="パンくずリスト">
+    <a href="../index.html">記事一覧</a><span aria-hidden="true">›</span><a href="../index.html#${categoryKey}">${escapeHtml(categoryLabel(categoryKey))}</a>
+  </nav>
   <article>
     <header class="article-header">
-      <div class="article-date">${formatDateJa(publishedIso)}</div>
+      <div class="article-date">${dateHtml}</div>
       <h1 class="article-title">${escapeHtml(article.title)}</h1>
     </header>
     <div class="article-body">
@@ -248,11 +319,11 @@ function buildIndexHtml(articles) {
 
   const tabsHtml = sorted.length === 0 ? "" : `
   <div class="category-tabs" role="tablist">
-    <button type="button" class="category-tab is-active" role="tab" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>
+    <button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>
     ${CATEGORIES.map((c) => {
       const count = sorted.filter((a) => (a.category || "kihon") === c.key).length;
       if (count === 0) return "";
-      return `<button type="button" class="category-tab" role="tab" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
+      return `<button type="button" class="category-tab" role="tab" aria-selected="false" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
     }).join("")}
   </div>`;
 
@@ -276,21 +347,38 @@ function buildIndexHtml(articles) {
   var searchInput = document.getElementById("article-search-input");
   var currentCategory = "all";
   var currentQuery = "";
+  var emptyEl = document.getElementById("article-list-empty");
   function applyFilter() {
+    var visible = 0;
     cards.forEach(function(card) {
       var matchesCategory = currentCategory === "all" || card.getAttribute("data-category") === currentCategory;
       var matchesQuery = currentQuery === "" || card.getAttribute("data-search").indexOf(currentQuery) !== -1;
       card.hidden = !(matchesCategory && matchesQuery);
+      if (!card.hidden) visible++;
     });
+    if (emptyEl) emptyEl.hidden = visible !== 0;
+  }
+  function selectCategory(category) {
+    var found = false;
+    tabs.forEach(function(t) {
+      var active = t.getAttribute("data-category") === category;
+      if (active) found = true;
+      t.classList.toggle("is-active", active);
+      t.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    if (!found) return selectCategory("all");
+    currentCategory = category;
+    applyFilter();
   }
   tabs.forEach(function(tab) {
     tab.addEventListener("click", function() {
-      tabs.forEach(function(t) { t.classList.remove("is-active"); });
-      tab.classList.add("is-active");
-      currentCategory = tab.getAttribute("data-category");
-      applyFilter();
+      var category = tab.getAttribute("data-category");
+      selectCategory(category);
+      // 記事のパンくずから「index.html#カテゴリ」で戻ってきた時に同じタブが開くよう、URLにも残す
+      history.replaceState(null, "", category === "all" ? location.pathname : "#" + category);
     });
   });
+  if (location.hash.length > 1) selectCategory(decodeURIComponent(location.hash.slice(1)));
   if (searchInput) {
     searchInput.addEventListener("input", function() {
       currentQuery = searchInput.value.trim().toLowerCase();
@@ -320,7 +408,8 @@ function buildIndexHtml(articles) {
 <meta property="og:title" content="${escapeHtml(site.siteName)} | NISA・つみたて投資をやさしく整理">
 <meta property="og:description" content="${escapeHtml(site.description)}">
 <meta property="og:url" content="${site.baseUrl}/">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="${escapeHtml(site.siteName)}">
+${commonHeadHtml("")}
 ${site.googleSiteVerification ? `<meta name="google-site-verification" content="${escapeHtml(site.googleSiteVerification)}">\n` : ""}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -331,7 +420,7 @@ ${gaSnippet()}</head>
 
 <header class="site-header">
   <div class="site-header-inner">
-    <a href="index.html" class="brand">${escapeHtml(site.siteName)}</a>
+    <h1 class="brand-heading"><a href="index.html" class="brand">${escapeHtml(site.siteName)}</a></h1>
     <p class="site-tagline">NISA・つみたて投資・証券口座選びを、はじめての人にもわかりやすく</p>
   </div>
 </header>
@@ -351,6 +440,7 @@ ${gaSnippet()}</head>
   ${searchHtml}
   ${tabsHtml}
   <div id="article-list" class="article-list">${listHtml}</div>
+  <p id="article-list-empty" class="empty-state" hidden>条件に合う記事が見つかりませんでした。別のキーワードやカテゴリで探してみてください。</p>
 </main>
 
 <footer class="site-footer">
@@ -365,15 +455,22 @@ ${tabScript}
 }
 
 function buildSitemapXml(articles) {
-  const urls = [
-    `${site.baseUrl}/`,
-    `${site.baseUrl}/shoken-koza-guide.html`,
-    `${site.baseUrl}/kabu-toushi-roadmap.html`,
-    ...articles.map((a) => `${site.baseUrl}/articles/${a.slug}.html`),
+  const latest = articles.reduce((max, a) => {
+    const d = (a.updatedAt || a.createdAt || "").slice(0, 10);
+    return d > max ? d : max;
+  }, "");
+  const entries = [
+    { loc: `${site.baseUrl}/`, lastmod: latest },
+    { loc: `${site.baseUrl}/shoken-koza-guide.html` },
+    { loc: `${site.baseUrl}/kabu-toushi-roadmap.html` },
+    ...articles.map((a) => ({
+      loc: `${site.baseUrl}/articles/${a.slug}.html`,
+      lastmod: (a.updatedAt || a.createdAt || "").slice(0, 10),
+    })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
+${entries.map((e) => `  <url><loc>${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ""}</url>`).join("\n")}
 </urlset>
 `;
 }
@@ -390,6 +487,7 @@ function publishArticle(article) {
   const entry = {
     slug: article.slug, title: article.title, meta: article.meta,
     keywords: article.keywords, createdAt: article.createdAt,
+    ...(article.updatedAt ? { updatedAt: article.updatedAt } : {}),
     category: article.category || inferCategory(article),
   };
   if (existingIdx >= 0) articles[existingIdx] = entry; else articles.push(entry);
@@ -408,4 +506,4 @@ function rebuildIndexOnly() {
   fs.writeFileSync(path.join(DOCS_DIR, "index.html"), buildIndexHtml(articles), "utf8");
 }
 
-module.exports = { publishArticle, readArticleIndex, writeArticleIndex, rebuildIndexOnly, inferCategory, CATEGORIES };
+module.exports = { publishArticle, readArticleIndex, writeArticleIndex, rebuildIndexOnly, inferCategory, commonHeadHtml, CATEGORIES };
