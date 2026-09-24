@@ -197,7 +197,9 @@ function buildArticleHtml(article, allArticles) {
     image: `${site.baseUrl}/ogp.png`,
     datePublished: publishedIso,
     dateModified: modifiedIso,
-    author: { "@type": "Organization", name: site.siteName, url: `${site.baseUrl}/operator.html` },
+    author: site.authorName
+      ? { "@type": "Person", name: site.authorName, url: `${site.baseUrl}/operator.html` }
+      : { "@type": "Organization", name: site.siteName, url: `${site.baseUrl}/operator.html` },
     publisher: { "@type": "Organization", name: site.siteName, logo: { "@type": "ImageObject", url: `${site.baseUrl}/apple-touch-icon.png` } },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
@@ -253,7 +255,7 @@ ${gaSnippet()}</head>
   </nav>
   <article>
     <header class="article-header">
-      <div class="article-date">${dateHtml}</div>
+      <div class="article-date">${dateHtml}${site.authorName ? ` ・ 執筆: <a href="../operator.html">${escapeHtml(site.authorName)}</a>` : ""}</div>
       <h1 class="article-title">${escapeHtml(article.title)}</h1>
     </header>
     <div class="article-body">

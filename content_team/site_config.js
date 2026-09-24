@@ -5,6 +5,7 @@ module.exports = {
   baseUrl: "https://jibetanoai.github.io/invest-media",
   description: "NISA・つみたて投資・証券口座の選び方など、投資初心者向けに分かりやすく整理するメディアです。",
   twitterHandle: "@toushi_kihon",
+  authorName: "じべた", // 運営者のハンドルネーム(運営者情報・記事の執筆者表示・構造化データに使う)
   googleSiteVerification: "pfcznZ7-wXUL0uIarImRcqfva9qxRNetmSPbL4nRxSw",
   googleAnalyticsId: "G-429SKH77WH",
 };
