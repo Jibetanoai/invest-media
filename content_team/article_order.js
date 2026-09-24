@@ -4,8 +4,10 @@
 const CATEGORY_ARTICLE_ORDER = {
   kihon: [
     "nisa-kihon-2026-2027-changes",
+    "nisa-lifetime-limit-quota-reuse",
     "investment-beginner-mistakes-nisa-basics",
     "tokutei-ippan-nisa-account-tax-basics",
+    "investment-tax-return-when-needed",
     "nisa-net-shoken-vs-net-bank",
     "sbi-rakuten-securities-comparison",
     "net-securities-comparison-beginners",
@@ -26,6 +28,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-financial-institution-change-guide",
   ],
   hajimeru: [
+    "seikatsu-bouei-shikin-before-investing",
     "nisa-hajimekata-7-steps",
     "shinshakaijin-nisa-monthly-amount",
     "ideco-how-to-start-beginner-guide",
@@ -34,6 +37,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "index-fund-how-to-choose-comparison-points",
     "toushin-etf-difference-nisa",
     "reit-basics-for-beginners",
+    "kojin-muke-kokusai-basics",
     "zensekai-kabushiki-vs-beikoku-kabushiki-nisa",
     "toushin-bunpaikin-ari-nashi",
     "toushin-hidden-cost-basics",
@@ -46,6 +50,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "creca-tsumitate-nisa-point-guide",
     "nisa-tsumitate-net-securities-comparison",
     "shareholder-benefits-nisa-growth-quota-guide",
+    "nisa-dividend-receiving-method",
   ],
   heiyou: [
     "ideco-nisa-difference-guide",
@@ -67,6 +72,7 @@ const CATEGORY_ARTICLE_ORDER = {
   souba: [
     "supply-demand-stock-price-basics",
     "macro-economics-basics-gdp-inflation-stock-price",
+    "kinri-and-stock-price-basics",
     "economic-indicators-basics-cpi-jobs-gdp",
     "us-employment-situation-basics",
     "earnings-report-basics-for-beginners",
