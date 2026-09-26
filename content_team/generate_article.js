@@ -4,23 +4,33 @@
 const fs = require("fs");
 const path = require("path");
 const { generateArticle } = require("./content_team");
-const { publishArticle } = require("./publish_article");
+const { publishArticle, CATEGORIES } = require("./publish_article");
 
 const RAW_DIR = path.join(__dirname, "..", "data", "articles_raw");
 
 async function main() {
-  const topic = process.argv.slice(2).join(" ").trim();
+  // --category=fx のようにカテゴリを明示できる(「NISAの外側の投資」の記事は必ず指定する)
+  const args = process.argv.slice(2);
+  const categoryArg = args.find((a) => a.startsWith("--category="));
+  const category = categoryArg ? categoryArg.slice("--category=".length) : null;
+  const topic = args.filter((a) => a !== categoryArg).join(" ").trim();
   if (!topic) {
-    console.error("使い方: node content_team/generate_article.js \"記事テーマ\"");
+    console.error("使い方: node content_team/generate_article.js [--category=fudousan|fx|crypto] \"記事テーマ\"");
     process.exit(1);
   }
+  if (category && !CATEGORIES.some((c) => c.key === category)) {
+    console.error(`[エラー] 不明なカテゴリ: ${category}`);
+    process.exit(1);
+  }
+  const highRisk = Boolean(category && CATEGORIES.find((c) => c.key === category).highRisk);
 
   console.log(`[開始] テーマ: ${topic}`);
   console.log("[課金] Claude Code CLI(サブスクリプション)経由。追加のAPI課金は発生しません。");
 
   const article = await generateArticle(topic, (label) => {
     console.log(`[進行中] ${label}`);
-  });
+  }, { highRisk });
+  if (category) article.category = category;
 
   // 生成元データ(本文Markdown等)を保存しておく。テンプレートやスタイルを
   // 直したいだけの時に、CLIを再実行せず再描画できるようにするため。

@@ -26,6 +26,12 @@ const CATEGORIES = [
   { key: "souba", label: "⑧ 相場・経済の見方" },
   { key: "kyounonews", label: "⑨ 今日の経済ニュース" },
   { key: "rekishi", label: "⑩ 相場の歴史(暴落・暴騰を振り返る)" },
+  // ここから下は「NISAの外側の投資」。値動き・損失リスクが大きめのジャンルなので、
+  // 記事一覧では別のタブ列に分け、記事ページには冒頭に注意ボックスを出す。
+  // 自動推定の対象外(既存記事の分類を変えないため)。generate_article.js の --category= で明示指定する。
+  { key: "fudousan", label: "⑪ 不動産投資", highRisk: true },
+  { key: "fx", label: "⑫ FX(外国為替証拠金取引)", highRisk: true },
+  { key: "crypto", label: "⑬ 暗号資産(仮想通貨)", highRisk: true },
 ];
 const CATEGORY_KEYWORD_RULES = [
   { key: "rekishi", words: ["バブル崩壊", "ブラックマンデー", "リーマンショック", "コロナショック", "世界恐慌", "暴落の歴史", "暴騰の歴史", "相場の歴史"] },
@@ -61,6 +67,28 @@ function escapeHtml(str) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function isHighRiskCategory(key) {
+  const found = CATEGORIES.find((c) => c.key === key);
+  return Boolean(found && found.highRisk);
+}
+
+// 「NISAの外側の投資」カテゴリの記事冒頭に出す注意ボックス。
+const HIGH_RISK_NOTES = {
+  fudousan: "不動産投資は、空室・家賃下落・金利上昇・修繕費などで想定どおりの収入にならないことがあり、借入(ローン)を使う場合は損失が自己資金を上回ることもあります。強引な勧誘やサブリース契約のトラブルについて、国土交通省・消費者庁などが注意を呼びかけています。",
+  fx: "FXはレバレッジをかけて取引するため、相場の急変時には預けた証拠金以上の損失が出ることがあります。金融庁に登録していない業者による勧誘にも注意が必要です。",
+  crypto: "暗号資産(仮想通貨)は価格の変動が非常に大きく、価値が大きく下がる可能性があります。交換業者の破綻や不正流出のリスクもあり、利用する際は金融庁・財務局に登録された業者かを確認する必要があります。",
+};
+function highRiskNoticeHtml(categoryKey) {
+  if (!isHighRiskCategory(categoryKey)) return "";
+  const note = HIGH_RISK_NOTES[categoryKey] || "";
+  return `
+    <aside class="risk-notice" role="note">
+      <p class="risk-notice-label">⚠ NISAの外側の投資について</p>
+      <p>${escapeHtml(note)}</p>
+      <p>NISA(少額投資非課税制度)の対象外で、税金の扱いも異なります。この記事は仕組みやリスクを理解するための情報で、取引をすすめるものではありません。</p>
+    </aside>`;
 }
 
 function categoryLabel(key) {
@@ -133,7 +161,15 @@ function formatDateJa(iso) {
 // 全記事共通のCTA。まとめガイド(shoken-koza-guide.html)は本文中どの記事
 // からも自然にたどり着けるリンクが無かったため、本文の直後(免責文の前)に
 // 毎回表示する。ガイド内には実際の証券会社アフィリエイトリンクがある。
-function hubCtaHtml() {
+function hubCtaHtml(categoryKey) {
+  if (isHighRiskCategory(categoryKey)) {
+    return `
+    <div class="hub-cta">
+      <p class="hub-cta-label">📌 まとめガイド</p>
+      <p class="hub-cta-text">NISA・つみたて投資など、長期・分散の基本から整理したい方は、テーマ別にまとめたガイドページもご覧ください。</p>
+      <a class="hub-cta-button" href="../shoken-koza-guide.html">証券口座の選び方 完全ガイドを見る →</a>
+    </div>`;
+  }
   return `
     <div class="hub-cta">
       <p class="hub-cta-label">📌 まとめガイド</p>
@@ -152,7 +188,12 @@ function relatedArticlesHtml(current, allArticles) {
   const ordered = currentCategory === "kyounonews" || pos === -1
     ? sameCategory
     : [...sameCategory.slice(pos + 1), ...sameCategory.slice(0, pos)];
-  const others = sorted.filter((a) => (a.category || "kihon") !== currentCategory && a.category !== "kyounonews");
+  // 「NISAの外側の投資」の記事は、NISA側の記事の「あわせて読みたい」には混ぜない(逆は、他のハイリスク記事→NISA側の順で補う)
+  const currentHighRisk = isHighRiskCategory(currentCategory);
+  const others = sorted
+    .filter((a) => (a.category || "kihon") !== currentCategory && a.category !== "kyounonews")
+    .filter((a) => currentHighRisk || !isHighRiskCategory(a.category))
+    .sort((a, b) => currentHighRisk ? isHighRiskCategory(b.category) - isHighRiskCategory(a.category) : 0);
   const candidates = currentCategory === "kyounonews"
     // ニュースは直近のニュース2本 + ニュースを読むための解説記事(相場・経済の見方)2本
     ? [...ordered.filter((a) => a.slug !== current.slug).slice(0, 2), ...others.filter((a) => a.category === "souba")]
@@ -258,10 +299,11 @@ ${gaSnippet()}</head>
       <div class="article-date">${dateHtml}${site.authorName ? ` ・ 執筆: <a href="../operator.html">${escapeHtml(site.authorName)}</a>` : ""}</div>
       <h1 class="article-title">${escapeHtml(article.title)}</h1>
     </header>
+    ${highRiskNoticeHtml(categoryKey)}
     <div class="article-body">
       ${bodyHtml}
     </div>
-    ${hubCtaHtml()}
+    ${hubCtaHtml(categoryKey)}
     <div class="article-disclaimer">
       本記事は情報提供を目的としており、投資勧誘や助言を目的としたものではありません。投資判断はご自身の責任で行ってください。本サイトはアフィリエイト広告を利用しています。
     </div>
@@ -281,9 +323,10 @@ ${gaSnippet()}</head>
 }
 
 function articleCardHtml(a) {
+  const risk = isHighRiskCategory(a.category);
   return `
-      <a class="article-card" href="articles/${escapeHtml(a.slug)}.html">
-        <div class="article-card-date">${formatDateJa(a.createdAt)}</div>
+      <a class="article-card${risk ? " is-risk" : ""}" href="articles/${escapeHtml(a.slug)}.html">
+        <div class="article-card-date">${risk ? `<span class="risk-badge">⚠ NISAの外側の投資</span>` : ""}${formatDateJa(a.createdAt)}</div>
         <h2>${escapeHtml(a.title)}</h2>
         <p>${escapeHtml(a.meta)}</p>
       </a>
@@ -319,15 +362,25 @@ function compareArticles(a, b) {
 function buildIndexHtml(articles) {
   const sorted = articles.slice().sort(compareArticles);
 
+  const categoryTabHtml = (c) => {
+    const count = sorted.filter((a) => (a.category || "kihon") === c.key).length;
+    if (count === 0) return "";
+    return `<button type="button" class="category-tab${c.highRisk ? " is-risk" : ""}" role="tab" aria-selected="false" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
+  };
+  const highRiskButtons = CATEGORIES.filter((c) => c.highRisk).map(categoryTabHtml).join("");
+  const highRiskTabsHtml = highRiskButtons === "" ? "" : `
+  <div class="risk-tab-group">
+    <p class="risk-tab-group-label">⚠ NISAの外側の投資 <span>値動き・損失のリスクが大きめのジャンルです。仕組みとリスクを知るための記事をまとめています</span></p>
+    <div class="category-tabs" role="tablist">
+      ${highRiskButtons}
+    </div>
+  </div>`;
   const tabsHtml = sorted.length === 0 ? "" : `
   <div class="category-tabs" role="tablist">
     <button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>
-    ${CATEGORIES.map((c) => {
-      const count = sorted.filter((a) => (a.category || "kihon") === c.key).length;
-      if (count === 0) return "";
-      return `<button type="button" class="category-tab" role="tab" aria-selected="false" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
-    }).join("")}
-  </div>`;
+    ${CATEGORIES.filter((c) => !c.highRisk).map(categoryTabHtml).join("")}
+  </div>
+  ${highRiskTabsHtml}`;
 
   const searchHtml = sorted.length === 0 ? "" : `
   <div class="article-search">

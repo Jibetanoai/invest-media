@@ -8,6 +8,8 @@
   --accent-ink: #6b4d13;
   --navy: #1b2740;
   --border: #e5e2d8;
+  --risk: #b54a2c;
+  --risk-bg: #fbeee8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +22,8 @@
     --accent-ink: #f0cf8a;
     --navy: #dfe6f5;
     --border: #2c2f3a;
+    --risk: #f08a68;
+    --risk-bg: #2a1d1a;
   }
 }
 
@@ -230,6 +234,65 @@ main {
   .category-tabs::-webkit-scrollbar { display: none; }
   .category-tab { flex: none; }
   main { padding: 28px 20px 48px; }
+}
+
+/* 「NISAの外側の投資」(不動産投資・FX・暗号資産)。NISA側と見分けがつくよう、別の色・別の列にする */
+.risk-tab-group {
+  margin: -4px 0 20px;
+  padding: 12px 14px 2px;
+  background: var(--risk-bg);
+  border: 1px solid var(--risk);
+  border-radius: 12px;
+}
+.risk-tab-group-label {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--risk);
+}
+.risk-tab-group-label span {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--muted);
+}
+.risk-tab-group .category-tabs { margin-bottom: 10px; }
+.category-tab.is-risk:hover { border-color: var(--risk); }
+.category-tab.is-risk.is-active {
+  background: var(--risk);
+  border-color: var(--risk);
+}
+.category-tab.is-risk.is-active .category-tab-count { color: var(--risk); }
+.article-card.is-risk { border-left: 4px solid var(--risk); }
+.risk-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--risk);
+  background: var(--risk-bg);
+  border: 1px solid var(--risk);
+  border-radius: 999px;
+}
+.risk-notice {
+  margin: 0 0 28px;
+  padding: 16px 18px;
+  background: var(--risk-bg);
+  border: 1px solid var(--risk);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.risk-notice p { margin: 0 0 8px; }
+.risk-notice p:last-child { margin-bottom: 0; }
+.risk-notice-label {
+  font-weight: 700;
+  color: var(--risk);
+}
+@media (max-width: 600px) {
+  .risk-tab-group { margin-left: -8px; margin-right: -8px; }
+  .risk-tab-group .category-tabs { margin: 0 -14px 10px; padding: 0 14px 6px; }
 }
 
 .category-tab:focus-visible,

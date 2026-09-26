@@ -21,6 +21,18 @@ const EDITORIAL_POLICY = `
 記事のテーマ次第で不自然にならない範囲で、「証券会社選びのポイント」「口座開設の比較」に
 自然につながる流れを意識すること(特定1社を断定的に推すのではなく、比較の観点を示す形)。`;
 
+// 「NISAの外側の投資」(不動産投資・FX・暗号資産)の記事だけに追加する編集方針。
+// 仕組みとリスクを中立に整理する記事にとどめ、始め方・業者比較・勧誘寄りにはしない(2026-09-26 Kさん決定)。
+const HIGH_RISK_POLICY = `
+追加の編集方針(この記事は「NISAの外側の投資」= 不動産投資・FX・暗号資産を扱う。上の方針に加えて厳守):
+A. 仕組み・リスク・コスト・税金・NISAとの違いを中立に整理する記事にする。始め方の手順、業者の比較・ランキング、特定の業者やサービスの推奨は書かない。
+B. リスク(元本割れ、レバレッジによる証拠金以上の損失やロスカット、価格の急変、交換業者の破綻・不正流出、空室・家賃下落・金利上昇・流動性の低さ等)を本文の前半で具体的に書く。メリットだけを強調しない。
+C. 「少額で簡単」「不労所得」「高利回り」「今がチャンス」など、魅力を煽る表現は使わない。
+D. 金融庁・消費者庁・国民生活センター・国土交通省などの公的な注意喚起(無登録業者、詐欺的な勧誘、SNSやマッチングアプリ経由の勧誘、サブリース契約のトラブル等)があれば出典つきで紹介し、業者の登録状況は公的な一覧で確認するよう案内する。
+E. 税金の扱いは最新の公的情報(国税庁・財務省など)で確認して書く。税制改正の予定や検討中の内容は、現行制度と明確に区別して「予定」「検討段階」と書く。
+F. 「生活防衛資金やNISAなど長期・分散の土台を先に整えてから検討する人が多い」といった考え方は、断定を避けた一般論として示してよい。
+G. 上の方針の末尾にある「証券口座開設につながる流れを意識する」は、この記事では適用しない。無理に証券口座の話へつなげない。`;
+
 // 7部署27人分の役割定義(記事制作向けに再編)。「編集企画室」の2人目(編集長)は、
 // 各部署の成果物が揃った後の最終まとめ役なので、この配列には含めず
 // generateArticle()の最後で別枠として扱う。
@@ -113,13 +125,13 @@ function roleListMarkdown(depts) {
 
 const PERSONA = `あなたは投資・資産形成をテーマにしたWebメディア「invest_media」の編集部です。読者は投資初心者〜中級者の一般個人です。断定を避けつつ、根拠を示して分かりやすく書くのが持ち味です。`;
 
-function buildPlanningWritingPrompt(topic) {
+function buildPlanningWritingPrompt(topic, extraPolicy = "") {
   const allDepts = [...DEPARTMENTS];
   const systemPrompt = `${PERSONA}
 
 ---
 補足: あなたは今、記事制作チームとして「企画・執筆チーム」を担当しています。以下の5部署23人分の役割をまとめて担当します。それぞれの視点で、Web検索ツールも使って調べたうえで作業してください。
-${EDITORIAL_POLICY}
+${EDITORIAL_POLICY}${extraPolicy}
 
 ${roleListMarkdown(allDepts)}
 
@@ -138,12 +150,12 @@ KEYWORDS: (狙うキーワードをカンマ区切りで2〜4個)
   return { systemPrompt, userPrompt };
 }
 
-function buildRedTeamPrompt(topic, draft) {
+function buildRedTeamPrompt(topic, draft, extraPolicy = "") {
   const systemPrompt = `${PERSONA}
 
 ---
 補足: あなたは今、記事制作チームで${redTeamDept.label}を担当しています。${redTeamDept.intro}
-${EDITORIAL_POLICY}
+${EDITORIAL_POLICY}${extraPolicy}
 
 以下の担当ごとに、下書き記事をチェックしてください。
 ${roleListMarkdown([redTeamDept])}
@@ -161,12 +173,12 @@ ${roleListMarkdown([redTeamDept])}
   return { systemPrompt, userPrompt };
 }
 
-function buildFinalEditPrompt(topic, draft, redTeamNotes) {
+function buildFinalEditPrompt(topic, draft, redTeamNotes, extraPolicy = "") {
   const systemPrompt = `${PERSONA}
 
 ---
 補足: あなたは今、記事制作チームの編集長として、${backofficeDept.label}(3人分)の作業も兼務して最終編集をしています。
-${EDITORIAL_POLICY}
+${EDITORIAL_POLICY}${extraPolicy}
 
 下書き記事とレッドチームの指摘を踏まえ、指摘事項を反映した最終版の記事を作成してください。${roleListMarkdown([backofficeDept])}
 
@@ -208,19 +220,21 @@ function parseArticleOutput(text) {
   };
 }
 
-async function generateArticle(topic, onProgress) {
+// options.highRisk: true のとき「NISAの外側の投資」向けの追加編集方針を全段階のプロンプトに入れる。
+async function generateArticle(topic, onProgress, options = {}) {
+  const extraPolicy = options.highRisk ? HIGH_RISK_POLICY : "";
   if (onProgress) onProgress("企画・執筆チーム(5部署23人分)");
-  const planPrompt = buildPlanningWritingPrompt(topic);
+  const planPrompt = buildPlanningWritingPrompt(topic, extraPolicy);
   const draftText = await runClaudeCLI({ ...planPrompt, tools: "WebSearch" });
   const draft = parseArticleOutput(draftText);
   if (!draft.body) throw new Error("下書きの本文が生成できなかったよ");
 
   if (onProgress) onProgress("レッドチーム(3人分)");
-  const redTeamPrompt = buildRedTeamPrompt(topic, draftText);
+  const redTeamPrompt = buildRedTeamPrompt(topic, draftText, extraPolicy);
   const redTeamNotes = await runClaudeCLI({ ...redTeamPrompt, tools: "WebSearch" });
 
   if (onProgress) onProgress("編集長+バックオフィス(まとめ)");
-  const finalPrompt = buildFinalEditPrompt(topic, draftText, redTeamNotes);
+  const finalPrompt = buildFinalEditPrompt(topic, draftText, redTeamNotes, extraPolicy);
   const finalText = await runClaudeCLI({ ...finalPrompt, tools: "" });
   const final = parseArticleOutput(finalText);
   if (!final.body) throw new Error("最終版の本文が生成できなかったよ");
@@ -244,4 +258,4 @@ async function generateArticle(topic, onProgress) {
   };
 }
 
-module.exports = { generateArticle, DEPARTMENTS, EDITORIAL_POLICY };
+module.exports = { generateArticle, DEPARTMENTS, EDITORIAL_POLICY, HIGH_RISK_POLICY };

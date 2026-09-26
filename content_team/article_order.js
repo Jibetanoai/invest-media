@@ -2,6 +2,21 @@
 // 「⑨ 今日の経済ニュース」カテゴリだけは対象外で、従来通り日付の新しい順に並ぶ。
 // ここに載っていないslugは、そのカテゴリの末尾に(作成日の新しい順で)配置される。
 const CATEGORY_ARTICLE_ORDER = {
+  fudousan: [
+    "real-estate-investment-reit-crowdfunding-risk-comparison",
+    "real-estate-investment-yield-and-risks",
+    "real-estate-investment-solicitation-trouble",
+  ],
+  fx: [
+    "fx-leverage-margin-losscut-risk",
+    "fx-nisa-difference-tax-loss-volatility",
+    "fx-swap-point-mechanism-and-risks",
+  ],
+  crypto: [
+    "crypto-asset-basics-risks-tax",
+    "crypto-asset-tax-vs-nisa",
+    "crypto-fraud-unregistered-operator-check",
+  ],
   kihon: [
     "nisa-kihon-2026-2027-changes",
     "nisa-lifetime-limit-quota-reuse",
