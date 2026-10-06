@@ -60,6 +60,9 @@
   }
   .pr-links a:hover { background: var(--bg); }
   .pr-links .pr-name { font-weight: 700; color: var(--navy); }
+  /* ASPの規約でリンクコードを改変できない広告(アクセストレード等)は、外側のスタイルだけで見た目をそろえる */
+  .pr-links .pr-raw a { font-weight: 700; color: var(--navy); justify-content: flex-start; }
+  .pr-links .pr-raw a img { position: absolute; }
   .pr-links .pr-badge {
     flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--accent-ink);
     background: rgba(169,121,31,0.14); padding: 3px 8px; border-radius: 999px;
@@ -102,6 +105,8 @@
   <ul class="pr-links">
     <li><a href="https://px.a8.net/svt/ejp?a8mat=4BC7V4+8PRGKY+3XCC+64C3M" rel="nofollow sponsored noopener" target="_blank"><span class="pr-name">松井証券</span><span class="pr-badge">公式サイト</span></a></li>
     <li><a href="https://px.a8.net/svt/ejp?a8mat=4BC7V4+8Y3J1U+1WP2+15S78J" rel="nofollow sponsored noopener" target="_blank"><span class="pr-name">DMM株(NISA対応)</span><span class="pr-badge">公式サイト</span></a></li>
+    <!-- アクセストレード マネックス証券(テキスト広告 330320)。リンクコードの改変は規約で禁止のため、発行コードそのまま -->
+    <li class="pr-raw"><a href="https://h.accesstrade.net/sp/cc?rk=010072vk00oztg" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">マネックス証券<img src="https://h.accesstrade.net/sp/rr?rk=010072vk00oztg" width="1" height="1" border="0" alt=""></a></li>
   </ul>
   <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4BC7V4+8PRGKY+3XCC+64C3M" alt="" style="position:absolute;">
 </div>
