@@ -101,6 +101,7 @@ const CATEGORY_ARTICLE_ORDER = {
   ],
   rekishi: [
     "nikkei-sp500-history-crashes",
+    "great-depression-1929-explained",
     "black-monday-1987",
     "japan-bubble-burst-1990",
     "dotcom-bubble-crash-2000",
