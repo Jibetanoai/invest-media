@@ -315,6 +315,7 @@ ${gaSnippet()}</head>
   <a href="../operator.html">運営者情報</a>
   <a href="../privacy-policy.html">プライバシーポリシー</a>
   <a href="../contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
 </footer>
 
 </body>
@@ -502,6 +503,7 @@ ${gaSnippet()}</head>
   <a href="operator.html">運営者情報</a>
   <a href="privacy-policy.html">プライバシーポリシー</a>
   <a href="contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
 </footer>
 ${tabScript}
 </body>
