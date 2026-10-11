@@ -1,5 +1,5 @@
 // 記事一覧(index.html)でのカテゴリ内の並び順(日付ではなく、読む順として分かりやすい内容ベースの順序)。
-// 「⑨ 今日の経済ニュース」カテゴリだけは対象外で、従来通り日付の新しい順に並ぶ。
+// 「⑪ 今日の経済ニュース」カテゴリだけは対象外で、従来通り日付の新しい順に並ぶ。
 // ここに載っていないslugは、そのカテゴリの末尾に(作成日の新しい順で)配置される。
 const CATEGORY_ARTICLE_ORDER = {
   fudousan: [
@@ -24,20 +24,13 @@ const CATEGORY_ARTICLE_ORDER = {
     "tokutei-ippan-nisa-account-tax-basics",
     "investment-tax-return-when-needed",
     "nisa-net-shoken-vs-net-bank",
-    "sbi-rakuten-securities-comparison",
-    "net-securities-comparison-beginners",
     "nisa-account-opening-documents",
     "nisa-check-frequency-mindset",
     "kodomo-shien-nisa-2027-guide",
-    "ipo-securities-comparison-underwriter-lottery",
-    "institutional-investors-vs-individual",
-    "shitekabu-features-and-risk-checkpoints",
-    "stock-order-types-guide",
-    "stop-loss-take-profit-rules-for-beginners",
-    "nanpin-kai-merit-risk-beginner",
-    "margin-trading-basics-vs-cash-trading",
   ],
   kouza: [
+    "net-securities-comparison-beginners",
+    "sbi-rakuten-securities-comparison",
     "nisa-account-brokerage-comparison-points",
     "nisa-couple-household-accounts",
     "nisa-financial-institution-change-guide",
@@ -57,14 +50,11 @@ const CATEGORY_ARTICLE_ORDER = {
     "toushin-bunpaikin-ari-nashi",
     "toushin-hidden-cost-basics",
     "high-dividend-vs-index-investing-comparison",
-    "how-to-pick-stocks-per-pbr-roe-dividend-yield",
   ],
   kaikata: [
     "tsumitate-vs-lump-sum-dollar-cost-averaging",
     "nisa-tsumitate-seicho-which-first",
-    "creca-tsumitate-nisa-point-guide",
     "nisa-tsumitate-net-securities-comparison",
-    "shareholder-benefits-nisa-growth-quota-guide",
     "nisa-dividend-receiving-method",
   ],
   heiyou: [
@@ -83,6 +73,20 @@ const CATEGORY_ARTICLE_ORDER = {
     "what-to-do-during-a-market-crash",
     "nisa-rebalance-basics",
     "nisa-exit-strategy-withdrawal",
+  ],
+  credit: [
+    "creca-tsumitate-nisa-point-guide",
+  ],
+  kobetsu: [
+    "stock-order-types-guide",
+    "how-to-pick-stocks-per-pbr-roe-dividend-yield",
+    "shareholder-benefits-nisa-growth-quota-guide",
+    "stop-loss-take-profit-rules-for-beginners",
+    "nanpin-kai-merit-risk-beginner",
+    "margin-trading-basics-vs-cash-trading",
+    "ipo-securities-comparison-underwriter-lottery",
+    "institutional-investors-vs-individual",
+    "shitekabu-features-and-risk-checkpoints",
   ],
   souba: [
     "supply-demand-stock-price-basics",

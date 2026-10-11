@@ -57,15 +57,23 @@
     <input type="search" id="article-search-input" placeholder="キーワードで検索(例:NISA、iDeCo)" aria-label="記事をキーワードで検索">
   </div>
   
-  <div class="category-tabs" role="tablist">
-    <button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">110</span></button>
-    <button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kihon">① 制度の全体像・基本<span class="category-tab-count">20</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kouza">② 口座を比較する<span class="category-tab-count">3</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="hajimeru">③ 実際に始める<span class="category-tab-count">5</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="shouhin">④ 商品を選ぶ<span class="category-tab-count">9</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kaikata">⑤ 買い方を決める<span class="category-tab-count">6</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="heiyou">⑥ 他の制度と使い分ける<span class="category-tab-count">9</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="hajimetaato">⑦ 始めた後に読む<span class="category-tab-count">4</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="souba">⑧ 相場・経済の見方<span class="category-tab-count">13</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kyounonews">⑨ 今日の経済ニュース<span class="category-tab-count">23</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="rekishi">⑩ 相場の歴史(暴落・暴騰を振り返る)<span class="category-tab-count">9</span></button>
+  <div class="tab-group tab-group-kihon">
+    <p class="tab-group-label">投資のキホン <span>はじめての人向け。NISAの仕組みから、口座選び・始め方・クレカ積立まで</span></p>
+    <div class="category-tabs" role="tablist">
+      <button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">110</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kihon">① 制度の全体像・基本<span class="category-tab-count">11</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kouza">② 口座を比較する<span class="category-tab-count">5</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="hajimeru">③ 実際に始める<span class="category-tab-count">5</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="shouhin">④ 商品を選ぶ<span class="category-tab-count">8</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kaikata">⑤ 買い方を決める<span class="category-tab-count">4</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="heiyou">⑥ 他の制度と使い分ける<span class="category-tab-count">9</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="hajimetaato">⑦ 始めた後に読む<span class="category-tab-count">4</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="credit">⑧ クレジットカード・ポイント<span class="category-tab-count">1</span></button>
+    </div>
+  </div>
+  <div class="tab-group tab-group-ouyou">
+    <p class="tab-group-label">投資の応用 <span>慣れてきた人向け。個別株の実践、相場の見方、毎日のニュース、相場の歴史</span></p>
+    <div class="category-tabs" role="tablist">
+      <button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kobetsu">⑨ 個別株・取引の実践<span class="category-tab-count">9</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="souba">⑩ 相場・経済の見方<span class="category-tab-count">13</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="kyounonews">⑪ 今日の経済ニュース<span class="category-tab-count">23</span></button><button type="button" class="category-tab" role="tab" aria-selected="false" data-category="rekishi">⑫ 相場の歴史(暴落・暴騰を振り返る)<span class="category-tab-count">9</span></button>
+    </div>
   </div>
   
   <div class="risk-tab-group">
     <p class="risk-tab-group-label">⚠ NISAの外側の投資 <span>値動き・損失のリスクが大きめのジャンルです。仕組みとリスクを知るための記事をまとめています</span></p>
     <div class="category-tabs" role="tablist">
-      <button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="fudousan">⑪ 不動産投資<span class="category-tab-count">3</span></button><button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="fx">⑫ FX(外国為替証拠金取引)<span class="category-tab-count">3</span></button><button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="crypto">⑬ 暗号資産(仮想通貨)<span class="category-tab-count">3</span></button>
+      <button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="fudousan">⑬ 不動産投資<span class="category-tab-count">3</span></button><button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="fx">⑭ FX(外国為替証拠金取引)<span class="category-tab-count">3</span></button><button type="button" class="category-tab is-risk" role="tab" aria-selected="false" data-category="crypto">⑮ 暗号資産(仮想通貨)<span class="category-tab-count">3</span></button>
     </div>
   </div>
   <div id="article-list" class="article-list"><div class="article-card-wrap" data-category="kihon" data-search="nisaの基本と2026年時点の見直し状況｜2027年開始予定の変更点まで整理 nisa（少額投資非課税制度）の仕組みを初心者向けに整理し、2026年時点の見直し状況と、2027年開始予定の「こども支援nisa」「つみたて投資枠での債券解禁」までを解説。金融機関を比べる際の観点もまとめました。 nisa 2026 変更点, nisa 基本, こどもnisa, つみたて投資枠">
@@ -104,18 +112,6 @@
         <h2>NISA口座はネット証券とネット銀行どっち?初心者が押さえたい6つの比較ポイント</h2>
         <p>NISA口座をネット証券とネット銀行のどちらで開くか迷う人向けに、取扱商品・最低積立額・手数料・入金のしやすさなど6つの観点を整理。金融機関変更のルールや2027年からの制度改正の内容も、初心者向けにやさしく解説します。</p>
       </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="sbi証券と楽天証券を比較｜手数料・取扱商品・ポイント還元の違いを初心者向けに整理 ネット証券大手、sbi証券と楽天証券の違いを初心者向けに整理。国内株・米国株の手数料、取扱商品、クレカ積立や投信保有のポイント還元、nisaでの使い勝手まで、比較の軸を5つに絞って解説します（2026年9月時点の公表情報をもとに整理）。 sbi証券 楽天証券 比較, ネット証券 選び方, クレカ積立 ポイント還元, nisa 証券会社">
-      <a class="article-card" href="articles/sbi-rakuten-securities-comparison.html">
-        <div class="article-card-date">2026年9月20日</div>
-        <h2>SBI証券と楽天証券を比較｜手数料・取扱商品・ポイント還元の違いを初心者向けに整理</h2>
-        <p>ネット証券大手、SBI証券と楽天証券の違いを初心者向けに整理。国内株・米国株の手数料、取扱商品、クレカ積立や投信保有のポイント還元、NISAでの使い勝手まで、比較の軸を5つに絞って解説します（2026年9月時点の公表情報をもとに整理）。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="ネット証券の選び方を5社比較｜sbi・楽天・マネックス・三菱ufj eスマート・松井を初心者向けに整理 ネット証券はどこを選べばいい？sbi証券・楽天証券・マネックス証券・三菱ufj eスマート証券（旧auカブコム）・松井証券の違いを、手数料・ポイント・取扱商品など5つの軸で初心者向けに整理しました（2026年9月時点）。 ネット証券 比較, ネット証券 選び方, 証券会社 おすすめ 初心者, nisa口座 比較">
-      <a class="article-card" href="articles/net-securities-comparison-beginners.html">
-        <div class="article-card-date">2026年9月20日</div>
-        <h2>ネット証券の選び方を5社比較｜SBI・楽天・マネックス・三菱UFJ eスマート・松井を初心者向けに整理</h2>
-        <p>ネット証券はどこを選べばいい？SBI証券・楽天証券・マネックス証券・三菱UFJ eスマート証券（旧auカブコム）・松井証券の違いを、手数料・ポイント・取扱商品など5つの軸で初心者向けに整理しました（2026年9月時点）。</p>
-      </a>
     </div><div class="article-card-wrap" data-category="kihon" data-search="nisa口座開設に必要なものは？本人確認書類・マイナンバーの準備から審査完了までの流れ nisa口座の開設に必要なものは主に「マイナンバー確認書類」「本人確認書類」「銀行口座」の3点。2026年時点で使える書類の注意点、申し込みから税務署の確認完了までの流れと日数の目安、つまずきやすい不備の例を整理しました。 nisa 口座開設 必要なもの, nisa 本人確認書類, nisa マイナンバー, nisa 口座開設 期間">
       <a class="article-card" href="articles/nisa-account-opening-documents.html">
         <div class="article-card-date">2026年9月12日</div>
@@ -134,48 +130,6 @@
         <h2>2027年開始予定の「こども支援NISA」とは？制度の中身と親が知っておきたい5つのこと</h2>
         <p>2027年1月開始予定のこども支援NISA（こどもNISA）を解説。年間60万円・上限600万円などの制度概要、ジュニアNISAとの違い、12歳までの払い出し制限や贈与税の論点、親のNISAとの整理の仕方まで初心者向けにまとめます。</p>
       </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="ipoの取扱数・主幹事実績・抽選ルールで比較するネット証券｜初心者向けの申し込み手順も整理 ipo（新規公開株）の証券会社選びを、取扱数・主幹事実績・抽選ルールの3つの観点で整理。2025〜2026年の集計データや数え方の違いにも触れつつ、ブックビルディングの手順やnisa成長投資枠との関係を初心者向けに解説します。 ipo 証券会社 比較, ipo 取扱数, ipo 主幹事, ipo 申し込み方法">
-      <a class="article-card" href="articles/ipo-securities-comparison-underwriter-lottery.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>IPOの取扱数・主幹事実績・抽選ルールで比較するネット証券｜初心者向けの申し込み手順も整理</h2>
-        <p>IPO（新規公開株）の証券会社選びを、取扱数・主幹事実績・抽選ルールの3つの観点で整理。2025〜2026年の集計データや数え方の違いにも触れつつ、ブックビルディングの手順やNISA成長投資枠との関係を初心者向けに解説します。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="機関投資家とは？個人投資家との違いと株価への影響を初心者向けに整理 機関投資家とは何か、個人投資家との違い、株価への影響を初心者向けに解説。日本株市場でのシェアや売買動向の見方、個人ならではの特徴、動きを確認できる公的データまで、公表済みの統計を交えて整理します。 機関投資家とは, 機関投資家 個人投資家 違い, 機関投資家 株価 影響, 投資部門別売買状況">
-      <a class="article-card" href="articles/institutional-investors-vs-individual.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>機関投資家とは？個人投資家との違いと株価への影響を初心者向けに整理</h2>
-        <p>機関投資家とは何か、個人投資家との違い、株価への影響を初心者向けに解説。日本株市場でのシェアや売買動向の見方、個人ならではの特徴、動きを確認できる公的データまで、公表済みの統計を交えて整理します。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="仕手株とは？個人投資家が巻き込まれないための見分け方と注意点を初心者向けに整理 仕手株とは何か、なぜリスクが大きいのかを初心者向けに整理。急騰銘柄に見られやすい特徴、増担保規制やsns情報の読み方、一次情報での確認手順、保有してしまった場合の考え方まで、公的資料を参照しながら解説します。 仕手株, 仕手株 見分け方, 相場操縦, 株 初心者 注意点">
-      <a class="article-card" href="articles/shitekabu-features-and-risk-checkpoints.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>仕手株とは？個人投資家が巻き込まれないための見分け方と注意点を初心者向けに整理</h2>
-        <p>仕手株とは何か、なぜリスクが大きいのかを初心者向けに整理。急騰銘柄に見られやすい特徴、増担保規制やSNS情報の読み方、一次情報での確認手順、保有してしまった場合の考え方まで、公的資料を参照しながら解説します。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="株の注文方法まとめ｜成行・指値・逆指値・oco・ifd・ifd-ocoの違いを初心者向けに整理 株の注文方法を初心者向けに整理。成行・指値・逆指値の基本3種と、oco・ifd・ifd-ocoの組み合わせ型の違い、使い分けの考え方、執行条件や有効期間の注意点、証券会社ごとの対応差まで比較の視点でまとめました。 株 注文方法, 成行 指値 違い, 逆指値 注文, ifd oco 注文">
-      <a class="article-card" href="articles/stock-order-types-guide.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>株の注文方法まとめ｜成行・指値・逆指値・OCO・IFD・IFD-OCOの違いを初心者向けに整理</h2>
-        <p>株の注文方法を初心者向けに整理。成行・指値・逆指値の基本3種と、OCO・IFD・IFD-OCOの組み合わせ型の違い、使い分けの考え方、執行条件や有効期間の注意点、証券会社ごとの対応差まで比較の視点でまとめました。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="損切りと利益確定のルールの作り方｜初心者が感情に流されないための考え方 損切りや利益確定の判断は、値動きより「自分の感情」に左右されがちです。買う前に決めるルールの考え方、損失許容額の組み立て、逆指値やocoなど注文機能の活用、nisa口座での注意点まで初心者向けに整理しました。 損切り ルール, 利益確定 タイミング, 損切りライン 決め方, 投資 初心者">
-      <a class="article-card" href="articles/stop-loss-take-profit-rules-for-beginners.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>損切りと利益確定のルールの作り方｜初心者が感情に流されないための考え方</h2>
-        <p>損切りや利益確定の判断は、値動きより「自分の感情」に左右されがちです。買う前に決めるルールの考え方、損失許容額の組み立て、逆指値やOCOなど注文機能の活用、NISA口座での注意点まで初心者向けに整理しました。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="ナンピン買いとは？メリットと危険性を初心者向けに整理｜検討の余地がある場面と慎重になりたい場面 ナンピン買い（難平）の意味と平均取得単価の計算、メリットと危険性を初心者向けに整理。積立投資（ドルコスト平均法）との違い、検討の余地がある場面・慎重になりたい場面の判断軸、事前に整理したい視点と証券口座選びの観点まで解説します。 ナンピン買い, ナンピン買い 危険, ナンピン買い とは, ナンピン ドルコスト平均法 違い">
-      <a class="article-card" href="articles/nanpin-kai-merit-risk-beginner.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>ナンピン買いとは？メリットと危険性を初心者向けに整理｜検討の余地がある場面と慎重になりたい場面</h2>
-        <p>ナンピン買い（難平）の意味と平均取得単価の計算、メリットと危険性を初心者向けに整理。積立投資（ドルコスト平均法）との違い、検討の余地がある場面・慎重になりたい場面の判断軸、事前に整理したい視点と証券口座選びの観点まで解説します。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kihon" data-search="信用取引とは？現物取引との違いと、初心者がまず知っておきたいリスク・仕組みを整理 信用取引とは何か、現物取引との違いを初心者向けに整理。保証金やレバレッジ、空売り、返済期限、追証などの仕組みとリスク、金利・貸株料といったコストの考え方、証券会社を比べる際の着眼点までまとめました。 信用取引とは, 信用取引 現物取引 違い, 信用取引 リスク, 追証">
-      <a class="article-card" href="articles/margin-trading-basics-vs-cash-trading.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>信用取引とは？現物取引との違いと、初心者がまず知っておきたいリスク・仕組みを整理</h2>
-        <p>信用取引とは何か、現物取引との違いを初心者向けに整理。保証金やレバレッジ、空売り、返済期限、追証などの仕組みとリスク、金利・貸株料といったコストの考え方、証券会社を比べる際の着眼点までまとめました。</p>
-      </a>
     </div><div class="article-card-wrap" data-category="kihon" data-search="こども支援nisaと学資保険はどっちがいい?違いを比較して使い分け方を整理 2027年開始予定のこども支援nisaと学資保険の違いを比較。年60万円・生涯600万円の制度概要、払出し制限と課税の扱い、保障や生命保険料控除の違いを整理し、併用を含めた使い分けの考え方と注意点を初心者向けにまとめます。 こども支援nisa, 学資保険, こどもnisa 比較, 教育資金の準備">
       <a class="article-card" href="articles/kodomo-shien-nisa-vs-gakushi-hoken.html">
         <div class="article-card-date">2026年10月4日</div>
@@ -187,6 +141,18 @@
         <div class="article-card-date">2026年10月4日</div>
         <h2>こどもNISA(こども支援NISA)とジュニアNISAの違いを徹底比較|2027年開始の新制度を7項目で整理</h2>
         <p>2027年1月に開始予定のこどもNISA(こども支援NISA)と、2023年に新規投資が終了したジュニアNISAの違いを、年間投資枠・非課税期間・払出し要件など7項目で比較。残高の扱いや確定/未確定の線引き、口座選びの観点も初心者向けに整理しました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kouza" data-search="ネット証券の選び方を5社比較｜sbi・楽天・マネックス・三菱ufj eスマート・松井を初心者向けに整理 ネット証券はどこを選べばいい？sbi証券・楽天証券・マネックス証券・三菱ufj eスマート証券（旧auカブコム）・松井証券の違いを、手数料・ポイント・取扱商品など5つの軸で初心者向けに整理しました（2026年9月時点）。 ネット証券 比較, ネット証券 選び方, 証券会社 おすすめ 初心者, nisa口座 比較">
+      <a class="article-card" href="articles/net-securities-comparison-beginners.html">
+        <div class="article-card-date">2026年9月20日</div>
+        <h2>ネット証券の選び方を5社比較｜SBI・楽天・マネックス・三菱UFJ eスマート・松井を初心者向けに整理</h2>
+        <p>ネット証券はどこを選べばいい？SBI証券・楽天証券・マネックス証券・三菱UFJ eスマート証券（旧auカブコム）・松井証券の違いを、手数料・ポイント・取扱商品など5つの軸で初心者向けに整理しました（2026年9月時点）。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kouza" data-search="sbi証券と楽天証券を比較｜手数料・取扱商品・ポイント還元の違いを初心者向けに整理 ネット証券大手、sbi証券と楽天証券の違いを初心者向けに整理。国内株・米国株の手数料、取扱商品、クレカ積立や投信保有のポイント還元、nisaでの使い勝手まで、比較の軸を5つに絞って解説します（2026年9月時点の公表情報をもとに整理）。 sbi証券 楽天証券 比較, ネット証券 選び方, クレカ積立 ポイント還元, nisa 証券会社">
+      <a class="article-card" href="articles/sbi-rakuten-securities-comparison.html">
+        <div class="article-card-date">2026年9月20日</div>
+        <h2>SBI証券と楽天証券を比較｜手数料・取扱商品・ポイント還元の違いを初心者向けに整理</h2>
+        <p>ネット証券大手、SBI証券と楽天証券の違いを初心者向けに整理。国内株・米国株の手数料、取扱商品、クレカ積立や投信保有のポイント還元、NISAでの使い勝手まで、比較の軸を5つに絞って解説します（2026年9月時点の公表情報をもとに整理）。</p>
       </a>
     </div><div class="article-card-wrap" data-category="kouza" data-search="nisa口座はどこで開設する？初心者が見ておきたい証券会社の比較ポイント7つ nisa口座をどこで開くか迷う人向けに、取扱商品・手数料・クレカ積立・アプリ・サポートなど代表的な7つの比較観点を整理。銀行と証券会社の違い、金融機関変更のルール、2027年開始予定のこどもnisaまで中立的に解説します。 nisa口座 どこで開設, nisa 証券会社 比較, nisa 口座開設 初心者, ネット証券 選び方">
       <a class="article-card" href="articles/nisa-account-brokerage-comparison-points.html">
@@ -284,12 +250,6 @@
         <h2>高配当株投資とインデックス投資の違いを比較｜初心者が判断するための4つの論点</h2>
         <p>高配当株投資とインデックス投資の違いを、仕組み・税金・手間・リスクの4視点で比較。配当利回りや配当性向の見方、NISAでの注意点、証券口座を選ぶときの比較観点まで、初心者が自分で判断するための材料を整理しました。</p>
       </a>
-    </div><div class="article-card-wrap" data-category="shouhin" data-search="個別株の選び方入門｜per・pbr・roe・配当利回りの見方を初心者向けに整理 個別株選びで使われるper・pbr・roe・配当利回りの意味と目安の考え方、4指標のつながり、初心者がつまずきやすい点を整理しました。銘柄情報を見るときの確認項目と、証券会社を比べる視点まで解説します。 個別株 選び方, per pbr 見方, roe 配当利回り, 株 初心者 指標">
-      <a class="article-card" href="articles/how-to-pick-stocks-per-pbr-roe-dividend-yield.html">
-        <div class="article-card-date">2026年9月21日</div>
-        <h2>個別株の選び方入門｜PER・PBR・ROE・配当利回りの見方を初心者向けに整理</h2>
-        <p>個別株選びで使われるPER・PBR・ROE・配当利回りの意味と目安の考え方、4指標のつながり、初心者がつまずきやすい点を整理しました。銘柄情報を見るときの確認項目と、証券会社を比べる視点まで解説します。</p>
-      </a>
     </div><div class="article-card-wrap" data-category="kaikata" data-search="積立投資と一括投資、どっちがいい？ドルコスト平均法の考え方を初心者向けに整理 積立投資と一括投資はどう違う？ドルコスト平均法の仕組みと限界、過去データが示す傾向、資金の性格やリスク許容度に応じた考え方、nisaの枠との関係、証券会社の積立設定の比較ポイントまで初心者向けに整理します。 積立投資 一括投資, ドルコスト平均法, 一括投資 積立 どっち, つみたて投資枠">
       <a class="article-card" href="articles/tsumitate-vs-lump-sum-dollar-cost-averaging.html">
         <div class="article-card-date">2026年9月10日</div>
@@ -302,23 +262,11 @@
         <h2>つみたて投資枠と成長投資枠、どっちを優先すべき？初心者向けの考え方と使い分けの目安</h2>
         <p>新NISAのつみたて投資枠と成長投資枠、初心者はどちらを優先？生涯枠1,800万円の内訳や公表データをもとに、判断の順番・タイプ別の使い分け・証券会社選びの比較ポイントまで整理して解説します。</p>
       </a>
-    </div><div class="article-card-wrap" data-category="kaikata" data-search="クレカ積立とは?nisaでのポイント還元の仕組みと証券会社ごとの違いを整理 クレカ積立の基本、nisaのつみたて投資枠・成長投資枠での使い方、ポイント還元率を左右する4つの条件、証券会社ごとの比較の観点と注意点を初心者向けに整理。年会費の損益分岐点や信託報酬との比較試算、選ぶ際のチェックリストもまとめました。 クレカ積立, クレカ積立 比較, nisa ポイント還元, クレカ積立 上限">
-      <a class="article-card" href="articles/creca-tsumitate-nisa-point-guide.html">
-        <div class="article-card-date">2026年9月11日</div>
-        <h2>クレカ積立とは?NISAでのポイント還元の仕組みと証券会社ごとの違いを整理</h2>
-        <p>クレカ積立の基本、NISAのつみたて投資枠・成長投資枠での使い方、ポイント還元率を左右する4つの条件、証券会社ごとの比較の観点と注意点を初心者向けに整理。年会費の損益分岐点や信託報酬との比較試算、選ぶ際のチェックリストもまとめました。</p>
-      </a>
     </div><div class="article-card-wrap" data-category="kaikata" data-search="nisa積立に強いネット証券の比較ポイント｜取扱ファンド数・最低積立額・ポイント還元で見る選び方 nisaのつみたて投資枠で使うネット証券は何を基準に見ればいい?取扱ファンド数、最低積立額と積立の柔軟性、クレカ積立・投信保有のポイント還元という3つの軸に加え、信託報酬を含めた負担率の考え方や金融機関変更のルールまで、公的資料を参照しながら初心者向けに整理しました。 nisa 積立 ネット証券 比較, つみたて投資枠 証券会社 選び方, クレカ積立 ポイント還元, nisa 口座 取扱ファンド数">
       <a class="article-card" href="articles/nisa-tsumitate-net-securities-comparison.html">
         <div class="article-card-date">2026年9月21日</div>
         <h2>NISA積立に強いネット証券の比較ポイント｜取扱ファンド数・最低積立額・ポイント還元で見る選び方</h2>
         <p>NISAのつみたて投資枠で使うネット証券は何を基準に見ればいい?取扱ファンド数、最低積立額と積立の柔軟性、クレカ積立・投信保有のポイント還元という3つの軸に加え、信託報酬を含めた負担率の考え方や金融機関変更のルールまで、公的資料を参照しながら初心者向けに整理しました。</p>
-      </a>
-    </div><div class="article-card-wrap" data-category="kaikata" data-search="株主優待とは？nisa成長投資枠での個別株投資の始め方と注意点をやさしく解説 株主優待の仕組みと、nisa成長投資枠で個別株を買うときの手順・注意点を初心者向けに整理。権利付最終日の数え方、配当金の受取方式、損益通算が使えない点などの落とし穴や、証券会社を比べる観点もまとめました。 株主優待, nisa 成長投資枠, 個別株 始め方, 株主優待 注意点">
-      <a class="article-card" href="articles/shareholder-benefits-nisa-growth-quota-guide.html">
-        <div class="article-card-date">2026年9月10日</div>
-        <h2>株主優待とは？NISA成長投資枠での個別株投資の始め方と注意点をやさしく解説</h2>
-        <p>株主優待の仕組みと、NISA成長投資枠で個別株を買うときの手順・注意点を初心者向けに整理。権利付最終日の数え方、配当金の受取方式、損益通算が使えない点などの落とし穴や、証券会社を比べる観点もまとめました。</p>
       </a>
     </div><div class="article-card-wrap" data-category="kaikata" data-search="nisaで配当金に税金がかかる？株式数比例配分方式の設定と注意点を初心者向けに整理 nisaで保有する株式・etf・reitの配当金を非課税で受け取るために必要な「株式数比例配分方式」の設定と、4つの受け取り方式の違い、投資信託の分配金との違い、外国株の配当の注意点を整理します。 nisa 配当金 税金, 株式数比例配分方式, nisa 配当 受け取り方, 配当金 非課税 設定">
       <a class="article-card" href="articles/nisa-dividend-receiving-method.html">
@@ -403,6 +351,66 @@
         <div class="article-card-date">2026年9月10日</div>
         <h2>NISAの出口戦略：いつ・どうやって売る？取り崩し方の考え方</h2>
         <p>NISAはいつ・どう売る？定額・定率・期間指定など取り崩し方の考え方、売却枠が翌年復活する仕組み、課税口座との使い分け、順序リスクへの備え、出口を見据えた証券会社の比較観点を初心者向けに整理します。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="credit" data-search="クレカ積立とは?nisaでのポイント還元の仕組みと証券会社ごとの違いを整理 クレカ積立の基本、nisaのつみたて投資枠・成長投資枠での使い方、ポイント還元率を左右する4つの条件、証券会社ごとの比較の観点と注意点を初心者向けに整理。年会費の損益分岐点や信託報酬との比較試算、選ぶ際のチェックリストもまとめました。 クレカ積立, クレカ積立 比較, nisa ポイント還元, クレカ積立 上限">
+      <a class="article-card" href="articles/creca-tsumitate-nisa-point-guide.html">
+        <div class="article-card-date">2026年9月11日</div>
+        <h2>クレカ積立とは?NISAでのポイント還元の仕組みと証券会社ごとの違いを整理</h2>
+        <p>クレカ積立の基本、NISAのつみたて投資枠・成長投資枠での使い方、ポイント還元率を左右する4つの条件、証券会社ごとの比較の観点と注意点を初心者向けに整理。年会費の損益分岐点や信託報酬との比較試算、選ぶ際のチェックリストもまとめました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="株の注文方法まとめ｜成行・指値・逆指値・oco・ifd・ifd-ocoの違いを初心者向けに整理 株の注文方法を初心者向けに整理。成行・指値・逆指値の基本3種と、oco・ifd・ifd-ocoの組み合わせ型の違い、使い分けの考え方、執行条件や有効期間の注意点、証券会社ごとの対応差まで比較の視点でまとめました。 株 注文方法, 成行 指値 違い, 逆指値 注文, ifd oco 注文">
+      <a class="article-card" href="articles/stock-order-types-guide.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>株の注文方法まとめ｜成行・指値・逆指値・OCO・IFD・IFD-OCOの違いを初心者向けに整理</h2>
+        <p>株の注文方法を初心者向けに整理。成行・指値・逆指値の基本3種と、OCO・IFD・IFD-OCOの組み合わせ型の違い、使い分けの考え方、執行条件や有効期間の注意点、証券会社ごとの対応差まで比較の視点でまとめました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="個別株の選び方入門｜per・pbr・roe・配当利回りの見方を初心者向けに整理 個別株選びで使われるper・pbr・roe・配当利回りの意味と目安の考え方、4指標のつながり、初心者がつまずきやすい点を整理しました。銘柄情報を見るときの確認項目と、証券会社を比べる視点まで解説します。 個別株 選び方, per pbr 見方, roe 配当利回り, 株 初心者 指標">
+      <a class="article-card" href="articles/how-to-pick-stocks-per-pbr-roe-dividend-yield.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>個別株の選び方入門｜PER・PBR・ROE・配当利回りの見方を初心者向けに整理</h2>
+        <p>個別株選びで使われるPER・PBR・ROE・配当利回りの意味と目安の考え方、4指標のつながり、初心者がつまずきやすい点を整理しました。銘柄情報を見るときの確認項目と、証券会社を比べる視点まで解説します。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="株主優待とは？nisa成長投資枠での個別株投資の始め方と注意点をやさしく解説 株主優待の仕組みと、nisa成長投資枠で個別株を買うときの手順・注意点を初心者向けに整理。権利付最終日の数え方、配当金の受取方式、損益通算が使えない点などの落とし穴や、証券会社を比べる観点もまとめました。 株主優待, nisa 成長投資枠, 個別株 始め方, 株主優待 注意点">
+      <a class="article-card" href="articles/shareholder-benefits-nisa-growth-quota-guide.html">
+        <div class="article-card-date">2026年9月10日</div>
+        <h2>株主優待とは？NISA成長投資枠での個別株投資の始め方と注意点をやさしく解説</h2>
+        <p>株主優待の仕組みと、NISA成長投資枠で個別株を買うときの手順・注意点を初心者向けに整理。権利付最終日の数え方、配当金の受取方式、損益通算が使えない点などの落とし穴や、証券会社を比べる観点もまとめました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="損切りと利益確定のルールの作り方｜初心者が感情に流されないための考え方 損切りや利益確定の判断は、値動きより「自分の感情」に左右されがちです。買う前に決めるルールの考え方、損失許容額の組み立て、逆指値やocoなど注文機能の活用、nisa口座での注意点まで初心者向けに整理しました。 損切り ルール, 利益確定 タイミング, 損切りライン 決め方, 投資 初心者">
+      <a class="article-card" href="articles/stop-loss-take-profit-rules-for-beginners.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>損切りと利益確定のルールの作り方｜初心者が感情に流されないための考え方</h2>
+        <p>損切りや利益確定の判断は、値動きより「自分の感情」に左右されがちです。買う前に決めるルールの考え方、損失許容額の組み立て、逆指値やOCOなど注文機能の活用、NISA口座での注意点まで初心者向けに整理しました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="ナンピン買いとは？メリットと危険性を初心者向けに整理｜検討の余地がある場面と慎重になりたい場面 ナンピン買い（難平）の意味と平均取得単価の計算、メリットと危険性を初心者向けに整理。積立投資（ドルコスト平均法）との違い、検討の余地がある場面・慎重になりたい場面の判断軸、事前に整理したい視点と証券口座選びの観点まで解説します。 ナンピン買い, ナンピン買い 危険, ナンピン買い とは, ナンピン ドルコスト平均法 違い">
+      <a class="article-card" href="articles/nanpin-kai-merit-risk-beginner.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>ナンピン買いとは？メリットと危険性を初心者向けに整理｜検討の余地がある場面と慎重になりたい場面</h2>
+        <p>ナンピン買い（難平）の意味と平均取得単価の計算、メリットと危険性を初心者向けに整理。積立投資（ドルコスト平均法）との違い、検討の余地がある場面・慎重になりたい場面の判断軸、事前に整理したい視点と証券口座選びの観点まで解説します。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="信用取引とは？現物取引との違いと、初心者がまず知っておきたいリスク・仕組みを整理 信用取引とは何か、現物取引との違いを初心者向けに整理。保証金やレバレッジ、空売り、返済期限、追証などの仕組みとリスク、金利・貸株料といったコストの考え方、証券会社を比べる際の着眼点までまとめました。 信用取引とは, 信用取引 現物取引 違い, 信用取引 リスク, 追証">
+      <a class="article-card" href="articles/margin-trading-basics-vs-cash-trading.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>信用取引とは？現物取引との違いと、初心者がまず知っておきたいリスク・仕組みを整理</h2>
+        <p>信用取引とは何か、現物取引との違いを初心者向けに整理。保証金やレバレッジ、空売り、返済期限、追証などの仕組みとリスク、金利・貸株料といったコストの考え方、証券会社を比べる際の着眼点までまとめました。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="ipoの取扱数・主幹事実績・抽選ルールで比較するネット証券｜初心者向けの申し込み手順も整理 ipo（新規公開株）の証券会社選びを、取扱数・主幹事実績・抽選ルールの3つの観点で整理。2025〜2026年の集計データや数え方の違いにも触れつつ、ブックビルディングの手順やnisa成長投資枠との関係を初心者向けに解説します。 ipo 証券会社 比較, ipo 取扱数, ipo 主幹事, ipo 申し込み方法">
+      <a class="article-card" href="articles/ipo-securities-comparison-underwriter-lottery.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>IPOの取扱数・主幹事実績・抽選ルールで比較するネット証券｜初心者向けの申し込み手順も整理</h2>
+        <p>IPO（新規公開株）の証券会社選びを、取扱数・主幹事実績・抽選ルールの3つの観点で整理。2025〜2026年の集計データや数え方の違いにも触れつつ、ブックビルディングの手順やNISA成長投資枠との関係を初心者向けに解説します。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="機関投資家とは？個人投資家との違いと株価への影響を初心者向けに整理 機関投資家とは何か、個人投資家との違い、株価への影響を初心者向けに解説。日本株市場でのシェアや売買動向の見方、個人ならではの特徴、動きを確認できる公的データまで、公表済みの統計を交えて整理します。 機関投資家とは, 機関投資家 個人投資家 違い, 機関投資家 株価 影響, 投資部門別売買状況">
+      <a class="article-card" href="articles/institutional-investors-vs-individual.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>機関投資家とは？個人投資家との違いと株価への影響を初心者向けに整理</h2>
+        <p>機関投資家とは何か、個人投資家との違い、株価への影響を初心者向けに解説。日本株市場でのシェアや売買動向の見方、個人ならではの特徴、動きを確認できる公的データまで、公表済みの統計を交えて整理します。</p>
+      </a>
+    </div><div class="article-card-wrap" data-category="kobetsu" data-search="仕手株とは？個人投資家が巻き込まれないための見分け方と注意点を初心者向けに整理 仕手株とは何か、なぜリスクが大きいのかを初心者向けに整理。急騰銘柄に見られやすい特徴、増担保規制やsns情報の読み方、一次情報での確認手順、保有してしまった場合の考え方まで、公的資料を参照しながら解説します。 仕手株, 仕手株 見分け方, 相場操縦, 株 初心者 注意点">
+      <a class="article-card" href="articles/shitekabu-features-and-risk-checkpoints.html">
+        <div class="article-card-date">2026年9月21日</div>
+        <h2>仕手株とは？個人投資家が巻き込まれないための見分け方と注意点を初心者向けに整理</h2>
+        <p>仕手株とは何か、なぜリスクが大きいのかを初心者向けに整理。急騰銘柄に見られやすい特徴、増担保規制やSNS情報の読み方、一次情報での確認手順、保有してしまった場合の考え方まで、公的資料を参照しながら解説します。</p>
       </a>
     </div><div class="article-card-wrap" data-category="souba" data-search="需要と供給から考える株価の決まり方｜ミクロ経済学の基本を投資初心者向けに整理 株価はなぜ動くのか。ミクロ経済学の「需要と供給」の考え方を使って、価格が決まる仕組みを初心者向けに整理しました。需要曲線・供給曲線の基本から、自社株買いや増資といった株式市場特有の需給要因、情報を読み解く視点までをやさしく解説します。 需要と供給 株価, ミクロ経済学 初心者, 株価 決まり方, 需給 株式市場">
       <a class="article-card" href="articles/supply-demand-stock-price-basics.html">

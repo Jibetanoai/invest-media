@@ -16,24 +16,34 @@ const INDEX_DATA_FILE = path.join(__dirname, "..", "data", "articles.json");
 // 新規記事は generate_article.js のトピック文言からキーワードで自動推定するが、
 // 分類が合わない場合は data/articles.json の該当エントリの category を手動修正すればよい。
 const CATEGORIES = [
-  { key: "kihon", label: "① 制度の全体像・基本" },
-  { key: "kouza", label: "② 口座を比較する" },
-  { key: "hajimeru", label: "③ 実際に始める" },
-  { key: "shouhin", label: "④ 商品を選ぶ" },
-  { key: "kaikata", label: "⑤ 買い方を決める" },
-  { key: "heiyou", label: "⑥ 他の制度と使い分ける" },
-  { key: "hajimetaato", label: "⑦ 始めた後に読む" },
-  { key: "souba", label: "⑧ 相場・経済の見方" },
-  { key: "kyounonews", label: "⑨ 今日の経済ニュース" },
-  { key: "rekishi", label: "⑩ 相場の歴史(暴落・暴騰を振り返る)" },
+  // 記事一覧のタブは3段に分ける(group)。kihon=投資のキホン(はじめての人)、ouyou=投資の応用(慣れてきた人)、
+  // soto=NISAの外側の投資(リスク高め)。keyは記事データ・URLのハッシュに使うので変えないこと。
+  { key: "kihon", label: "① 制度の全体像・基本", group: "kihon" },
+  { key: "kouza", label: "② 口座を比較する", group: "kihon" },
+  { key: "hajimeru", label: "③ 実際に始める", group: "kihon" },
+  { key: "shouhin", label: "④ 商品を選ぶ", group: "kihon" },
+  { key: "kaikata", label: "⑤ 買い方を決める", group: "kihon" },
+  { key: "heiyou", label: "⑥ 他の制度と使い分ける", group: "kihon" },
+  { key: "hajimetaato", label: "⑦ 始めた後に読む", group: "kihon" },
+  { key: "credit", label: "⑧ クレジットカード・ポイント", group: "kihon" },
+  { key: "kobetsu", label: "⑨ 個別株・取引の実践", group: "ouyou" },
+  { key: "souba", label: "⑩ 相場・経済の見方", group: "ouyou" },
+  { key: "kyounonews", label: "⑪ 今日の経済ニュース", group: "ouyou" },
+  { key: "rekishi", label: "⑫ 相場の歴史(暴落・暴騰を振り返る)", group: "ouyou" },
   // ここから下は「NISAの外側の投資」。値動き・損失リスクが大きめのジャンルなので、
   // 記事一覧では別のタブ列に分け、記事ページには冒頭に注意ボックスを出す。
   // 自動推定の対象外(既存記事の分類を変えないため)。generate_article.js の --category= で明示指定する。
-  { key: "fudousan", label: "⑪ 不動産投資", highRisk: true },
-  { key: "fx", label: "⑫ FX(外国為替証拠金取引)", highRisk: true },
-  { key: "crypto", label: "⑬ 暗号資産(仮想通貨)", highRisk: true },
+  { key: "fudousan", label: "⑬ 不動産投資", group: "soto", highRisk: true },
+  { key: "fx", label: "⑭ FX(外国為替証拠金取引)", group: "soto", highRisk: true },
+  { key: "crypto", label: "⑮ 暗号資産(仮想通貨)", group: "soto", highRisk: true },
 ];
+const TAB_GROUPS = {
+  kihon: { label: "投資のキホン", note: "はじめての人向け。NISAの仕組みから、口座選び・始め方・クレカ積立まで" },
+  ouyou: { label: "投資の応用", note: "慣れてきた人向け。個別株の実践、相場の見方、毎日のニュース、相場の歴史" },
+};
 const CATEGORY_KEYWORD_RULES = [
+  { key: "credit", words: ["クレジットカード", "クレカ", "ポイント投資", "ポイント還元"] },
+  { key: "kobetsu", words: ["個別株", "株主優待", "損切り", "利確", "ナンピン", "信用取引", "IPO", "注文方法", "機関投資家", "仕手株"] },
   { key: "rekishi", words: ["バブル崩壊", "ブラックマンデー", "リーマンショック", "コロナショック", "世界恐慌", "暴落の歴史", "暴騰の歴史", "相場の歴史"] },
   { key: "kaikata", words: ["積立", "一括投資", "つみたて投資枠", "成長投資枠", "クレカ積立", "ドルコスト"] },
   { key: "hajimetaato", words: ["含み損", "狼狽売り", "出口戦略", "取り崩し", "売り方"] },
@@ -334,8 +344,8 @@ function articleCardHtml(a) {
     `;
 }
 
-// 「⑨ 今日の経済ニュース」だけは日付の新しい順、それ以外のカテゴリは
-// カテゴリの並び(①〜⑧・⑩)→カテゴリ内はarticle_order.jsで定義した内容ベースの順序、
+// 「⑪ 今日の経済ニュース」だけは日付の新しい順、それ以外のカテゴリは
+// カテゴリの並び(①〜⑩・⑫〜⑮)→カテゴリ内はarticle_order.jsで定義した内容ベースの順序、
 // という表示順にする。article_order.jsに載っていない記事はカテゴリ末尾(作成日の新しい順)。
 function articleSortKey(a) {
   const category = a.category || "kihon";
@@ -368,6 +378,21 @@ function buildIndexHtml(articles) {
     if (count === 0) return "";
     return `<button type="button" class="category-tab${c.highRisk ? " is-risk" : ""}" role="tab" aria-selected="false" data-category="${c.key}">${escapeHtml(c.label)}<span class="category-tab-count">${count}</span></button>`;
   };
+  const groupTabsHtml = (group, withAll) => {
+    const buttons = CATEGORIES.filter((c) => c.group === group).map(categoryTabHtml).join("");
+    const allButton = withAll
+      ? `<button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>`
+      : "";
+    if (buttons === "" && allButton === "") return "";
+    const g = TAB_GROUPS[group];
+    return `
+  <div class="tab-group tab-group-${group}">
+    <p class="tab-group-label">${escapeHtml(g.label)} <span>${escapeHtml(g.note)}</span></p>
+    <div class="category-tabs" role="tablist">
+      ${allButton}${buttons}
+    </div>
+  </div>`;
+  };
   const highRiskButtons = CATEGORIES.filter((c) => c.highRisk).map(categoryTabHtml).join("");
   const highRiskTabsHtml = highRiskButtons === "" ? "" : `
   <div class="risk-tab-group">
@@ -376,11 +401,7 @@ function buildIndexHtml(articles) {
       ${highRiskButtons}
     </div>
   </div>`;
-  const tabsHtml = sorted.length === 0 ? "" : `
-  <div class="category-tabs" role="tablist">
-    <button type="button" class="category-tab is-active" role="tab" aria-selected="true" data-category="all">すべて<span class="category-tab-count">${sorted.length}</span></button>
-    ${CATEGORIES.filter((c) => !c.highRisk).map(categoryTabHtml).join("")}
-  </div>
+  const tabsHtml = sorted.length === 0 ? "" : `${groupTabsHtml("kihon", true)}${groupTabsHtml("ouyou", false)}
   ${highRiskTabsHtml}`;
 
   const searchHtml = sorted.length === 0 ? "" : `
