@@ -75,7 +75,11 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-exit-strategy-withdrawal",
   ],
   credit: [
+    "nenkaihi-muryo-credit-card-hikaku-kureka-tsumitate",
     "creca-tsumitate-nisa-point-guide",
+    "kureka-tsumitate-card-comparison-points",
+    "credit-card-tsumitate-reward-rate-changes",
+    "point-investing-credit-card-nisa",
   ],
   kobetsu: [
     "stock-order-types-guide",
