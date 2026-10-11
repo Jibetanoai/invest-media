@@ -4,6 +4,10 @@
 //   1. 企画・執筆チーム(編集企画室+リサーチ部+執筆部+SEO部+収益化部、計23人分)
 //   2. レッドチーム(事実確認・誇大表現・金融ルールの3人分)
 //   3. 編集長+バックオフィス(最終編集、校正・公開管理・実績記録の3人分)
+//   4. ハルシネーションチェック部門(数字・日付・固有名詞を1つずつ一次情報で確認し、誤りを直す)
+//   5. 最終チェック部門(編集方針・ハルシネーション報告を踏まえて合否判定。不合格なら公開しない)
+//   6. マーケティング部門(SNS投稿案・タイトル改善案・内部リンク案。投稿はKさんの確認後のみ)
+// 2026-10-11 Kさん指示で4〜6を追加。
 const fs = require("fs");
 const path = require("path");
 const { runClaudeCLI } = require("./claude_cli");
@@ -198,6 +202,130 @@ NOTE: (この記事が狙ったキーワード・読者層の内部管理メモ�
   return { systemPrompt, userPrompt };
 }
 
+
+// ---- 4. ハルシネーションチェック部門 ----
+const hallucinationDept = {
+  key: "hallucination",
+  label: "ハルシネーションチェック部門",
+  intro: "記事中の事実を1つずつ一次情報で確かめ、確かめられないものは残さない部署。",
+  roles: [
+    { label: "事実抽出担当", mandate: "本文から、数字・割合・金額・日付・制度名・会社名・サービス名・法令・統計・引用を含む文をすべて抜き出す" },
+    { label: "一次情報照合担当", mandate: "抜き出した事実を、公式サイト・官公庁・発表元のプレスリリースなど一次情報で1つずつ確認する(検索結果の要約や個人ブログだけで確認済みにしない)" },
+    { label: "出典整合担当", mandate: "本文の数字と、記事末尾の出典に書かれている内容が一致しているかを確認する(出典に書いていないことを出典扱いにしない)" },
+    { label: "修正担当", mandate: "誤りは正しい内容に直し、確認できなかった事実は削除するか「〜とされています(出典)」程度にとどめる。条件付きの数字は条件を省略しない" },
+  ],
+};
+
+function buildHallucinationPrompt(topic, finalText, extraPolicy = "") {
+  const systemPrompt = `${PERSONA}
+
+---
+補足: あなたは今、${hallucinationDept.label}を担当しています。${hallucinationDept.intro}
+${EDITORIAL_POLICY}${extraPolicy}
+
+${roleListMarkdown([hallucinationDept])}
+
+作業手順:
+1. 事実を含む文をすべて番号付きで抜き出す。
+2. WebSearch と WebFetch で、できるだけ一次情報のページを開いて1つずつ確かめる。
+3. 判定は「確認済み」「誤り」「確認できず」の3つ。確認済みには根拠URLを付ける。
+4. 誤り・確認できずの文を直した記事全文を出す。
+
+出力形式(厳守):
+## ハルシネーションチェック報告
+| No | 本文の記述 | 判定 | 根拠URL | 対応 |
+|---|---|---|---|---|
+(全項目)
+TITLE: (タイトル。数字に誤りがあれば直す)
+META: (メタディスクリプション。同上)
+<<<BODY>>>
+(修正済みの記事本文全文。Markdown)
+
+重要:
+- 「たぶん正しい」は確認済みにしない。確認できなかったものは本文から消すか、断定しない書き方に直す。
+- 本文の構成・言い回しは、事実の修正に必要な範囲以外は変えない。
+- 指定した出力形式以外の前置き・後書きは書かない。`;
+  const userPrompt = `記事テーマ: ${topic}\n\n以下の記事をチェックしてください。\n\n---\n${finalText}`;
+  return { systemPrompt, userPrompt };
+}
+
+// ---- 5. 最終チェック部門 ----
+const finalCheckDept = {
+  key: "finalcheck",
+  label: "最終チェック部門",
+  intro: "公開してよいかを最後に判定する部署。迷ったら不合格にする。",
+  roles: [
+    { label: "コンプライアンス担当", mandate: "利益の保証・断定的な勧誘・個別の投資助言・煽り表現がないか(金融商品取引法・景品表示法)" },
+    { label: "事実チェック担当", mandate: "ハルシネーションチェック報告で「誤り」「確認できず」だった項目が、本文で直っているか" },
+    { label: "読者目線担当", mandate: "初心者が読んで誤解しないか(条件付きの数字が条件なしで書かれていないか、古い情報が今の話として書かれていないか)" },
+    { label: "体裁担当", mandate: "アフィリエイト開示が冒頭に1回あるか、免責文を本文で繰り返していないか、確認時点(○年○月時点)が書かれているか" },
+  ],
+};
+
+function buildFinalCheckPrompt(topic, checkedText, hallucinationReport, extraPolicy = "") {
+  const systemPrompt = `${PERSONA}
+
+---
+補足: あなたは今、${finalCheckDept.label}を担当しています。${finalCheckDept.intro}
+${EDITORIAL_POLICY}${extraPolicy}
+
+${roleListMarkdown([finalCheckDept])}
+
+出力形式(厳守):
+VERDICT: PASS または FAIL
+## 最終チェック報告
+- (担当名): (確認結果。問題があれば具体的に)
+...
+TITLE: (最終タイトル。直す必要がなければそのまま)
+META: (最終メタディスクリプション)
+<<<BODY>>>
+(軽微な問題はここで直した最終本文。FAILの場合も本文は出す)
+
+判定基準:
+- 編集方針違反、または直っていない事実の誤りが1つでもあれば FAIL。
+- 表現の小さな修正で解決できるものは直したうえで PASS にしてよい。`;
+  const userPrompt = `記事テーマ: ${topic}\n\n【ハルシネーションチェック報告】\n${hallucinationReport}\n\n【チェック後の記事】\n${checkedText}`;
+  return { systemPrompt, userPrompt };
+}
+
+// ---- 6. マーケティング部門 ----
+const marketingDept = {
+  key: "marketing",
+  label: "マーケティング部門",
+  intro: "記事を必要な人に届ける部署。ブランドはASSET LAB(ブログ「投資のキホン」はASSET LABが運営)。煽らない。",
+  roles: [
+    { label: "SNS担当(X)", mandate: "Xの投稿案を2本(各140字以内、記事URLは {URL} と書く)。煽り・断定・利益保証の表現は使わない" },
+    { label: "SNS担当(Instagram)", mandate: "Instagramのキャプション案を1本(本文200字程度+ハッシュタグ5〜8個。リンクはプロフィールから、と書く)" },
+    { label: "YouTube連携担当", mandate: "この記事をもとにしたショート動画(約40秒)のネタ案を1つ、タイトル案と3行の流れで" },
+    { label: "検索流入担当", mandate: "検索結果でクリックされやすく、誇大でないタイトル案とメタディスクリプション案を1つずつ(採用はKさんが判断)" },
+    { label: "内部リンク担当", mandate: "サイト内の既存記事一覧から、この記事と一緒に読まれるとよい記事を3本選ぶ" },
+  ],
+};
+
+function buildMarketingPrompt(article, existingArticles) {
+  const list = existingArticles.map((a) => `- ${a.slug}: ${a.title}`).join("\n");
+  const systemPrompt = `${PERSONA}
+
+---
+補足: あなたは今、${marketingDept.label}を担当しています。${marketingDept.intro}
+${EDITORIAL_POLICY}
+
+${roleListMarkdown([marketingDept])}
+
+出力はMarkdownで、担当ごとに見出しを分けて書く。投稿はKさんが確認してから行うので、「下書き」として書くこと。`;
+  const userPrompt = `記事タイトル: ${article.title}\nメタ: ${article.meta}\n\n【本文】\n${article.bodyMarkdown}\n\n【サイト内の既存記事】\n${list}`;
+  return { systemPrompt, userPrompt };
+}
+
+function parseVerdict(text) {
+  const m = text.match(/^VERDICT:\s*(PASS|FAIL)/m);
+  return m ? m[1] : "FAIL";
+}
+function reportPart(text) {
+  const idx = text.search(/^TITLE:/m);
+  return (idx >= 0 ? text.slice(0, idx) : text).trim();
+}
+
 // TITLE:/META:/SLUG:/NOTE: の行と、<<<BODY>>>以降の本文を取り出す。
 function parseArticleOutput(text) {
   const bodyMarker = "<<<BODY>>>";
@@ -239,6 +367,22 @@ async function generateArticle(topic, onProgress, options = {}) {
   const final = parseArticleOutput(finalText);
   if (!final.body) throw new Error("最終版の本文が生成できなかったよ");
 
+  // 4. ハルシネーションチェック部門(一次情報で1つずつ確認・修正)
+  if (onProgress) onProgress("ハルシネーションチェック部門(4人分)");
+  const hcPrompt = buildHallucinationPrompt(topic, `TITLE: ${final.title}\nMETA: ${final.meta}\n<<<BODY>>>\n${final.body}`, extraPolicy);
+  const hcText = await runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 15 * 60 * 1000 });
+  const hallucinationReport = reportPart(hcText);
+  const checked = parseArticleOutput(hcText);
+  if (!checked.body) throw new Error("ハルシネーションチェック後の本文が取れなかったよ");
+
+  // 5. 最終チェック部門(合否判定)
+  if (onProgress) onProgress("最終チェック部門(4人分)");
+  const fcPrompt = buildFinalCheckPrompt(topic, `TITLE: ${checked.title || final.title}\nMETA: ${checked.meta || final.meta}\n<<<BODY>>>\n${checked.body}`, hallucinationReport, extraPolicy);
+  const fcText = await runClaudeCLI({ ...fcPrompt, tools: "" });
+  const verdict = parseVerdict(fcText);
+  const finalCheckReport = reportPart(fcText);
+  const approved = parseArticleOutput(fcText);
+
   const slug = (final.slug || draft.title || topic)
     .toLowerCase()
     .replace(/[^a-z0-9\-]+/g, "-")
@@ -247,15 +391,24 @@ async function generateArticle(topic, onProgress, options = {}) {
 
   return {
     topic,
-    title: final.title || draft.title || topic,
-    meta: final.meta || draft.meta || "",
+    title: approved.title || checked.title || final.title || draft.title || topic,
+    meta: approved.meta || checked.meta || final.meta || draft.meta || "",
     keywords: draft.keywords || "",
     slug,
     note: final.note || "",
-    bodyMarkdown: final.body,
+    bodyMarkdown: approved.body || checked.body,
     redTeamNotes,
+    hallucinationReport,
+    finalCheckReport,
+    verdict,
     createdAt: new Date().toISOString(),
   };
 }
 
-module.exports = { generateArticle, DEPARTMENTS, EDITORIAL_POLICY, HIGH_RISK_POLICY };
+// 6. マーケティング部門。記事の公開(=最終チェック合格)後に呼ぶ。投稿は自動では行わない。
+async function generateMarketing(article, existingArticles) {
+  const prompt = buildMarketingPrompt(article, existingArticles);
+  return runClaudeCLI({ ...prompt, tools: "" });
+}
+
+module.exports = { generateArticle, generateMarketing, buildHallucinationPrompt, buildFinalCheckPrompt, parseVerdict, reportPart, DEPARTMENTS, EDITORIAL_POLICY, HIGH_RISK_POLICY };
