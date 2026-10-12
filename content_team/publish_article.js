@@ -520,8 +520,8 @@ ${gaSnippet()}</head>
   </a>
   <a class="article-card" href="kodomo-nisa-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
-    <h2>こどもNISAロードマップ｜2027年開始前に読んでおきたい8記事</h2>
-    <p>制度の全体像→お金の枠と引き出しのルール→始め方→学資保険・児童手当・祖父母の援助との関係→18歳以降まで、順番に読めるように整理しました。</p>
+    <h2>こどもNISAロードマップ｜2027年開始前に読んでおきたい9記事</h2>
+    <p>制度の全体像とメリット・デメリット→お金の枠と引き出しのルール→始め方→学資保険・児童手当・祖父母の援助との関係→18歳以降まで、順番に読めるように整理しました。</p>
   </a>
   <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>

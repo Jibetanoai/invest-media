@@ -19,6 +19,7 @@ const CATEGORY_ARTICLE_ORDER = {
   ],
   kodomo: [
     "kodomo-shien-nisa-2027-guide",
+    "kodomo-nisa-merit-demerit",
     "kodomo-nisa-junior-nisa-hikaku",
     "kodomo-nisa-tax-free-limit-withdrawal-rules",
     "kodomo-nisa-start-guide",
