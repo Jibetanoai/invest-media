@@ -230,7 +230,8 @@
       "meta": "2027年1月に開始予定のこどもNISA(こども支援NISA)と、2023年に新規投資が終了したジュニアNISAの違いを、年間投資枠・非課税期間・払出し要件など7項目で比較。残高の扱いや確定/未確定の線引き、口座選びの観点も初心者向けに整理しました。",
       "keywords": "こども支援NISA, ジュニアNISA 違い, こどもNISA 2027年, 教育資金 積立",
       "createdAt": "2026-10-04T12:16:42.112Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kodomo-nisa-start-guide",
@@ -238,7 +239,8 @@
       "meta": "2027年1月開始予定のこども支援NISA(こどもNISA)。口座開設の受付は2026年10月から順次始まっています。親権者の口座準備、マイナンバー確認書類や続柄が分かる住民票などの必要書類、申し込みから買付までの流れ、払出し制限や贈与税の論点を初心者向けに整理します。",
       "keywords": "こども支援NISA, こどもNISA 始め方, こどもNISA 必要書類, こどもNISA 口座開設",
       "createdAt": "2026-10-04T12:05:59.509Z",
-      "category": "hajimeru"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kodomo-shien-nisa-2027-guide",
@@ -246,7 +248,8 @@
       "meta": "2027年1月開始予定のこども支援NISA（こどもNISA）を解説。年間60万円・上限600万円などの制度概要、ジュニアNISAとの違い、12歳までの払い出し制限や贈与税の論点、親のNISAとの整理の仕方まで初心者向けにまとめます。",
       "keywords": "こども支援NISA, こどもNISA, 2027年 NISA 未成年, 教育資金 NISA",
       "createdAt": "2026-09-10T03:47:03.051Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kodomo-shien-nisa-vs-gakushi-hoken",
@@ -254,7 +257,8 @@
       "meta": "2027年開始予定のこども支援NISAと学資保険の違いを比較。年60万円・生涯600万円の制度概要、払出し制限と課税の扱い、保障や生命保険料控除の違いを整理し、併用を含めた使い分けの考え方と注意点を初心者向けにまとめます。",
       "keywords": "こども支援NISA, 学資保険, こどもNISA 比較, 教育資金の準備",
       "createdAt": "2026-10-04T12:25:43.292Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kojin-muke-kokusai-basics",
@@ -931,7 +935,8 @@
       "meta": "2027年1月開始予定の「こどもNISA(こども支援NISA)」を整理。年間60万円・非課税保有限度額600万円という枠の中身、中学入学年を境に変わる払出し要件、18歳での移行、金融機関を比べる際の観点まで初心者向けに解説します。",
       "keywords": "こども支援NISA, こどもNISA 非課税枠, こどもNISA 引き出し, こどもNISA いつから",
       "createdAt": "2026-10-12T14:17:26.869Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "jidou-teate-kodomo-nisa-tsumitate",
@@ -939,7 +944,8 @@
       "meta": "2027年1月開始予定のこどもNISA（通称）で児童手当を積み立てると、どんな形になるのか。月1万円・1.5万円・3万円のケース別に前提と仮定試算、子ども名義の注意点、出口の考え方、証券会社比較の観点までを整理します。",
       "keywords": "児童手当 こどもNISA, こども支援NISA, 児童手当 積立 シミュレーション, 教育資金 準備",
       "createdAt": "2026-10-12T14:41:58.486Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kodomo-nisa-grandparent-gift-tax-notes",
@@ -947,7 +953,8 @@
       "meta": "2027年1月開始予定のこどもNISA(報道では「こども支援NISA」とも呼ばれた制度)に祖父母からの資金を入れる場合、贈与税や名義預金の扱いが論点になります。年110万円の基礎控除の数え方、贈与契約書や振込記録の残し方、金融機関を比べる観点を整理しました。",
       "keywords": "こども支援NISA 贈与税, こどもNISA 祖父母, 贈与契約書 記録, 名義預金",
       "createdAt": "2026-10-12T15:07:31.686Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     },
     {
       "slug": "kodomo-shien-nisa-18sai-after",
@@ -955,7 +962,8 @@
       "meta": "2027年開始予定のこども支援NISA(こどもNISA)。子どもが18歳になると口座はどうなる?成人NISAへの引継ぎ、600万円の枠の扱い、払出し制限が外れる時期と勘定が切り替わる時期のズレを公表情報から整理します。",
       "keywords": "こども支援NISA 18歳, こどもNISA 成人後, こどもNISA 18歳以降, こども支援NISA 注意点",
       "createdAt": "2026-10-12T15:56:42.438Z",
-      "category": "kihon"
+      "updatedAt": "2026-10-12T21:47:21.603Z",
+      "category": "kodomo"
     }
   ]
 }

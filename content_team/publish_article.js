@@ -26,6 +26,8 @@ const CATEGORIES = [
   { key: "heiyou", label: "⑥ 他の制度と使い分ける", group: "kihon" },
   { key: "hajimetaato", label: "⑦ 始めた後に読む", group: "kihon" },
   { key: "credit", label: "⑧ クレジットカード・ポイント", group: "kihon" },
+  // こどもNISA(2027年開始予定)は大枠テーマを1つ独立させて、関連記事をまとめる。
+  { key: "kodomo", label: "こどもNISAの記事", group: "kodomo" },
   { key: "kobetsu", label: "⑨ 個別株・取引の実践", group: "ouyou" },
   { key: "souba", label: "⑩ 相場・経済の見方", group: "ouyou" },
   { key: "kyounonews", label: "⑪ 今日の経済ニュース", group: "ouyou" },
@@ -39,9 +41,11 @@ const CATEGORIES = [
 ];
 const TAB_GROUPS = {
   kihon: { label: "投資のキホン", note: "はじめての人向け。NISAの仕組みから、口座選び・始め方・クレカ積立まで" },
+  kodomo: { label: "こどもNISA", note: "2027年開始予定の、子どものためのNISA。制度の中身・始め方・引き出しのルール・18歳以降まで" },
   ouyou: { label: "投資の応用", note: "慣れてきた人向け。個別株の実践、相場の見方、毎日のニュース、相場の歴史" },
 };
 const CATEGORY_KEYWORD_RULES = [
+  { key: "kodomo", words: ["こどもNISA", "こども支援NISA", "ジュニアNISA"] },
   { key: "credit", words: ["クレジットカード", "クレカ", "ポイント投資", "ポイント還元"] },
   { key: "kobetsu", words: ["個別株", "株主優待", "損切り", "利確", "ナンピン", "信用取引", "IPO", "注文方法", "機関投資家", "仕手株"] },
   { key: "rekishi", words: ["バブル崩壊", "ブラックマンデー", "リーマンショック", "コロナショック", "世界恐慌", "暴落の歴史", "暴騰の歴史", "相場の歴史"] },
@@ -406,7 +410,7 @@ function buildIndexHtml(articles) {
       ${highRiskButtons}
     </div>
   </div>`;
-  const tabsHtml = sorted.length === 0 ? "" : `${groupTabsHtml("kihon", true)}${groupTabsHtml("ouyou", false)}
+  const tabsHtml = sorted.length === 0 ? "" : `${groupTabsHtml("kihon", true)}${groupTabsHtml("kodomo", false)}${groupTabsHtml("ouyou", false)}
   ${highRiskTabsHtml}`;
 
   const searchHtml = sorted.length === 0 ? "" : `
@@ -514,6 +518,11 @@ ${gaSnippet()}</head>
     <h2>証券口座の選び方 完全ガイド</h2>
     <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
   </a>
+  <a class="article-card" href="kodomo-nisa-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
+    <div class="article-card-date">📌 まとめガイド</div>
+    <h2>こどもNISAロードマップ｜2027年開始前に読んでおきたい8記事</h2>
+    <p>制度の全体像→お金の枠と引き出しのルール→始め方→学資保険・児童手当・祖父母の援助との関係→18歳以降まで、順番に読めるように整理しました。</p>
+  </a>
   <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
     <h2>株式投資初心者ロードマップ｜安全に始めるための20記事</h2>
@@ -546,6 +555,7 @@ function buildSitemapXml(articles) {
     { loc: `${site.baseUrl}/`, lastmod: latest },
     { loc: `${site.baseUrl}/shoken-koza-guide.html` },
     { loc: `${site.baseUrl}/kabu-toushi-roadmap.html` },
+    { loc: `${site.baseUrl}/kodomo-nisa-roadmap.html` },
     ...articles.map((a) => ({
       loc: `${site.baseUrl}/articles/${a.slug}.html`,
       lastmod: (a.updatedAt || a.createdAt || "").slice(0, 10),
