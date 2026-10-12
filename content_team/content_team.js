@@ -10,6 +10,7 @@
 // 2026-10-11 Kさん指示で4〜6を追加。
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { runClaudeCLI } = require("./claude_cli");
 
 // このメディア全体の編集方針(元ネタのAI投資委員会の3原則に相当)。
@@ -349,36 +350,64 @@ function parseArticleOutput(text) {
 }
 
 // options.highRisk: true のとき「NISAの外側の投資」向けの追加編集方針を全段階のプロンプトに入れる。
+// 途中経過の保存先。各段階が終わるたびに data/drafts/<テーマのハッシュ>/ に書き出す。
+// 時間切れで止まっても、そこまでの下書きを見られる。同じテーマで再実行すると、
+// 保存済みの段階は飛ばして続きから始める(最初からやり直したいときは --fresh)。
+const DRAFTS_DIR = path.join(__dirname, "..", "data", "drafts");
+
+function stageStore(topic, fresh) {
+  const id = crypto.createHash("sha1").update(topic).digest("hex").slice(0, 12);
+  const dir = path.join(DRAFTS_DIR, id);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "_テーマ.txt"), `${topic}\n`, "utf8");
+  return {
+    dir,
+    async run(name, label, fn, onProgress) {
+      const file = path.join(dir, name);
+      if (!fresh && fs.existsSync(file)) {
+        if (onProgress) onProgress(`${label}(保存済みの結果を使う: ${path.relative(process.cwd(), file)})`);
+        return fs.readFileSync(file, "utf8");
+      }
+      if (onProgress) onProgress(label);
+      const text = await fn();
+      fs.writeFileSync(file, text, "utf8");
+      return text;
+    },
+  };
+}
+
 async function generateArticle(topic, onProgress, options = {}) {
   const extraPolicy = options.highRisk ? HIGH_RISK_POLICY : "";
-  if (onProgress) onProgress("企画・執筆チーム(5部署23人分)");
+  const store = stageStore(topic, options.fresh);
+  if (onProgress) onProgress(`途中経過の保存先: ${path.relative(process.cwd(), store.dir)}/`);
   const planPrompt = buildPlanningWritingPrompt(topic, extraPolicy);
-  const draftText = await runClaudeCLI({ ...planPrompt, tools: "WebSearch" });
+  const draftText = await store.run("1_下書き.md", "企画・執筆チーム(5部署23人分)",
+    () => runClaudeCLI({ ...planPrompt, tools: "WebSearch", timeoutMs: 10 * 60 * 1000 }), onProgress);
   const draft = parseArticleOutput(draftText);
   if (!draft.body) throw new Error("下書きの本文が生成できなかったよ");
 
-  if (onProgress) onProgress("レッドチーム(3人分)");
   const redTeamPrompt = buildRedTeamPrompt(topic, draftText, extraPolicy);
-  const redTeamNotes = await runClaudeCLI({ ...redTeamPrompt, tools: "WebSearch" });
+  const redTeamNotes = await store.run("2_レッドチーム指摘.md", "レッドチーム(3人分)",
+    () => runClaudeCLI({ ...redTeamPrompt, tools: "WebSearch", timeoutMs: 10 * 60 * 1000 }), onProgress);
 
-  if (onProgress) onProgress("編集長+バックオフィス(まとめ)");
   const finalPrompt = buildFinalEditPrompt(topic, draftText, redTeamNotes, extraPolicy);
-  const finalText = await runClaudeCLI({ ...finalPrompt, tools: "" });
+  const finalText = await store.run("3_仕上げ.md", "編集長+バックオフィス(まとめ)",
+    () => runClaudeCLI({ ...finalPrompt, tools: "" }), onProgress);
   const final = parseArticleOutput(finalText);
   if (!final.body) throw new Error("最終版の本文が生成できなかったよ");
 
   // 4. ハルシネーションチェック部門(一次情報で1つずつ確認・修正)
-  if (onProgress) onProgress("ハルシネーションチェック部門(4人分)");
   const hcPrompt = buildHallucinationPrompt(topic, `TITLE: ${final.title}\nMETA: ${final.meta}\n<<<BODY>>>\n${final.body}`, extraPolicy);
-  const hcText = await runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 15 * 60 * 1000 });
+  const hcText = await store.run("4_ハルシネーションチェック.md", "ハルシネーションチェック部門(4人分)",
+    () => runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 15 * 60 * 1000 }), onProgress);
   const hallucinationReport = reportPart(hcText);
   const checked = parseArticleOutput(hcText);
   if (!checked.body) throw new Error("ハルシネーションチェック後の本文が取れなかったよ");
 
   // 5. 最終チェック部門(合否判定)
-  if (onProgress) onProgress("最終チェック部門(4人分)");
   const fcPrompt = buildFinalCheckPrompt(topic, `TITLE: ${checked.title || final.title}\nMETA: ${checked.meta || final.meta}\n<<<BODY>>>\n${checked.body}`, hallucinationReport, extraPolicy);
-  const fcText = await runClaudeCLI({ ...fcPrompt, tools: "" });
+  const fcText = await store.run("5_最終チェック.md", "最終チェック部門(4人分)",
+    () => runClaudeCLI({ ...fcPrompt, tools: "" }), onProgress);
   const verdict = parseVerdict(fcText);
   const finalCheckReport = reportPart(fcText);
   const approved = parseArticleOutput(fcText);

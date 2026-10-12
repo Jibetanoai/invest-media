@@ -9,7 +9,8 @@ const { spawn } = require("child_process");
 const CLAUDE_CLI = path.join(__dirname, "..", "node_modules", ".bin", "claude");
 const DEFAULT_TIMEOUT_MS = 5 * 60 * 1000;
 
-function runClaudeCLI({ systemPrompt, userPrompt, tools = "WebSearch", timeoutMs = DEFAULT_TIMEOUT_MS }) {
+// model: 省略時は claude-opus-5。軽い作業(ネット検索中心のチェックなど)は "sonnet" を渡すと利用枠の消費が少ない。
+function runClaudeCLI({ systemPrompt, userPrompt, tools = "WebSearch", timeoutMs = DEFAULT_TIMEOUT_MS, model = "claude-opus-5" }) {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(CLAUDE_CLI)) {
       reject(new Error("claude CLIが見つからないよ(npm installできてないかも)"));
@@ -22,7 +23,7 @@ function runClaudeCLI({ systemPrompt, userPrompt, tools = "WebSearch", timeoutMs
 
     const args = [
       "-p", userPrompt,
-      "--model", "claude-opus-5",
+      "--model", model,
       "--system-prompt", systemPrompt,
       "--tools", tools,
       "--permission-mode", "bypassPermissions",

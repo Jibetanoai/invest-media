@@ -27,6 +27,12 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-account-opening-documents",
     "nisa-check-frequency-mindset",
     "kodomo-shien-nisa-2027-guide",
+    "kodomo-nisa-tax-free-limit-withdrawal-rules",
+    "kodomo-nisa-junior-nisa-hikaku",
+    "kodomo-shien-nisa-vs-gakushi-hoken",
+    "jidou-teate-kodomo-nisa-tsumitate",
+    "kodomo-nisa-grandparent-gift-tax-notes",
+    "kodomo-shien-nisa-18sai-after",
   ],
   kouza: [
     "net-securities-comparison-beginners",

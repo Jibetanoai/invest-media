@@ -1,4 +1,5 @@
-// 使い方: node content_team/generate_article.js "記事テーマ"
+// 使い方: node content_team/generate_article.js [--fresh] "記事テーマ"
+// 途中経過は data/drafts/ に段階ごとに残る。同じテーマで再実行すると続きから(--freshで最初から)。
 // Claude Code CLI(Kさんのサブスクリプション経由、追加のAPI課金なし)で記事を
 // 作り、docs/articles/にHTMLとして書き出す。git commit・pushは別途行うこと。
 const fs = require("fs");
@@ -16,7 +17,8 @@ async function main() {
   const args = process.argv.slice(2);
   const categoryArg = args.find((a) => a.startsWith("--category="));
   const category = categoryArg ? categoryArg.slice("--category=".length) : null;
-  const topic = args.filter((a) => a !== categoryArg && a !== "--no-marketing").join(" ").trim();
+  const fresh = args.includes("--fresh");
+  const topic = args.filter((a) => a !== categoryArg && a !== "--no-marketing" && a !== "--fresh").join(" ").trim();
   if (!topic) {
     console.error("使い方: node content_team/generate_article.js [--category=fudousan|fx|crypto] \"記事テーマ\"");
     process.exit(1);
@@ -32,7 +34,7 @@ async function main() {
 
   const article = await generateArticle(topic, (label) => {
     console.log(`[進行中] ${label}`);
-  }, { highRisk });
+  }, { highRisk, fresh });
   if (category) article.category = category;
 
   // チェック報告(ハルシネーションチェック部門・最終チェック部門)は、合否に関係なく残す。
