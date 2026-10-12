@@ -3,7 +3,7 @@
 // 更新する。git commit・pushは別途手動(または依頼)で行う想定。
 const fs = require("fs");
 const path = require("path");
-const { markdownToHtml } = require("./markdown");
+const { markdownToHtml, findBrokenTables } = require("./markdown");
 const { DIAGRAMS } = require("./diagrams");
 const { ARTICLE_ORDER_INDEX } = require("./article_order");
 const site = require("./site_config");
@@ -235,6 +235,11 @@ function injectDiagrams(html) {
 function buildArticleHtml(article, allArticles) {
   const url = `${site.baseUrl}/articles/${article.slug}.html`;
   const bodyHtml = addTableOfContents(injectDiagrams(markdownToHtml(article.bodyMarkdown)));
+  // 表の列がずれた記事は書き出さない(見出しと中身がずれたまま公開されるのを防ぐ)
+  const brokenTables = findBrokenTables(bodyHtml);
+  if (brokenTables.length) {
+    throw new Error(`[表のずれ] ${article.slug}: ${brokenTables.join(" / ")}。元の文章(data/articles_raw/${article.slug}.json)の表を直してから書き出してね`);
+  }
   const publishedIso = article.createdAt;
   // 公開後に内容を直した記事は、raw JSONに updatedAt(ISO文字列)を入れておくと更新日として表示・構造化データに反映される
   const modifiedIso = article.updatedAt || publishedIso;

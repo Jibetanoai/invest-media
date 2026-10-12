@@ -23,16 +23,19 @@ function markdownToHtml(md) {
   let tableRows = null;
   let blockquoteLines = null;
 
+  // 両端の|だけ外して分ける。空のセル(表の左上の空欄など)も1マスとして残す。
+  const splitCells = (row) => row.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
+
   const flushTable = () => {
     if (!tableRows || tableRows.length === 0) return;
     const [headerRow, , ...bodyRows] = tableRows;
-    const headerCells = headerRow.split("|").map((c) => c.trim()).filter((c) => c !== "");
+    const headerCells = splitCells(headerRow);
     html += "<table><thead><tr>";
     for (const c of headerCells) html += `<th>${inlineMarkdown(c)}</th>`;
     html += "</tr></thead><tbody>";
     for (const row of bodyRows) {
-      const cells = row.split("|").map((c) => c.trim()).filter((c) => c !== "");
-      if (cells.length === 0) continue;
+      const cells = splitCells(row);
+      if (cells.every((c) => c === "")) continue;
       html += "<tr>";
       for (const c of cells) html += `<td>${inlineMarkdown(c)}</td>`;
       html += "</tr>";
@@ -100,4 +103,20 @@ function markdownToHtml(md) {
   return html;
 }
 
-module.exports = { markdownToHtml };
+// 書き出したHTMLの表が、全部の行で同じマス数になっているか確かめる。
+// ずれていたら、どの表の何行目かを返す(空なら問題なし)。
+function findBrokenTables(html) {
+  const problems = [];
+  const tables = html.match(/<table>[\s\S]*?<\/table>/g) || [];
+  tables.forEach((t, i) => {
+    const rows = t.match(/<tr>[\s\S]*?<\/tr>/g) || [];
+    const counts = rows.map((r) => (r.match(/<t[hd]>/g) || []).length);
+    if (new Set(counts).size > 1) {
+      const head = (rows[0] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 40);
+      problems.push(`${i + 1}個目の表(見出し: ${head})の行ごとのマス数: ${counts.join(",")}`);
+    }
+  });
+  return problems;
+}
+
+module.exports = { markdownToHtml, findBrokenTables };
