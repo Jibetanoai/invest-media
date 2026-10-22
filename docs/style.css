@@ -259,6 +259,7 @@ main {
 .tab-group .category-tabs { margin-bottom: 10px; }
 .tab-group-ouyou { border-left: 4px solid var(--accent); }
 .tab-group-kodomo { border-left: 4px solid #e8a33d; }
+.tab-group-news { border-left: 4px solid #5b8def; }
 @media (max-width: 600px) {
   .tab-group .category-tabs,
   .risk-tab-group .category-tabs {

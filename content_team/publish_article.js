@@ -30,19 +30,20 @@ const CATEGORIES = [
   { key: "kodomo", label: "こどもNISAの記事", group: "kodomo" },
   { key: "kobetsu", label: "⑨ 個別株・取引の実践", group: "ouyou" },
   { key: "souba", label: "⑩ 相場・経済の見方", group: "ouyou" },
-  { key: "kyounonews", label: "⑪ 今日の経済ニュース", group: "ouyou" },
-  { key: "rekishi", label: "⑫ 相場の歴史(暴落・暴騰を振り返る)", group: "ouyou" },
+  { key: "rekishi", label: "⑪ 相場の歴史(暴落・暴騰を振り返る)", group: "ouyou" },
+  { key: "kyounonews", label: "今日の経済ニュース(毎朝更新)", group: "news" },
   // ここから下は「NISAの外側の投資」。値動き・損失リスクが大きめのジャンルなので、
   // 記事一覧では別のタブ列に分け、記事ページには冒頭に注意ボックスを出す。
   // 自動推定の対象外(既存記事の分類を変えないため)。generate_article.js の --category= で明示指定する。
-  { key: "fudousan", label: "⑬ 不動産投資", group: "soto", highRisk: true },
-  { key: "fx", label: "⑭ FX(外国為替証拠金取引)", group: "soto", highRisk: true },
-  { key: "crypto", label: "⑮ 暗号資産(仮想通貨)", group: "soto", highRisk: true },
+  { key: "fudousan", label: "⑫ 不動産投資", group: "soto", highRisk: true },
+  { key: "fx", label: "⑬ FX(外国為替証拠金取引)", group: "soto", highRisk: true },
+  { key: "crypto", label: "⑭ 暗号資産(仮想通貨)", group: "soto", highRisk: true },
 ];
 const TAB_GROUPS = {
   kihon: { label: "投資のキホン", note: "はじめての人向け。NISAの仕組みから、口座選び・始め方・クレカ積立まで" },
   kodomo: { label: "こどもNISA", note: "2027年開始予定の、子どものためのNISA。制度の中身・始め方・引き出しのルール・18歳以降まで" },
-  ouyou: { label: "投資の応用", note: "慣れてきた人向け。個別株の実践、相場の見方、毎日のニュース、相場の歴史" },
+  ouyou: { label: "投資の応用", note: "慣れてきた人向け。個別株の実践、相場の見方、相場の歴史" },
+  news: { label: "今日の経済ニュース", note: "毎朝、前日の日米の株式・為替市場の動きを整理しています" },
 };
 const CATEGORY_KEYWORD_RULES = [
   { key: "kodomo", words: ["こどもNISA", "こども支援NISA", "ジュニアNISA"] },
@@ -353,8 +354,8 @@ function articleCardHtml(a) {
     `;
 }
 
-// 「⑪ 今日の経済ニュース」だけは日付の新しい順、それ以外のカテゴリは
-// カテゴリの並び(①〜⑩・⑫〜⑮)→カテゴリ内はarticle_order.jsで定義した内容ベースの順序、
+// 「今日の経済ニュース」だけは日付の新しい順、それ以外のカテゴリは
+// カテゴリの並び(①〜⑭)→カテゴリ内はarticle_order.jsで定義した内容ベースの順序、
 // という表示順にする。article_order.jsに載っていない記事はカテゴリ末尾(作成日の新しい順)。
 function articleSortKey(a) {
   const category = a.category || "kihon";
@@ -410,7 +411,7 @@ function buildIndexHtml(articles) {
       ${highRiskButtons}
     </div>
   </div>`;
-  const tabsHtml = sorted.length === 0 ? "" : `${groupTabsHtml("kihon", true)}${groupTabsHtml("kodomo", false)}${groupTabsHtml("ouyou", false)}
+  const tabsHtml = sorted.length === 0 ? "" : `${groupTabsHtml("kihon", true)}${groupTabsHtml("kodomo", false)}${groupTabsHtml("ouyou", false)}${groupTabsHtml("news", false)}
   ${highRiskTabsHtml}`;
 
   const searchHtml = sorted.length === 0 ? "" : `
