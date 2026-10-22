@@ -524,6 +524,11 @@ ${gaSnippet()}</head>
     <h2>こどもNISAロードマップ｜2027年開始前に読んでおきたい9記事</h2>
     <p>制度の全体像とメリット・デメリット→お金の枠と引き出しのルール→始め方→学資保険・児童手当・祖父母の援助との関係→18歳以降まで、順番に読めるように整理しました。</p>
   </a>
+  <a class="article-card" href="fudousan-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
+    <div class="article-card-date">📌 まとめガイド</div>
+    <h2>不動産投資の初心者ロードマップ｜リスクから税金まで順番に読む8記事</h2>
+    <p>NISA・株式との違い、利回りとリスク、J-REITと不動産クラウドファンディング、ローン、税金、勧誘トラブルまで、検討する前に知っておきたいことを順番に整理しました。</p>
+  </a>
   <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
     <h2>株式投資初心者ロードマップ｜安全に始めるための20記事</h2>
@@ -557,6 +562,7 @@ function buildSitemapXml(articles) {
     { loc: `${site.baseUrl}/shoken-koza-guide.html` },
     { loc: `${site.baseUrl}/kabu-toushi-roadmap.html` },
     { loc: `${site.baseUrl}/kodomo-nisa-roadmap.html` },
+    { loc: `${site.baseUrl}/fudousan-roadmap.html` },
     ...articles.map((a) => ({
       loc: `${site.baseUrl}/articles/${a.slug}.html`,
       lastmod: (a.updatedAt || a.createdAt || "").slice(0, 10),

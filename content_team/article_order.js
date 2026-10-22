@@ -4,7 +4,12 @@
 const CATEGORY_ARTICLE_ORDER = {
   fudousan: [
     "real-estate-investment-reit-crowdfunding-risk-comparison",
+    "real-estate-vs-nisa-stock-comparison",
     "real-estate-investment-yield-and-risks",
+    "j-reit-kihon-risk-tax-nisa",
+    "real-estate-crowdfunding-structure-risks",
+    "real-estate-investment-loan-basics",
+    "real-estate-investment-tax-basics",
     "real-estate-investment-solicitation-trouble",
   ],
   fx: [
@@ -42,6 +47,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "net-securities-comparison-beginners",
     "sbi-rakuten-securities-comparison",
     "nisa-account-brokerage-comparison-points",
+    "net-bank-vs-megabank-basics",
     "nisa-couple-household-accounts",
     "nisa-financial-institution-change-guide",
   ],
@@ -85,6 +91,8 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-exit-strategy-withdrawal",
   ],
   credit: [
+    "credit-card-how-to-choose-2026",
+    "first-credit-card-for-students-and-new-grads",
     "nenkaihi-muryo-credit-card-hikaku-kureka-tsumitate",
     "creca-tsumitate-nisa-point-guide",
     "kureka-tsumitate-card-comparison-points",
