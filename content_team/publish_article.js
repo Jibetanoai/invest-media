@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { markdownToHtml, findBrokenTables } = require("./markdown");
+const { PR_BOXES } = require("./pr_boxes");
 const { DIAGRAMS } = require("./diagrams");
 const { ARTICLE_ORDER_INDEX } = require("./article_order");
 const site = require("./site_config");
@@ -103,6 +104,20 @@ function highRiskNoticeHtml(categoryKey) {
       <p class="risk-notice-label">⚠ NISAの外側の投資について</p>
       <p>${escapeHtml(note)}</p>
       <p>NISA(少額投資非課税制度)の対象外で、税金の扱いも異なります。この記事は仕組みやリスクを理解するための情報で、取引をすすめるものではありません。</p>
+    </aside>`;
+}
+
+// 「NISAの外側の投資」の記事末尾の広告枠(本文とは分ける)。承認済みのリンクがあるカテゴリだけ出す。
+function prBoxHtml(categoryKey) {
+  const items = PR_BOXES[categoryKey] || [];
+  if (!isHighRiskCategory(categoryKey) || items.length === 0) return "";
+  return `
+    <aside class="pr-box" aria-label="広告">
+      <p class="pr-box-label">広告(PR)</p>
+      <p class="pr-box-note">以下は広告です。この記事の内容は特定の事業者をすすめるものではありません。申し込む前に、各社の公式サイトでリスク・手数料・登録状況を確認してください。</p>
+      <ul class="pr-links">
+        ${items.map((it) => `<li class="pr-raw">${it.html}</li>`).join("\n        ")}
+      </ul>
     </aside>`;
 }
 
@@ -323,7 +338,7 @@ ${gaSnippet()}</head>
     <div class="article-body">
       ${bodyHtml}
     </div>
-    ${hubCtaHtml(categoryKey)}
+    ${hubCtaHtml(categoryKey)}${prBoxHtml(categoryKey)}
     <div class="article-disclaimer">
       本記事は情報提供を目的としており、投資勧誘や助言を目的としたものではありません。投資判断はご自身の責任で行ってください。本サイトはアフィリエイト広告を利用しています。
     </div>
