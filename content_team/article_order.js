@@ -4,6 +4,7 @@
 const CATEGORY_ARTICLE_ORDER = {
   fudousan: [
     "real-estate-investment-reit-crowdfunding-risk-comparison",
+    "real-estate-investment-failure-patterns",
     "real-estate-vs-nisa-stock-comparison",
     "real-estate-investment-yield-and-risks",
     "j-reit-kihon-risk-tax-nisa",
@@ -54,6 +55,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "net-bank-vs-megabank-basics",
     "net-bank-hikaku-points-2026",
     "securities-linked-netbank-sweep-interest",
+    "sbi-shinsei-bank-features",
     "nisa-couple-household-accounts",
     "nisa-financial-institution-change-guide",
   ],
@@ -65,6 +67,7 @@ const CATEGORY_ARTICLE_ORDER = {
   ],
   shouhin: [
     "index-fund-how-to-choose-comparison-points",
+    "active-fund-vs-index-fund-basics",
     "toushin-etf-difference-nisa",
     "reit-basics-for-beginners",
     "kojin-muke-kokusai-basics",
@@ -85,7 +88,9 @@ const CATEGORY_ARTICLE_ORDER = {
     "ideco-tax-benefits-guide",
     "ideco-how-to-receive-lumpsum-annuity",
     "ideco-demerit-chuiten",
+    "ideco-kinyukikan-erabikata",
     "robo-advisor-vs-nisa-basics",
+    "robo-advisor-how-to-choose",
     "furusato-nozei-howto-onestop-kakutei-shinkoku",
     "furusato-tax-site-comparison-2026",
     "furusato-nozei-nisa-priority",
@@ -103,6 +108,8 @@ const CATEGORY_ARTICLE_ORDER = {
     "first-credit-card-for-students-and-new-grads",
     "gold-card-kureka-tsumitate-breakeven",
     "rakuten-card-features-kurekatsumitate",
+    "smbc-card-nl-kureka-tsumitate",
+    "epos-card-features-fees-points-benefits",
     "nenkaihi-muryo-credit-card-hikaku-kureka-tsumitate",
     "creca-tsumitate-nisa-point-guide",
     "kureka-tsumitate-card-comparison-points",
