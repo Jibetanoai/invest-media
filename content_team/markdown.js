@@ -1,10 +1,15 @@
+const AFFILIATE_HOSTS = /\/\/(?:[\w-]+\.)*(?:valuecommerce\.com|valuecommerce\.ne\.jp|a8\.net|accesstrade\.net|trafficgate\.net|afl\.rakuten\.co\.jp|afi-b\.com|moshimo\.com)\//;
 // ごく簡易的なMarkdown→HTML変換(market_appのブラウザ側実装をNode用に移植し、
 // 記事生成でよく出てくる表・引用にも対応させた軽量版)。
 function inlineMarkdown(text) {
   return text
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, "<em>$1</em>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, text, url) => {
+      // アフィリエイト(ASP)のリンクには nofollow sponsored を付ける
+      const rel = AFFILIATE_HOSTS.test(url) ? "nofollow sponsored noopener" : "noopener";
+      return `<a href="${url}" target="_blank" rel="${rel}">${text}</a>`;
+    });
 }
 
 function closeList(html, inList) {
