@@ -7,6 +7,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "real-estate-investment-failure-patterns",
     "real-estate-vs-nisa-stock-comparison",
     "real-estate-investment-yield-and-risks",
+    "real-estate-investment-yield-calculation",
     "j-reit-kihon-risk-tax-nisa",
     "real-estate-crowdfunding-structure-risks",
     "real-estate-investment-loan-basics",
