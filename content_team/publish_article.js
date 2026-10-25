@@ -252,6 +252,27 @@ function injectDiagrams(html) {
   });
 }
 
+// 本文の「## よくある質問」内の「### Q. …」と回答から、FAQの構造化データ(FAQPage)を作る。なければnull。
+function faqJsonLd(bodyMarkdown) {
+  const lines = String(bodyMarkdown || "").split("\n");
+  const start = lines.findIndex((l) => /^##\s*よくある質問/.test(l));
+  if (start < 0) return null;
+  const items = [];
+  let cur = null;
+  const clean = (t) => t.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[*_`>#]/g, "").replace(/\s+/g, " ").trim();
+  for (const line of lines.slice(start + 1)) {
+    if (/^##\s/.test(line)) break;
+    const q = line.match(/^(?:###\s*|\*\*)\s*Q[.．:：]?\s*(.+?)(?:\*\*)?\s*$/);
+    if (q) { cur = { question: clean(q[1]), answer: [] }; items.push(cur); continue; }
+    if (cur) cur.answer.push(line.replace(/^\s*\*{0,2}A[.．:：]\*{0,2}\s*/, ""));
+  }
+  const entities = items
+    .map((it) => ({ q: it.question, a: clean(it.answer.join(" ")) }))
+    .filter((it) => it.q && it.a)
+    .map((it) => ({ "@type": "Question", name: it.q, acceptedAnswer: { "@type": "Answer", text: it.a } }));
+  return entities.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: entities } : null;
+}
+
 function buildArticleHtml(article, allArticles) {
   const url = `${site.baseUrl}/articles/${article.slug}.html`;
   const bodyHtml = addTableOfContents(injectDiagrams(markdownToHtml(article.bodyMarkdown)));
@@ -315,7 +336,7 @@ ${commonHeadHtml("../")}
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
-${gaSnippet()}</head>
+${faqJsonLd(article.bodyMarkdown) ? `<script type="application/ld+json">${JSON.stringify(faqJsonLd(article.bodyMarkdown))}</script>\n` : ""}${gaSnippet()}</head>
 <body>
 
 <header class="site-header">
