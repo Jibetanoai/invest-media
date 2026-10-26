@@ -79,6 +79,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "zensekai-kabushiki-vs-beikoku-kabushiki-nisa",
     "toushin-bunpaikin-ari-nashi",
     "toushin-hidden-cost-basics",
+    "shintaku-hoshu-hikaku-keisan",
     "high-dividend-vs-index-investing-comparison",
   ],
   kaikata: [
@@ -86,6 +87,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-tsumitate-seicho-which-first",
     "nisa-tsumitate-net-securities-comparison",
     "nisa-dividend-receiving-method",
+    "dividend-yield-after-tax-calculation",
   ],
   heiyou: [
     "ideco-nisa-difference-guide",
@@ -125,6 +127,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "stock-order-types-guide",
     "how-to-pick-stocks-per-pbr-roe-dividend-yield",
     "shareholder-benefits-nisa-growth-quota-guide",
+    "kabunushi-yutai-haito-rimawari-keisan",
     "stop-loss-take-profit-rules-for-beginners",
     "nanpin-kai-merit-risk-beginner",
     "margin-trading-basics-vs-cash-trading",
