@@ -8,6 +8,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "real-estate-vs-nisa-stock-comparison",
     "real-estate-investment-yield-and-risks",
     "real-estate-investment-yield-calculation",
+    "real-estate-investment-how-much-to-start",
     "j-reit-kihon-risk-tax-nisa",
     "real-estate-crowdfunding-structure-risks",
     "real-estate-investment-loan-basics",
