@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配当利回り計算ツール(税引前・税引後・優待込み) | 投資のキホン</title>
+<meta name="description" content="株価と1株あたり配当金から配当利回りを計算する無料ツールです。特定口座(税率20.315%)とNISAの税引後の受取額、株主優待を含めた総合利回りも計算できます。">
+<link rel="canonical" href="https://jibetanoai.github.io/invest-media/tools/dividend-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="配当利回り計算ツール(税引前・税引後・優待込み) | 投資のキホン">
+<meta property="og:description" content="株価と1株あたり配当金から配当利回りを計算する無料ツールです。特定口座(税率20.315%)とNISAの税引後の受取額、株主優待を含めた総合利回りも計算できます。">
+<meta property="og:url" content="https://jibetanoai.github.io/invest-media/tools/dividend-calculator.html">
+<meta property="og:site_name" content="投資のキホン">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://jibetanoai.github.io/invest-media/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1f27" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"配当利回り計算ツール(税引前・税引後・優待込み)","url":"https://jibetanoai.github.io/invest-media/tools/dividend-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"株価と1株あたり配当金から配当利回りを計算する無料ツールです。特定口座(税率20.315%)とNISAの税引後の受取額、株主優待を含めた総合利回りも計算できます。"}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-429SKH77WH"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-429SKH77WH");</script>
+<style>
+  .tool-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  .tool-main h1 { font-size: 26px; color: var(--navy); margin: 8px 0 12px; }
+  .tool-lead { color: var(--muted); font-size: 15px; line-height: 1.8; }
+  .tool-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 20px 0; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .tool-row label { flex: 1 1 200px; font-size: 14px; color: var(--text); }
+  .tool-row input, .tool-row select { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); box-sizing: border-box; }
+  .tool-result { margin-top: 8px; padding: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+  .tool-result .big { font-size: 24px; font-weight: 700; color: var(--navy); }
+  .tool-result p { margin: 6px 0; }
+  .tool-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tool-table th, .tool-table td { border: 1px solid var(--border); padding: 8px; text-align: right; }
+  .tool-table th { background: var(--bg); text-align: center; }
+  .tool-note { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .tool-links a { display: block; margin: 6px 0; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a href="../index.html" class="brand">投資のキホン</a></div></header>
+<div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
+<main class="tool-main">
+  <a href="index.html" class="back-link">← 計算ツール一覧</a>
+  <h1>配当利回り計算ツール(税引前・税引後・優待込み)</h1>
+  <p class="tool-lead">株価・1株あたりの年間配当金・株数を入れると、配当利回り(税引前・税引後)と受け取れる配当金の目安を計算します。株主優待の価値を入れると、配当と合わせた総合利回りも出せます。</p>
+  <div class="tool-card">
+    <div class="tool-row">
+      <label>株価(円)<input id="price" type="number" inputmode="decimal" value="2000"></label>
+      <label>1株あたり年間配当金(円)<input id="div" type="number" inputmode="decimal" value="60"></label>
+    </div>
+    <div class="tool-row">
+      <label>株数<input id="qty" type="number" inputmode="numeric" value="100" step="1"></label>
+      <label>口座<select id="acct"><option value="tokutei">特定口座・一般口座(国内株 20.315%)</option><option value="nisa">NISA口座(非課税)</option></select></label>
+    </div>
+    <div class="tool-row">
+      <label>株主優待の年間価値(円・任意)<input id="yutai" type="number" inputmode="decimal" placeholder="例:2000"></label>
+    </div>
+    <div class="tool-result" id="out"></div>
+  </div>
+  <p class="tool-note">税率は国内上場株式の配当にかかる20.315%(所得税15%・復興特別所得税0.315%・住民税5%)で計算しています。NISAで国内株の配当を非課税で受け取るには、証券会社で「株式数比例配分方式」を選ぶ必要があります。外国株の配当は現地での課税があるため、この計算とは異なります。株主優待の価値は、実際に使える金額で見積もってください。配当や優待は企業の判断で変更・廃止されることがあります。</p>
+  <div class="tool-links"><h2>関連記事</h2>
+    <a href="../articles/nisa-dividend-receiving-method.html">NISAで配当金に税金がかかる?株式数比例配分方式の設定と注意点</a>
+    <a href="../articles/high-dividend-vs-index-investing-comparison.html">高配当株投資とインデックス投資の違いを比較</a>
+  </div>
+  <p class="tool-note">このツールは入力した数字をもとに計算するだけのもので、入力内容はどこにも送信・保存されません。計算結果は前提に基づく目安で、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</p>
+</main>
+<footer class="site-footer">
+  <a href="../operator.html">運営者情報</a>
+  <a href="../editorial-policy.html">編集方針</a>
+  <a href="../privacy-policy.html">プライバシーポリシー</a>
+  <a href="../contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
+</footer>
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(String($(id).value).replace(/,/g,''));return isFinite(v)?v:NaN;};
+const yen=v=>isFinite(v)?Math.round(v).toLocaleString('ja-JP')+'円':'—';
+const pct=(v,d=2)=>isFinite(v)?(v*100).toFixed(d)+'%':'—';
+function calc(){const p=num('price'),dv=num('div'),q=num('qty'),y=num('yutai');const nisa=$('acct').value==='nisa';
+if(!(p>0)||!(dv>=0)||!(q>0)){$('out').innerHTML='<p>株価・配当金・株数を入れてください。</p>';return;}
+const tax=nisa?0:0.20315;const gross=dv*q,net=gross*(1-tax),inv=p*q;const ry=dv/p,rn=ry*(1-tax);
+let h=`<p>投資金額 ${yen(inv)}</p><p>配当利回り(税引前)</p><p class="big">${pct(ry)}</p><p>税引後の配当利回り:<strong>${pct(rn)}</strong>(${nisa?'NISA:非課税':'税率20.315%'})</p><p>年間の配当金:税引前 ${yen(gross)} / 税引後 ${yen(net)}</p>`;
+if(y>0){h+=`<p>株主優待を含めた総合利回り(税引後配当+優待):<strong>${pct((net+y)/inv)}</strong></p>`;}
+$('out').innerHTML=h;}
+['price','div','qty','acct','yutai'].forEach(i=>$(i).addEventListener('input',calc));calc();
+</script>
+</body>
+</html>

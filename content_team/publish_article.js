@@ -369,6 +369,7 @@ ${faqJsonLd(article.bodyMarkdown) ? `<script type="application/ld+json">${JSON.s
 
 <footer class="site-footer">
   <a href="../operator.html">運営者情報</a>
+  <a href="../editorial-policy.html">編集方針</a>
   <a href="../privacy-policy.html">プライバシーポリシー</a>
   <a href="../contact.html">お問い合わせ</a>
   <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
@@ -555,6 +556,11 @@ ${gaSnippet()}</head>
     <h2>証券口座の選び方 完全ガイド</h2>
     <p>口座選び・始め方・商品選びまで、関連記事をテーマ別に整理しました。まずはここから。</p>
   </a>
+  <a class="article-card" href="tools/index.html" style="border-color:var(--accent); margin-bottom:24px;">
+    <div class="article-card-date">🧮 無料の計算ツール</div>
+    <h2>投資の計算ツール｜下落率・回復率、配当利回り、クレカ積立のポイント</h2>
+    <p>数字を入れるだけで、株価が戻るのに必要な上昇率、税引後の配当利回り、クレカ積立のポイントと年会費の損益分岐を確かめられます。</p>
+  </a>
   <a class="article-card" href="kodomo-nisa-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
     <h2>こどもNISAロードマップ｜2027年開始前に読んでおきたい9記事</h2>
@@ -578,6 +584,7 @@ ${gaSnippet()}</head>
 
 <footer class="site-footer">
   <a href="operator.html">運営者情報</a>
+  <a href="editorial-policy.html">編集方針</a>
   <a href="privacy-policy.html">プライバシーポリシー</a>
   <a href="contact.html">お問い合わせ</a>
   <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
@@ -598,6 +605,11 @@ function buildSitemapXml(articles) {
     { loc: `${site.baseUrl}/shoken-koza-guide.html` },
     { loc: `${site.baseUrl}/kabu-toushi-roadmap.html` },
     { loc: `${site.baseUrl}/kodomo-nisa-roadmap.html` },
+    { loc: `${site.baseUrl}/editorial-policy.html` },
+    { loc: `${site.baseUrl}/tools/index.html` },
+    { loc: `${site.baseUrl}/tools/recovery-calculator.html` },
+    { loc: `${site.baseUrl}/tools/dividend-calculator.html` },
+    { loc: `${site.baseUrl}/tools/kureka-points-calculator.html` },
     { loc: `${site.baseUrl}/fudousan-roadmap.html` },
     ...articles.map((a) => ({
       loc: `${site.baseUrl}/articles/${a.slug}.html`,

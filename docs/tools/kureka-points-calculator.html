@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クレカ積立のポイント計算ツール(年会費の損益分岐つき) | 投資のキホン</title>
+<meta name="description" content="クレカ積立の毎月の積立額と還元率から、もらえるポイントの目安を計算する無料ツールです。年会費を入れると実質の還元額と、2枚のカードを比べたときの損益分岐も分かります。">
+<link rel="canonical" href="https://jibetanoai.github.io/invest-media/tools/kureka-points-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="クレカ積立のポイント計算ツール(年会費の損益分岐つき) | 投資のキホン">
+<meta property="og:description" content="クレカ積立の毎月の積立額と還元率から、もらえるポイントの目安を計算する無料ツールです。年会費を入れると実質の還元額と、2枚のカードを比べたときの損益分岐も分かります。">
+<meta property="og:url" content="https://jibetanoai.github.io/invest-media/tools/kureka-points-calculator.html">
+<meta property="og:site_name" content="投資のキホン">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://jibetanoai.github.io/invest-media/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1f27" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"クレカ積立のポイント計算ツール(年会費の損益分岐つき)","url":"https://jibetanoai.github.io/invest-media/tools/kureka-points-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"クレカ積立の毎月の積立額と還元率から、もらえるポイントの目安を計算する無料ツールです。年会費を入れると実質の還元額と、2枚のカードを比べたときの損益分岐も分かります。"}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-429SKH77WH"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-429SKH77WH");</script>
+<style>
+  .tool-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  .tool-main h1 { font-size: 26px; color: var(--navy); margin: 8px 0 12px; }
+  .tool-lead { color: var(--muted); font-size: 15px; line-height: 1.8; }
+  .tool-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 20px 0; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .tool-row label { flex: 1 1 200px; font-size: 14px; color: var(--text); }
+  .tool-row input, .tool-row select { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); box-sizing: border-box; }
+  .tool-result { margin-top: 8px; padding: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+  .tool-result .big { font-size: 24px; font-weight: 700; color: var(--navy); }
+  .tool-result p { margin: 6px 0; }
+  .tool-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tool-table th, .tool-table td { border: 1px solid var(--border); padding: 8px; text-align: right; }
+  .tool-table th { background: var(--bg); text-align: center; }
+  .tool-note { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .tool-links a { display: block; margin: 6px 0; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a href="../index.html" class="brand">投資のキホン</a></div></header>
+<div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
+<main class="tool-main">
+  <a href="index.html" class="back-link">← 計算ツール一覧</a>
+  <h1>クレカ積立のポイント計算ツール(年会費の損益分岐つき)</h1>
+  <p class="tool-lead">毎月の積立額と還元率を入れると、1年間にもらえるポイントの目安を計算します。年会費のあるカードと比べるときは、カードBにも入力してください。</p>
+  <div class="tool-card">
+    <div class="tool-row">
+      <label>毎月の積立額(円・上限は多くの場合10万円)<input id="amt" type="number" inputmode="numeric" value="50000" step="1000"></label>
+    </div>
+    <div class="tool-row">
+      <label>カードA 還元率(%)<input id="ra" type="number" inputmode="decimal" value="0.5" step="0.05"></label>
+      <label>カードA 年会費(円)<input id="fa" type="number" inputmode="numeric" value="0"></label>
+    </div>
+    <div class="tool-row">
+      <label>カードB 還元率(%・任意)<input id="rb" type="number" inputmode="decimal" placeholder="例:1.0" step="0.05"></label>
+      <label>カードB 年会費(円・任意)<input id="fb" type="number" inputmode="numeric" placeholder="例:5500"></label>
+    </div>
+    <div class="tool-result" id="out"></div>
+  </div>
+  <p class="tool-note">還元率は、カードや証券会社、前年のカード利用額、対象ファンドなどの条件で変わります。最新の条件は各社の公式サイトで確認してください。ポイントは1ポイント=1円として計算しています。年会費無料の条件(年間利用額など)がある場合、クレカ積立の金額が集計の対象外になることもあります。</p>
+  <div class="tool-links"><h2>関連記事</h2>
+    <a href="../articles/kureka-tsumitate-card-comparison-points.html">投資信託のクレカ積立に使えるカード比較</a>
+    <a href="../articles/gold-card-kureka-tsumitate-breakeven.html">ゴールドカードは必要?年会費とクレカ積立の還元率から考える損益分岐</a>
+  </div>
+  <p class="tool-note">このツールは入力した数字をもとに計算するだけのもので、入力内容はどこにも送信・保存されません。計算結果は前提に基づく目安で、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</p>
+</main>
+<footer class="site-footer">
+  <a href="../operator.html">運営者情報</a>
+  <a href="../editorial-policy.html">編集方針</a>
+  <a href="../privacy-policy.html">プライバシーポリシー</a>
+  <a href="../contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
+</footer>
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(String($(id).value).replace(/,/g,''));return isFinite(v)?v:NaN;};
+const yen=v=>isFinite(v)?Math.round(v).toLocaleString('ja-JP')+'円':'—';
+const pct=(v,d=2)=>isFinite(v)?(v*100).toFixed(d)+'%':'—';
+function calc(){const a=num('amt'),ra=num('ra')/100,fa=num('fa')||0,rb=num('rb')/100,fb=num('fb')||0;
+if(!(a>0)||!(ra>=0)){$('out').innerHTML='<p>積立額と還元率を入れてください。</p>';return;}
+const ya=a*12*ra;let h=`<p>カードA:1年でもらえるポイントの目安</p><p class="big">${yen(ya)}相当</p><p>年会費を引いた実質:${yen(ya-fa)}(月 ${yen(a*ra)}相当)</p>`;
+if(rb>=0&&isFinite(rb)){const yb=a*12*rb;h+=`<p>カードB:1年 ${yen(yb)}相当、年会費を引いた実質 ${yen(yb-fb)}</p>`;
+const diffRate=rb-ra,diffFee=fb-fa;if(diffRate>0&&diffFee>0){const be=diffFee/diffRate/12;h+=`<p>年会費の差 ${yen(diffFee)} を還元率の差で取り戻すには、毎月 <strong>${yen(be)}</strong> 以上の積立が必要です${be>100000?'(多くの証券会社の上限月10万円を超えるため、積立だけでは取り戻せない計算です)':''}。</p>`;}
+h+=`<p>この条件では <strong>${(yb-fb)>(ya-fa)?'カードB':'カードA'}</strong> のほうが実質の還元額が多くなります。</p>`;}
+$('out').innerHTML=h;}
+['amt','ra','fa','rb','fb'].forEach(i=>$(i).addEventListener('input',calc));calc();
+</script>
+</body>
+</html>

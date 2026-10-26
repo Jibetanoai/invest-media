@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株価の下落率・回復率計算ツール | 投資のキホン</title>
+<meta name="description" content="株価が何%下がったら、元に戻るには何%の上昇が必要かを計算できる無料ツールです。高値と現在値から下落率を出し、回復に必要な上昇率と下落率別の早見表を表示します。">
+<link rel="canonical" href="https://jibetanoai.github.io/invest-media/tools/recovery-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="株価の下落率・回復率計算ツール | 投資のキホン">
+<meta property="og:description" content="株価が何%下がったら、元に戻るには何%の上昇が必要かを計算できる無料ツールです。高値と現在値から下落率を出し、回復に必要な上昇率と下落率別の早見表を表示します。">
+<meta property="og:url" content="https://jibetanoai.github.io/invest-media/tools/recovery-calculator.html">
+<meta property="og:site_name" content="投資のキホン">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://jibetanoai.github.io/invest-media/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1f27" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"株価の下落率・回復率計算ツール","url":"https://jibetanoai.github.io/invest-media/tools/recovery-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"株価が何%下がったら、元に戻るには何%の上昇が必要かを計算できる無料ツールです。高値と現在値から下落率を出し、回復に必要な上昇率と下落率別の早見表を表示します。"}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-429SKH77WH"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-429SKH77WH");</script>
+<style>
+  .tool-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  .tool-main h1 { font-size: 26px; color: var(--navy); margin: 8px 0 12px; }
+  .tool-lead { color: var(--muted); font-size: 15px; line-height: 1.8; }
+  .tool-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 20px 0; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .tool-row label { flex: 1 1 200px; font-size: 14px; color: var(--text); }
+  .tool-row input, .tool-row select { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); box-sizing: border-box; }
+  .tool-result { margin-top: 8px; padding: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+  .tool-result .big { font-size: 24px; font-weight: 700; color: var(--navy); }
+  .tool-result p { margin: 6px 0; }
+  .tool-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tool-table th, .tool-table td { border: 1px solid var(--border); padding: 8px; text-align: right; }
+  .tool-table th { background: var(--bg); text-align: center; }
+  .tool-note { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .tool-links a { display: block; margin: 6px 0; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a href="../index.html" class="brand">投資のキホン</a></div></header>
+<div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
+<main class="tool-main">
+  <a href="index.html" class="back-link">← 計算ツール一覧</a>
+  <h1>株価の下落率・回復率計算ツール</h1>
+  <p class="tool-lead">株価が30%下がると、元に戻るには30%ではなく約42.9%の上昇が必要です。下落率か、高値と現在の株価を入れると、回復に必要な上昇率を計算します。</p>
+  <div class="tool-card">
+    <div class="tool-row">
+      <label>下落率(%)<input id="d" type="number" inputmode="decimal" value="30" min="0" max="99.9" step="0.1"></label>
+    </div>
+    <p class="tool-note">または、高値と現在の株価から計算する</p>
+    <div class="tool-row">
+      <label>高値(円)<input id="hi" type="number" inputmode="decimal" placeholder="例:3000"></label>
+      <label>現在の株価(円)<input id="now" type="number" inputmode="decimal" placeholder="例:2100"></label>
+    </div>
+    <div class="tool-result" id="out"></div>
+  </div>
+  <h2>下落率別の早見表</h2>
+  <table class="tool-table"><tr><th>下落率</th><th>元に戻るのに必要な上昇率</th></tr><tr><td>10%</td><td>11.1%</td></tr><tr><td>20%</td><td>25.0%</td></tr><tr><td>30%</td><td>42.9%</td></tr><tr><td>40%</td><td>66.7%</td></tr><tr><td>50%</td><td>100.0%</td></tr><tr><td>60%</td><td>150.0%</td></tr><tr><td>70%</td><td>233.3%</td></tr><tr><td>80%</td><td>400.0%</td></tr><tr><td>90%</td><td>900.0%</td></tr></table>
+  <p class="tool-note">計算式:必要な上昇率 = 1 ÷ (1 − 下落率) − 1。配当や手数料、税金、為替は含みません。</p>
+  <div class="tool-links"><h2>関連記事</h2>
+    <a href="../articles/what-to-do-during-a-market-crash.html">株価が暴落したらどうする?過去の暴落から学ぶ、慌てないための考え方</a>
+    <a href="../articles/nikkei-sp500-history-crashes.html">日経平均・S&amp;P500の歴史から学ぶ暴落と暴騰</a>
+  </div>
+  <p class="tool-note">このツールは入力した数字をもとに計算するだけのもので、入力内容はどこにも送信・保存されません。計算結果は前提に基づく目安で、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</p>
+</main>
+<footer class="site-footer">
+  <a href="../operator.html">運営者情報</a>
+  <a href="../editorial-policy.html">編集方針</a>
+  <a href="../privacy-policy.html">プライバシーポリシー</a>
+  <a href="../contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
+</footer>
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(String($(id).value).replace(/,/g,''));return isFinite(v)?v:NaN;};
+const yen=v=>isFinite(v)?Math.round(v).toLocaleString('ja-JP')+'円':'—';
+const pct=(v,d=2)=>isFinite(v)?(v*100).toFixed(d)+'%':'—';
+function calc(){let d=num('d')/100;const hi=num('hi'),now=num('now');let src='';
+if(isFinite(hi)&&isFinite(now)&&hi>0&&now>0&&now<hi){d=1-now/hi;src=`高値${yen(hi)}→現在${yen(now)}の下落率は <strong>${pct(d,1)}</strong> です。`;}
+if(!(d>=0&&d<1)){$('out').innerHTML='<p>0〜99.9%の下落率を入れてください。</p>';return;}
+const r=1/(1-d)-1;$('out').innerHTML=(src?`<p>${src}</p>`:'')+`<p>元の水準に戻るのに必要な上昇率</p><p class="big">${pct(r,1)}</p>`+(isFinite(now)&&isFinite(hi)&&src?`<p>株価${yen(now)}から${yen(hi)}まで、あと${yen(hi-now)}の上昇が必要です。</p>`:'');}
+['d','hi','now'].forEach(i=>$(i).addEventListener('input',calc));calc();
+</script>
+</body>
+</html>
