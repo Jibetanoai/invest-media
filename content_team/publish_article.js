@@ -562,7 +562,7 @@ ${gaSnippet()}</head>
   </a>
   <a class="article-card" href="fudousan-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">📌 まとめガイド</div>
-    <h2>不動産投資の初心者ロードマップ｜リスクから税金まで順番に読む9記事</h2>
+    <h2>不動産投資の初心者ロードマップ｜リスクから税金まで順番に読む14記事</h2>
     <p>NISA・株式との違い、利回りとリスク、J-REITと不動産クラウドファンディング、ローン、税金、勧誘トラブルまで、検討する前に知っておきたいことを順番に整理しました。</p>
   </a>
   <a class="article-card" href="kabu-toushi-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">

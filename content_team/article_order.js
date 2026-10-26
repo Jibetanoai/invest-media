@@ -9,6 +9,8 @@ const CATEGORY_ARTICLE_ORDER = {
     "real-estate-investment-yield-and-risks",
     "real-estate-investment-yield-calculation",
     "real-estate-investment-how-much-to-start",
+    "real-estate-investment-location-guide",
+    "real-estate-investment-interest-rate-rise",
     "j-reit-kihon-risk-tax-nisa",
     "real-estate-crowdfunding-structure-risks",
     "real-estate-investment-loan-basics",
