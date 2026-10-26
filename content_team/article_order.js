@@ -53,6 +53,8 @@ const CATEGORY_ARTICLE_ORDER = {
   kouza: [
     "net-securities-comparison-beginners",
     "sbi-rakuten-securities-comparison",
+    "aukabucom-sbi-shoken-hikaku",
+    "rakuten-sec-monex-hikaku",
     "matsui-securities-features-guide",
     "dmm-kabu-fees-nisa-guide",
     "us-stock-broker-comparison-2026-10",
