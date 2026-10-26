@@ -10,6 +10,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "real-estate-investment-yield-calculation",
     "real-estate-investment-how-much-to-start",
     "real-estate-investment-location-guide",
+    "fudosan-toshi-jinko-genshou-akiyaritsu",
     "real-estate-investment-interest-rate-rise",
     "j-reit-kihon-risk-tax-nisa",
     "real-estate-crowdfunding-structure-risks",
