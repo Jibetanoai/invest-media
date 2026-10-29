@@ -558,7 +558,7 @@ ${gaSnippet()}</head>
   </a>
   <a class="article-card" href="tools/index.html" style="border-color:var(--accent); margin-bottom:24px;">
     <div class="article-card-date">🧮 無料の計算ツール</div>
-    <h2>投資の計算ツール｜下落率・回復率、配当利回り、クレカ積立のポイント</h2>
+    <h2>投資の計算ツール｜複利、下落率・回復率、配当利回り、クレカ積立のポイント</h2>
     <p>数字を入れるだけで、株価が戻るのに必要な上昇率、税引後の配当利回り、クレカ積立のポイントと年会費の損益分岐を確かめられます。</p>
   </a>
   <a class="article-card" href="kodomo-nisa-roadmap.html" style="border-color:var(--accent); margin-bottom:24px;">
@@ -610,6 +610,7 @@ function buildSitemapXml(articles) {
     { loc: `${site.baseUrl}/tools/recovery-calculator.html` },
     { loc: `${site.baseUrl}/tools/dividend-calculator.html` },
     { loc: `${site.baseUrl}/tools/kureka-points-calculator.html` },
+    { loc: `${site.baseUrl}/tools/compound-calculator.html` },
     { loc: `${site.baseUrl}/fudousan-roadmap.html` },
     ...articles.map((a) => ({
       loc: `${site.baseUrl}/articles/${a.slug}.html`,

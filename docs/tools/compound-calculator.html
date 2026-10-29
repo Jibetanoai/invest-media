@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>複利計算ツール(積立・配当再投資のシミュレーション) | 投資のキホン</title>
+<meta name="description" content="毎月の積立額、初期投資額、想定利回り、期間から、複利で増えた場合の資産の目安を計算する無料ツールです。元本と運用益の内訳、年ごとの推移表、配当を再投資しない場合との差も確認できます。">
+<link rel="canonical" href="https://jibetanoai.github.io/invest-media/tools/compound-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="複利計算ツール(積立・配当再投資のシミュレーション) | 投資のキホン">
+<meta property="og:description" content="毎月の積立額、初期投資額、想定利回り、期間から、複利で増えた場合の資産の目安を計算する無料ツールです。元本と運用益の内訳、年ごとの推移表、配当を再投資しない場合との差も確認できます。">
+<meta property="og:url" content="https://jibetanoai.github.io/invest-media/tools/compound-calculator.html">
+<meta property="og:site_name" content="投資のキホン">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://jibetanoai.github.io/invest-media/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1f27" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"複利計算ツール(積立・配当再投資のシミュレーション)","url":"https://jibetanoai.github.io/invest-media/tools/compound-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"毎月の積立額、初期投資額、想定利回り、期間から、複利で増えた場合の資産の目安を計算する無料ツールです。元本と運用益の内訳、年ごとの推移表、配当を再投資しない場合との差も確認できます。"}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-429SKH77WH"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-429SKH77WH");</script>
+<style>
+  .tool-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  .tool-main h1 { font-size: 26px; color: var(--navy); margin: 8px 0 12px; }
+  .tool-lead { color: var(--muted); font-size: 15px; line-height: 1.8; }
+  .tool-card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 20px 0; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .tool-row label { flex: 1 1 200px; font-size: 14px; color: var(--text); }
+  .tool-row input, .tool-row select { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); box-sizing: border-box; }
+  .tool-result { margin-top: 8px; padding: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+  .tool-result .big { font-size: 24px; font-weight: 700; color: var(--navy); }
+  .tool-result p { margin: 6px 0; }
+  .tool-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tool-table th, .tool-table td { border: 1px solid var(--border); padding: 8px; text-align: right; }
+  .tool-table th { background: var(--bg); text-align: center; }
+  .tool-note { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .tool-links a { display: block; margin: 6px 0; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a href="../index.html" class="brand">投資のキホン</a></div></header>
+<div class="disclosure-banner">本サイトはアフィリエイト広告を利用しています</div>
+<main class="tool-main">
+  <a href="index.html" class="back-link">← 計算ツール一覧</a>
+  <h1>複利計算ツール(積立・配当再投資のシミュレーション)</h1>
+  <p class="tool-lead">初期投資額・毎月の積立額・想定利回り(年率)・期間を入れると、利益を再投資した場合(複利)の資産額の目安を計算します。利益を受け取って再投資しない場合(単利)との差も表示します。</p>
+  <div class="tool-card">
+    <div class="tool-row">
+      <label>初期投資額(円)<input id="p0" type="number" inputmode="numeric" value="0" step="10000"></label>
+      <label>毎月の積立額(円)<input id="m" type="number" inputmode="numeric" value="30000" step="1000"></label>
+    </div>
+    <div class="tool-row">
+      <label>想定利回り(年率%)<input id="r" type="number" inputmode="decimal" value="4" step="0.1"></label>
+      <label>期間(年)<input id="y" type="number" inputmode="numeric" value="20" min="1" max="60" step="1"></label>
+    </div>
+    <div class="tool-result" id="out"></div>
+  </div>
+  <h2>年ごとの推移</h2>
+  <div style="overflow-x:auto"><table class="tool-table" id="tbl"></table></div>
+  <p class="tool-note">計算の前提:毎月末に積み立て、利回りは毎月複利(年率÷12)で一定とし、税金・手数料・信託報酬は含めていません。単利は、運用益を再投資せず元本だけに利回りがかかる場合の参考値です。実際の運用では価格が上下し、元本を下回ることもあります。</p>
+  <div class="tool-links"><h2>関連記事</h2>
+    <a href="../articles/tsumitate-vs-lump-sum-dollar-cost-averaging.html">積立投資と一括投資、どっちがいい?ドルコスト平均法の考え方</a>
+    <a href="../articles/shintaku-hoshu-hikaku-keisan.html">信託報酬の差は10年でいくら?比較計算でわかる保有コスト</a>
+  </div>
+  <p class="tool-note">このツールは入力した数字をもとに計算するだけのもので、入力内容はどこにも送信・保存されません。計算結果は前提に基づく目安で、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</p>
+</main>
+<footer class="site-footer">
+  <a href="../operator.html">運営者情報</a>
+  <a href="../editorial-policy.html">編集方針</a>
+  <a href="../privacy-policy.html">プライバシーポリシー</a>
+  <a href="../contact.html">お問い合わせ</a>
+  <p class="operated-by">投資のキホンは <strong>ASSET LAB</strong> が運営するブログです</p>
+</footer>
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(String($(id).value).replace(/,/g,''));return isFinite(v)?v:NaN;};
+const yen=v=>isFinite(v)?Math.round(v).toLocaleString('ja-JP')+'円':'—';
+const pct=(v,d=2)=>isFinite(v)?(v*100).toFixed(d)+'%':'—';
+function calc(){const p0=num('p0')||0,m=num('m')||0,r=num('r')/100,y=Math.round(num('y'));
+if(!(y>=1&&y<=60)||!(r>-1)){$('out').innerHTML='<p>期間(1〜60年)と利回りを入れてください。</p>';return;}
+const i=r/12;let bal=p0,rows='<tr><th>年</th><th>元本</th><th>資産額(複利)</th><th>うち運用益</th><th>単利の場合</th></tr>';
+for(let k=1;k<=y*12;k++){bal=bal*(1+i)+m;if(k%12===0){const yr=k/12,prin=p0+m*k;let simple=p0*(1+r*yr);for(let j=1;j<=k;j++)simple+=m*(1+i*(k-j));if(yr<=10||yr%5===0||yr===y)rows+=`<tr><td>${yr}年</td><td>${yen(prin)}</td><td>${yen(bal)}</td><td>${yen(bal-prin)}</td><td>${yen(simple)}</td></tr>`;}}
+const prin=p0+m*12*y;$('tbl').innerHTML=rows;
+$('out').innerHTML=`<p>${y}年後の資産額の目安(複利)</p><p class="big">${yen(bal)}</p><p>元本 ${yen(prin)} / 運用益 ${yen(bal-prin)}</p>`;}
+['p0','m','r','y'].forEach(x=>$(x).addEventListener('input',calc));calc();
+</script>
+</body>
+</html>
