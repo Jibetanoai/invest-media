@@ -69,6 +69,7 @@ const CATEGORY_ARTICLE_ORDER = {
   hajimeru: [
     "seikatsu-bouei-shikin-before-investing",
     "nisa-hajimekata-7-steps",
+    "kabu-100kabu-ikura-hitsuyou",
     "shinshakaijin-nisa-monthly-amount",
     "ideco-how-to-start-beginner-guide",
   ],
@@ -109,6 +110,7 @@ const CATEGORY_ARTICLE_ORDER = {
   hajimetaato: [
     "nisa-fukumizon-robaiuri-taisaku",
     "what-to-do-during-a-market-crash",
+    "stock-decline-recovery-rate-calculation",
     "nisa-rebalance-basics",
     "nisa-exit-strategy-withdrawal",
   ],
