@@ -317,17 +317,17 @@ function buildArticleHtml(article, allArticles) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(article.title)} | ${site.siteName}</title>
+<title>${escapeHtml(article.seoTitle || article.title)} | ${site.siteName}</title>
 <meta name="description" content="${escapeHtml(article.meta)}">
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${escapeHtml(article.title)}">
+<meta property="og:title" content="${escapeHtml(article.seoTitle || article.title)}">
 <meta property="og:description" content="${escapeHtml(article.meta)}">
 <meta property="og:url" content="${url}">
 <meta property="og:site_name" content="${escapeHtml(site.siteName)}">
 <meta property="article:published_time" content="${publishedIso}">
 <meta property="article:modified_time" content="${modifiedIso}">
-<meta name="twitter:title" content="${escapeHtml(article.title)}">
+<meta name="twitter:title" content="${escapeHtml(article.seoTitle || article.title)}">
 <meta name="twitter:description" content="${escapeHtml(article.meta)}">
 ${commonHeadHtml("../")}
 <link rel="preconnect" href="https://fonts.googleapis.com">
