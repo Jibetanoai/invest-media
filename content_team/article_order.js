@@ -55,6 +55,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "sbi-rakuten-securities-comparison",
     "aukabucom-sbi-shoken-hikaku",
     "rakuten-sec-monex-hikaku",
+    "kabu-tesuryo-keisan-hikaku",
     "matsui-securities-features-guide",
     "dmm-kabu-fees-nisa-guide",
     "us-stock-broker-comparison-2026-10",
@@ -91,6 +92,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-tsumitate-net-securities-comparison",
     "nisa-dividend-receiving-method",
     "dividend-yield-after-tax-calculation",
+    "dividend-reinvestment-compound-simulation",
   ],
   heiyou: [
     "ideco-nisa-difference-guide",
@@ -132,6 +134,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "how-to-pick-stocks-per-pbr-roe-dividend-yield",
     "shareholder-benefits-nisa-growth-quota-guide",
     "kabunushi-yutai-haito-rimawari-keisan",
+    "kabunushi-yutai-kaiaku-risk-check",
     "stop-loss-take-profit-rules-for-beginners",
     "nanpin-kai-merit-risk-beginner",
     "margin-trading-basics-vs-cash-trading",
