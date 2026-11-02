@@ -155,6 +155,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "shitekabu-features-and-risk-checkpoints",
   ],
   souba: [
+    "inflation-resistant-assets-comparison",
     "supply-demand-stock-price-basics",
     "macro-economics-basics-gdp-inflation-stock-price",
     "kinri-and-stock-price-basics",
