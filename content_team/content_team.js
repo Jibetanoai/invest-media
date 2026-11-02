@@ -409,7 +409,7 @@ async function generateArticle(topic, onProgress, options = {}) {
   // 4. ハルシネーションチェック部門(一次情報で1つずつ確認・修正)
   const hcPrompt = buildHallucinationPrompt(topic, `TITLE: ${final.title}\nMETA: ${final.meta}\n<<<BODY>>>\n${final.body}`, extraPolicy);
   const hcText = await store.run("4_ハルシネーションチェック.md", "ハルシネーションチェック部門(4人分)",
-    () => runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 15 * 60 * 1000 }), onProgress);
+    () => runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 25 * 60 * 1000 }), onProgress);
   const hallucinationReport = reportPart(hcText);
   const checked = parseArticleOutput(hcText);
   if (!checked.body) throw new Error("ハルシネーションチェック後の本文が取れなかったよ");
