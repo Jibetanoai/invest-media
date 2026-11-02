@@ -59,6 +59,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "rakuten-sec-monex-hikaku",
     "kabu-tesuryo-keisan-hikaku",
     "matsui-securities-features-guide",
+    "rakuten-sec-features-merit-demerit",
     "dmm-kabu-fees-nisa-guide",
     "us-stock-broker-comparison-2026-10",
     "nisa-account-brokerage-comparison-points",
