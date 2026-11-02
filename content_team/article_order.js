@@ -76,6 +76,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-hajimekata-7-steps",
     "kabu-100kabu-ikura-hitsuyou",
     "shinshakaijin-nisa-monthly-amount",
+    "fuyonai-nisa-tax-shakaihoken",
     "ideco-how-to-start-beginner-guide",
   ],
   shouhin: [
@@ -98,6 +99,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "nisa-tsumitate-seicho-which-first",
     "shin-nisa-1800man-nannen-tsumitate-hayamihyo",
     "nisa-tsumitate-frequency-daily-weekly-monthly",
+    "nisa-us-etf-foreign-tax-double-taxation",
     "nisa-tsumitate-net-securities-comparison",
     "nisa-dividend-receiving-method",
     "dividend-yield-after-tax-calculation",
@@ -106,6 +108,7 @@ const CATEGORY_ARTICLE_ORDER = {
   heiyou: [
     "rougo-shikin-ikura-hitsuyo-nisa-keisan",
     "ideco-nisa-difference-guide",
+    "corporate-dc-ideco-matching-contribution",
     "ideco-contribution-limit-by-job",
     "ideco-tax-benefits-guide",
     "ideco-how-to-receive-lumpsum-annuity",

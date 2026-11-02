@@ -392,7 +392,7 @@ async function generateArticle(topic, onProgress, options = {}) {
   if (onProgress) onProgress(`途中経過の保存先: ${path.relative(process.cwd(), store.dir)}/`);
   const planPrompt = buildPlanningWritingPrompt(topic, extraPolicy);
   const draftText = await store.run("1_下書き.md", "企画・執筆チーム(5部署23人分)",
-    () => runClaudeCLI({ ...planPrompt, tools: "WebSearch", timeoutMs: 10 * 60 * 1000 }), onProgress);
+    () => runClaudeCLI({ ...planPrompt, tools: "WebSearch", timeoutMs: 20 * 60 * 1000 }), onProgress);
   const draft = parseArticleOutput(draftText);
   if (!draft.body) throw new Error("下書きの本文が生成できなかったよ");
 

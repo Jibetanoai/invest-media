@@ -1528,6 +1528,30 @@
       "keywords": "インフレに強い資産, インフレ対策 投資, インフレ 現金 目減り, 物価上昇 資産運用",
       "createdAt": "2026-11-02T14:30:59.905Z",
       "category": "souba"
+    },
+    {
+      "slug": "corporate-dc-ideco-matching-contribution",
+      "title": "企業型DCとは?iDeCo併用とマッチング拠出の違いを整理",
+      "meta": "企業型DCとは何かを、iDeCo・NISAとの違いから整理。2026年11月時点の拠出限度額、企業型DCとiDeCoの併用条件、マッチング拠出との選び方、2026年12月施行予定の改正点までまとめます。",
+      "keywords": "企業型DC とは, 企業型DC iDeCo 併用, マッチング拠出, 企業型DC 拠出限度額",
+      "createdAt": "2026-11-02T15:57:13.338Z",
+      "category": "heiyou"
+    },
+    {
+      "slug": "nisa-us-etf-foreign-tax-double-taxation",
+      "title": "NISAの米国ETFは外国税10%が戻らない｜二重課税と手取り計算例",
+      "meta": "NISAで米国ETFを買うと配当に米国で10%課税され、外国税額控除では取り戻せません。配当100ドルの手取りをNISA・特定口座で比較し、二重課税の扱いと為替手数料、米国ETFと投資信託どっちかの確認項目を整理します。",
+      "keywords": "NISA 米国ETF 外国税, NISA 二重課税, 米国ETF 投資信託 どっち, NISA 為替手数料",
+      "createdAt": "2026-11-02T16:20:11.660Z",
+      "category": "kaikata"
+    },
+    {
+      "slug": "fuyonai-nisa-tax-shakaihoken",
+      "title": "扶養内NISAはできる?主婦・パートの税金と社会保険への影響を整理",
+      "meta": "扶養内 NISAの疑問に回答。NISAの非課税の利益は扶養判定の合計所得金額に含まれず、収入のない主婦(夫)でもNISAは使えます。136万円の壁、社会保険の扶養の注意点、課税口座との違いを公的情報と計算例で整理。",
+      "keywords": "扶養内 NISA, 主婦 NISA 扶養 外れる, NISA 利益 扶養, NISA 扶養 社会保険",
+      "createdAt": "2026-11-02T16:44:16.397Z",
+      "category": "hajimeru"
     }
   ]
 }
