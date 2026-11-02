@@ -87,6 +87,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "etf-distribution-yield-vs-total-return",
     "balance-fund-merit-demerit-nisa",
     "bond-basics-interest-rate-price-jgb",
+    "gold-investment-basics-tsumitate-etf-tax",
     "reit-basics-for-beginners",
     "kojin-muke-kokusai-basics",
     "zensekai-kabushiki-vs-beikoku-kabushiki-nisa",
