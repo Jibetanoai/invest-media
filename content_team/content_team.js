@@ -402,7 +402,7 @@ async function generateArticle(topic, onProgress, options = {}) {
 
   const finalPrompt = buildFinalEditPrompt(topic, draftText, redTeamNotes, extraPolicy);
   const finalText = await store.run("3_仕上げ.md", "編集長+バックオフィス(まとめ)",
-    () => runClaudeCLI({ ...finalPrompt, tools: "" }), onProgress);
+    () => runClaudeCLI({ ...finalPrompt, tools: "", timeoutMs: 15 * 60 * 1000 }), onProgress);
   const final = parseArticleOutput(finalText);
   if (!final.body) throw new Error("最終版の本文が生成できなかったよ");
 
