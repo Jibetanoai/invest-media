@@ -365,6 +365,14 @@ function parseArticleOutput(text) {
 // 保存済みの段階は飛ばして続きから始める(最初からやり直したいときは --fresh)。
 const DRAFTS_DIR = path.join(__dirname, "..", "data", "drafts");
 
+
+// 時間切れ後の再開: 同じ会話IDで続きを頼む
+const RESUME_PROMPT = "前回は制限時間で中断しました。ここまでの調査と執筆内容を活かして、調べ直しは必要な分だけにし、最初の指示どおりの出力形式で最終版を完成させてください。";
+function resumeArgs(sess) {
+  if (!sess) return {};
+  return sess.resume ? { sessionId: sess.sessionId, resume: true, userPrompt: RESUME_PROMPT } : { sessionId: sess.sessionId };
+}
+
 function stageStore(topic, fresh) {
   const id = crypto.createHash("sha1").update(topic).digest("hex").slice(0, 12);
   const dir = path.join(DRAFTS_DIR, id);
@@ -378,9 +386,28 @@ function stageStore(topic, fresh) {
         if (onProgress) onProgress(`${label}(保存済みの結果を使う: ${path.relative(process.cwd(), file)})`);
         return fs.readFileSync(file, "utf8");
       }
-      if (onProgress) onProgress(label);
-      const text = await fn();
+      // 時間切れで止まった段階は、同じ会話の続きから再開する(調べ直し・書き直しで使用量を無駄にしないため)
+      const sessionFile = `${file}.session`;
+      const partialFile = file.replace(/\.md$/, "_途中.md");
+      const resumeId = !fresh && fs.existsSync(sessionFile) ? fs.readFileSync(sessionFile, "utf8").trim() : null;
+      const sessionId = resumeId || crypto.randomUUID();
+      fs.writeFileSync(sessionFile, sessionId, "utf8");
+      if (onProgress) onProgress(resumeId ? `${label}(前回時間切れになった続きから再開)` : label);
+      let text;
+      try {
+        text = await fn({ sessionId, resume: !!resumeId });
+      } catch (err) {
+        if (err.timedOut && err.partial) {
+          fs.writeFileSync(partialFile, err.partial, "utf8");
+          err.message += `(途中経過を保存したよ: ${path.relative(process.cwd(), partialFile)}。次回はこの続きから再開する)`;
+        } else if (!resumeId) {
+          fs.rmSync(sessionFile, { force: true });
+        }
+        throw err;
+      }
       fs.writeFileSync(file, text, "utf8");
+      fs.rmSync(sessionFile, { force: true });
+      fs.rmSync(partialFile, { force: true });
       return text;
     },
   };
@@ -392,24 +419,24 @@ async function generateArticle(topic, onProgress, options = {}) {
   if (onProgress) onProgress(`途中経過の保存先: ${path.relative(process.cwd(), store.dir)}/`);
   const planPrompt = buildPlanningWritingPrompt(topic, extraPolicy);
   const draftText = await store.run("1_下書き.md", "企画・執筆チーム(5部署23人分)",
-    () => runClaudeCLI({ ...planPrompt, tools: "WebSearch", timeoutMs: 20 * 60 * 1000 }), onProgress);
+    (sess) => runClaudeCLI({ ...planPrompt, ...resumeArgs(sess), tools: "WebSearch", timeoutMs: 20 * 60 * 1000 }), onProgress);
   const draft = parseArticleOutput(draftText);
   if (!draft.body) throw new Error("下書きの本文が生成できなかったよ");
 
   const redTeamPrompt = buildRedTeamPrompt(topic, draftText, extraPolicy);
   const redTeamNotes = await store.run("2_レッドチーム指摘.md", "レッドチーム(3人分)",
-    () => runClaudeCLI({ ...redTeamPrompt, tools: "WebSearch", timeoutMs: 10 * 60 * 1000 }), onProgress);
+    (sess) => runClaudeCLI({ ...redTeamPrompt, ...resumeArgs(sess), tools: "WebSearch", timeoutMs: 10 * 60 * 1000 }), onProgress);
 
   const finalPrompt = buildFinalEditPrompt(topic, draftText, redTeamNotes, extraPolicy);
   const finalText = await store.run("3_仕上げ.md", "編集長+バックオフィス(まとめ)",
-    () => runClaudeCLI({ ...finalPrompt, tools: "", timeoutMs: 15 * 60 * 1000 }), onProgress);
+    (sess) => runClaudeCLI({ ...finalPrompt, ...resumeArgs(sess), tools: "", timeoutMs: 15 * 60 * 1000 }), onProgress);
   const final = parseArticleOutput(finalText);
   if (!final.body) throw new Error("最終版の本文が生成できなかったよ");
 
   // 4. ハルシネーションチェック部門(一次情報で1つずつ確認・修正)
   const hcPrompt = buildHallucinationPrompt(topic, `TITLE: ${final.title}\nMETA: ${final.meta}\n<<<BODY>>>\n${final.body}`, extraPolicy);
   const hcText = await store.run("4_ハルシネーションチェック.md", "ハルシネーションチェック部門(4人分)",
-    () => runClaudeCLI({ ...hcPrompt, tools: "WebSearch,WebFetch", timeoutMs: 25 * 60 * 1000 }), onProgress);
+    (sess) => runClaudeCLI({ ...hcPrompt, ...resumeArgs(sess), tools: "WebSearch,WebFetch", timeoutMs: 25 * 60 * 1000 }), onProgress);
   const hallucinationReport = reportPart(hcText);
   const checked = parseArticleOutput(hcText);
   if (!checked.body) throw new Error("ハルシネーションチェック後の本文が取れなかったよ");
@@ -417,7 +444,7 @@ async function generateArticle(topic, onProgress, options = {}) {
   // 5. 最終チェック部門(合否判定)
   const fcPrompt = buildFinalCheckPrompt(topic, `TITLE: ${checked.title || final.title}\nMETA: ${checked.meta || final.meta}\n<<<BODY>>>\n${checked.body}`, hallucinationReport, extraPolicy);
   const fcText = await store.run("5_最終チェック.md", "最終チェック部門(4人分)",
-    () => runClaudeCLI({ ...fcPrompt, tools: "" }), onProgress);
+    (sess) => runClaudeCLI({ ...fcPrompt, ...resumeArgs(sess), tools: "", timeoutMs: 10 * 60 * 1000 }), onProgress);
   const verdict = parseVerdict(fcText);
   const finalCheckReport = reportPart(fcText);
   const approved = parseArticleOutput(fcText);
