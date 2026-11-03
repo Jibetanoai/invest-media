@@ -84,6 +84,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "index-fund-how-to-choose-comparison-points",
     "active-fund-vs-index-fund-basics",
     "toushin-etf-difference-nisa",
+    "nisa-etf-merit-demerit-vs-toushin",
     "toushin-kijunkagaku-towa",
     "etf-distribution-yield-vs-total-return",
     "balance-fund-merit-demerit-nisa",
