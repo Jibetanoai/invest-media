@@ -88,6 +88,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "toushin-kijunkagaku-towa",
     "etf-distribution-yield-vs-total-return",
     "balance-fund-merit-demerit-nisa",
+    "bond-basics-types-jgb-corporate-foreign",
     "bond-basics-interest-rate-price-jgb",
     "gold-investment-basics-tsumitate-etf-tax",
     "reit-basics-for-beginners",
