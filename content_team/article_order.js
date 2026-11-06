@@ -197,6 +197,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "corona-shock-2020",
     "us-rate-hike-2022-selloff",
     "boj-rate-hike-2024-crash",
+    "midterm-elections-stock-market-sp500",
   ],
 };
 
