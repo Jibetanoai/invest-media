@@ -397,7 +397,13 @@ function stageStore(topic, fresh) {
       try {
         text = await fn({ sessionId, resume: !!resumeId });
       } catch (err) {
-        if (err.timedOut && err.partial) {
+        // 前回の会話が残っていなかった(何も始まる前に止まっていた)ときは、新しく始め直す
+        if (resumeId && /No conversation found/i.test(err.message)) {
+          fs.rmSync(sessionFile, { force: true });
+          return this.run(name, label, fn, onProgress);
+        }
+        if (err.partial) {
+          // 時間切れ・使用上限など理由を問わず、途中まで進んでいれば会話IDと途中経過を残して次回続きから再開する
           fs.writeFileSync(partialFile, err.partial, "utf8");
           err.message += `(途中経過を保存したよ: ${path.relative(process.cwd(), partialFile)}。次回はこの続きから再開する)`;
         } else if (!resumeId) {

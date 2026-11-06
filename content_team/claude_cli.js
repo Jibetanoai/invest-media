@@ -77,14 +77,21 @@ function runClaudeCLI({ systemPrompt, userPrompt, tools = "WebSearch", timeoutMs
     child.on("close", (code) => {
       clearTimeout(timer);
       if (buf) onLine(buf);
+      // 失敗したときは、そこまでに書いた文章と検索の記録を err.partial に付けて返す
+      const hasProgress = texts.length > 0 || streaming || toolLog.length > 0;
+      const fail = (err) => {
+        if (hasProgress) {
+          err.partial = [
+            "## ここまでに書いた文章", [...texts, streaming].filter(Boolean).join("\n\n") || "(まだなし)",
+            "", "## ここまでの検索の記録", toolLog.join("\n") || "(まだなし)",
+          ].join("\n");
+        }
+        reject(err);
+      };
       if (timedOut) {
         const err = new Error(`claude CLIが${Math.round(timeoutMs / 1000)}秒以内に応答しなかったので中断したよ`);
         err.timedOut = true;
-        err.partial = [
-          "## ここまでに書いた文章", [...texts, streaming].filter(Boolean).join("\n\n") || "(まだなし)",
-          "", "## ここまでの検索の記録", toolLog.join("\n") || "(まだなし)",
-        ].join("\n");
-        reject(err);
+        fail(err);
         return;
       }
 
@@ -92,20 +99,20 @@ function runClaudeCLI({ systemPrompt, userPrompt, tools = "WebSearch", timeoutMs
         const msg = result.result === "Not logged in · Please run /login"
           ? "claude CLIにログインしてないよ。ターミナルで `claude setup-token` を実行してログインしてね。"
           : (result.result || "claude CLIがエラーを返したよ");
-        reject(new Error(msg));
+        fail(new Error(msg));
         return;
       }
       if (code !== 0) {
-        reject(new Error(stderr.trim() || (result && result.result) || `claude CLIが終了コード${code}で失敗したよ`));
+        fail(new Error(stderr.trim() || (result && result.result) || `claude CLIが終了コード${code}で失敗したよ`));
         return;
       }
       if (!result) {
-        reject(new Error(`claude CLIの出力を解析できなかったよ: ${stderr.slice(0, 500)}`));
+        fail(new Error(`claude CLIの出力を解析できなかったよ: ${stderr.slice(0, 500)}`));
         return;
       }
       const text = (result.result || "").trim();
       if (!text) {
-        reject(new Error("本文が空だったよ"));
+        fail(new Error("本文が空だったよ"));
         return;
       }
       resolve(text);
