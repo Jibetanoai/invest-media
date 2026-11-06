@@ -93,6 +93,8 @@ const CATEGORY_ARTICLE_ORDER = {
     "reit-basics-for-beginners",
     "kojin-muke-kokusai-basics",
     "zensekai-kabushiki-vs-beikoku-kabushiki-nisa",
+    "sp500-towa-shikumi-nisa",
+    "zensekai-kabushiki-orukan-kousei-hiritsu",
     "toushin-bunpaikin-ari-nashi",
     "toushin-hidden-cost-basics",
     "shintaku-hoshu-hikaku-keisan",
@@ -168,6 +170,8 @@ const CATEGORY_ARTICLE_ORDER = {
   souba: [
     "inflation-resistant-assets-comparison",
     "yen-depreciation-japanese-stocks-impact",
+    "policy-rate-hike-impact",
+    "fomc-towa-kabuka-eikyo-nittei",
     "supply-demand-stock-price-basics",
     "macro-economics-basics-gdp-inflation-stock-price",
     "kinri-and-stock-price-basics",
