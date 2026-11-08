@@ -198,6 +198,7 @@ const CATEGORY_ARTICLE_ORDER = {
     "us-rate-hike-2022-selloff",
     "boj-rate-hike-2024-crash",
     "midterm-elections-stock-market-sp500",
+    "us-elections-impact-japan-stocks-yen",
   ],
 };
 
