@@ -199,6 +199,9 @@ const CATEGORY_ARTICLE_ORDER = {
     "boj-rate-hike-2024-crash",
     "midterm-elections-stock-market-sp500",
     "us-elections-impact-japan-stocks-yen",
+    "presidential-election-cycle-stock-market",
+    "us-election-stock-fx-2016-2020-2024",
+    "republican-democrat-stock-market-data",
   ],
 };
 
